@@ -1,11 +1,9 @@
-import Header from './components/Header';
-import LoginPage from './components/LoginPage'
+import Login from "./pages/Login";
 
 function App() {
   return (
     <>
-    <Header />
-    <LoginPage />
+      <Login />
     </>
   );
 }
