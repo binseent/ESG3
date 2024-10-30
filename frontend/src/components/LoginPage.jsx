@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import './LoginPage.css'; // For additional styling
-
+import React, { useState } from "react";
+import "./LoginPage.css"; // For additional styling
 
 const LoginPage = () => {
   // Toggle between "Log in" and "Password Reset"
@@ -12,20 +11,20 @@ const LoginPage = () => {
         <div className="toggle-buttons">
           {/* Toggle button for switching between Log In and Password Reset */}
           <div className="switch-toggle">
-          <button 
-            type="button" 
-            className={isLogin ? 'active' : ''} 
-            onClick={() => setIsLogin(true)}
-          >
-            Log in
-          </button>
-          <button 
-            type="button" 
-            className={!isLogin ? 'active' : ''} 
-            onClick={() => setIsLogin(false)}
-          >
-            Password Reset
-          </button>
+            <button
+              type="button"
+              className={isLogin ? "active" : ""}
+              onClick={() => setIsLogin(true)}
+            >
+              Log in
+            </button>
+            <button
+              type="button"
+              className={!isLogin ? "active" : ""}
+              onClick={() => setIsLogin(false)}
+            >
+              Password Reset
+            </button>
           </div>
         </div>
 
