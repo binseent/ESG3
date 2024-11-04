@@ -1,20 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 
 function Login() {
+  const [isRegister, setIsRegister] = useState(false);
+
+  const handleToggle = () => {
+    setIsRegister(!isRegister);
+  };
+
   return (
     <div className="login">
-      <h2 className="title">Login with your Student Account</h2>
+      <h2 className="title">
+        {isRegister ? "Register an Account" : "Login with your Student Account"}
+      </h2>
       <div className="buttonContainer">
-        <button className="button activeButton">LOG IN</button>
-        <button className="button">REGISTER</button>
+        <button
+          className={`button ${!isRegister ? "activeButton" : ""}`}
+          onClick={() => setIsRegister(false)}
+        >
+          LOG IN
+        </button>
+        <button
+          className={`button ${isRegister ? "activeButton" : ""}`}
+          onClick={() => setIsRegister(true)}
+        >
+          REGISTER
+        </button>
       </div>
-      <input type="text" placeholder="Student ID" className="input" />
-      <input type="password" placeholder="Password" className="input" />
-      <button className="loginButton">Log in</button>
-      <a href="/" className="forgotPassword">
-        Forgot Password?
-      </a>
+
+      {isRegister ? (
+        <div className="registerForm">
+          <input type="text" placeholder="First Name" className="input" />
+          <input type="text" placeholder="Middle Name" className="input" />
+          <input type="text" placeholder="Last Name" className="input" />
+          <input type="email" placeholder="Email Address" className="input" />
+          <input type="password" placeholder="Password" className="input" />
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            className="input"
+          />
+          <button className="registerButton">Register</button>
+        </div>
+      ) : (
+        <div className="loginForm">
+          <input type="text" placeholder="Student ID" className="input" />
+          <input type="password" placeholder="Password" className="input" />
+          <button className="loginButton">Log in</button>
+          <a
+            href="https://www.facebook.com/Jvincent30"
+            className="forgotPassword"
+          >
+            Forgot Password?
+          </a>
+        </div>
+      )}
     </div>
   );
 }
