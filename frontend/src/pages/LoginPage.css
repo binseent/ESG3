@@ -1,7 +1,17 @@
 .container {
-    display: flex;
-    flex-direction: row; 
-    width: 100vw;
-    height: 100vh;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  
+  .input {
+    width: 50%;
+  }
+}
