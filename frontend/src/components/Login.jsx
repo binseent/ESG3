@@ -4,6 +4,7 @@ import "./Login.css";
 function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
+  const [email, setEmail] = useState("");  
 
   const handleToggle = () => {
     setIsRegister(!isRegister);
@@ -12,6 +13,38 @@ function Login() {
 
   const handleForgotPasswordClick = () => {
     setForgotPassword(true);
+  };
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value); 
+  };
+
+  const handleResetPassword = async (event) => {
+    event.preventDefault();
+
+    if (!email) {
+      alert("Please enter an email address!");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }), 
+      });
+
+      if (response.ok) {
+        alert("Password reset email sent!");
+      } else {
+        alert("Error sending password reset email.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error connecting to the server.");
+    }
   };
 
   return (
@@ -76,8 +109,19 @@ function Login() {
       ) : (
         <div className="forgotPasswordForm">
           <h2 className="title">Enter your email for password reset</h2>
-          <input type="email" placeholder="Email" className="input" />
-          <button className="resetButton">Reset</button>
+          <input
+            type="email"
+            placeholder="Email"
+            className="input"
+            value={email}  
+            onChange={handleEmailChange}  
+          />
+          <button
+            className="resetButton"
+            onClick={handleResetPassword} 
+          >
+            Reset
+          </button>
         </div>
       )}
     </div>
