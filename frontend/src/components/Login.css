@@ -20,7 +20,7 @@
 
 .loginTitle {
   margin-bottom: 30px;
-  margin-top: 230px;
+  margin-top: 220px;
 }
 
 .registerTitle {
@@ -100,17 +100,33 @@
 }
 
 .forgotPassword {
-<<<<<<< Updated upstream
-  margin-top: 40px;
-=======
-  margin-top: 230px;
->>>>>>> Stashed changes
+  margin-top: 220px;
   color: #ffdc71;
   font-size: 14px;
   text-decoration: underline;
   cursor: pointer;
   background: none;
   border: none;
+}
+.goBackButton {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.goBackButton:hover {
+  transform: scale(1.1);
+}
+
+.backIcon {
+  width: 35px;
+  height: 35px;
+  filter: invert(1);
 }
 
 @media (max-width: 1440px) {

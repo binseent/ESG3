@@ -15,6 +15,10 @@ function Login() {
     setForgotPassword(true);
   };
 
+  const handleGoBack = () => {
+    setForgotPassword(false);
+  };
+
   const handleEmailChange = (event) => {
     setEmail(event.target.value); 
   };
@@ -22,6 +26,7 @@ function Login() {
   const handleResetPassword = async (event) => {
     event.preventDefault();
 
+  
     if (!email) {
       alert("Please enter an email address!");
       return;
@@ -103,6 +108,7 @@ function Login() {
               >
                 Forgot Password?
               </button>
+              
             </div>
           )}
         </>
@@ -121,6 +127,14 @@ function Login() {
             onClick={handleResetPassword} 
           >
             Reset
+          </button>
+
+          <button className="goBackButton" onClick={handleGoBack}>
+            <img
+              src="https://cdn-icons-png.flaticon.com/512/93/93634.png"
+              alt="Back"
+              className="backIcon"
+            />
           </button>
         </div>
       )}
