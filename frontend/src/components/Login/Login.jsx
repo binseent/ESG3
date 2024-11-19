@@ -7,7 +7,7 @@ function Login() {
 
   const handleToggle = () => {
     setIsRegister(!isRegister);
-    setForgotPassword(false); // Reset forgot password state when toggling between login and register
+    setForgotPassword(false);
   };
 
   const handleForgotPasswordClick = () => {
@@ -15,7 +15,7 @@ function Login() {
   };
 
   const handleGoBack = () => {
-    setForgotPassword(false); // Return to the previous form
+    setForgotPassword(false);
   };
 
   return (
@@ -82,7 +82,6 @@ function Login() {
           <h2 className="title">Enter your email for password reset</h2>
           <input type="email" placeholder="Email" className="input" />
           <button className="resetButton">Reset</button>
-          {/* New Go Back Button */}
           <button className="goBackButton" onClick={handleGoBack}>
             <img
               src="https://cdn-icons-png.flaticon.com/512/93/93634.png"
