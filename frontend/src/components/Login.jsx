@@ -7,7 +7,7 @@ function Login() {
 
   const handleToggle = () => {
     setIsRegister(!isRegister);
-    setForgotPassword(false); // Reset forgot password state when toggling between login and register
+    setForgotPassword(false);
   };
 
   const handleForgotPasswordClick = () => {
@@ -18,7 +18,9 @@ function Login() {
     <div className="login">
       {!forgotPassword ? (
         <>
-          <h2 className="title">
+          <h2
+            className={`title ${isRegister ? "registerTitle" : "loginTitle"}`}
+          >
             {isRegister
               ? "Register an Account"
               : "Login with your Student Account"}
