@@ -5,8 +5,10 @@
   justify-content: center;
   background-color: #418550;
   width: 30%;
-  height: auto;
+  height: 100vh;
   overflow: hidden;
+  position: absolute;
+  right: 0;
 }
 
 .title {
@@ -99,6 +101,31 @@
   background: none;
   border: none;
 }
+.forgotPasswordForm input{
+  width: 80%;
+}
+
+.goBackButton {
+  position: absolute; 
+  top: 20px; 
+  left: 20px; 
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.goBackButton:hover {
+  transform: scale(1.1);
+}
+
+.backIcon {
+  width: 35px; 
+  height: 35px; 
+  filter: invert(1);
+}
+
 
 @media (max-width: 1440px) {
   .registerForm {
