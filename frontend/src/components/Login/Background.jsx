@@ -1,6 +1,6 @@
 import React from "react";
-import Logo from "../assets/LGCVSU.png";
-import "../components/Background.css";
+import "./Background.css";
+import Logo from "../../assets/LGCVSU.png";
 
 const Background = () => {
   return (

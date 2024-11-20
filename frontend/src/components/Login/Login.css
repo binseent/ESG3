@@ -9,6 +9,8 @@
   width: 30%;
   height: 100vh;
   overflow: hidden;
+  position: absolute;
+  right: 0;
 }
 
 .title {
@@ -32,7 +34,6 @@
   margin-bottom: 20px;
   background-color: #bea453;
   border-radius: 10px;
-  overflow: hidden;
 }
 
 .button {
@@ -44,16 +45,12 @@
   border: none;
   cursor: pointer;
   font-size: 10px;
-
-  /* Add transition for smooth animations */
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
 }
 
 .activeButton {
-  background-color: #ffdc71; /* Active state background color */
-  color: #000; /* Active state text color */
-
-  /* Optional: Add slight scaling for smooth emphasis */
+  background-color: #ffdc71;
+  color: #000;
   transform: scale(1);
 }
 
@@ -140,5 +137,11 @@
   .input {
     width: 100%;
     margin-bottom: 5px;
+  }
+  .forgotPassword {
+    margin-top: 180px;
+  }
+  .title {
+    margin-bottom: 20px;
   }
 }
