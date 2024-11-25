@@ -19,12 +19,7 @@ const StudentInfo = () => (
             />
           </h4>
           <p>Student Number</p>
-          <input
-            type="file"
-            className="change-photo"
-            accept=".png, .jpg, .jpeg"
-            name="Change photo"
-          />
+          <button className="edit-info">Change photo</button>
         </div>
       </div>
     </div>
