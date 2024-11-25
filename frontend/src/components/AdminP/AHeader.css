@@ -1,0 +1,33 @@
+/* Header Container */
+.header {
+    display: flex; /* Align children horizontally */
+    justify-content: space-between; /* Space out the items */
+    align-items: center; /* Center items vertically */
+    background-color: #2f855a; /* Green background */
+    color: white; /* White text */
+    padding: 16px; /* Padding inside the header */
+  }
+  
+  /* Title Styling */
+  .header-title {
+    font-size: 18px; /* Text size */
+    font-weight: bold; /* Bold text */
+  }
+  
+  /* Admin Info Container */
+  .header-admin {
+    display: flex; /* Align items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 8px; /* Add space between items */
+    position: absolute;
+    right: 10px;
+  }
+  
+  /* Profile Icon Styling */
+  .header-profile {
+    width: 32px; /* Set width */
+    height: 32px; /* Set height */
+    background-color: white; /* White background */
+    border-radius: 50%; /* Make it a circle */
+  }
+  
