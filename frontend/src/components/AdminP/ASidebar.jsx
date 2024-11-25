@@ -16,6 +16,12 @@ const ASidebar = ({ activeSection, setActiveSection }) => (
       >
         New Enrollees
       </li> 
+      <li 
+        className={activeSection === "ResetPass" ? "active" : ""}
+        onClick={() => setActiveSection("ResetPass")}
+      >
+        Reset Password Request
+      </li> 
     </ul>
   </aside>
   ); 

@@ -1,0 +1,50 @@
+.Reset-Container {
+    display: flex;
+    flex-direction: column; 
+    height: 84vh;
+}
+
+/* Table of Password reset requests */ /* Table of Password reset requests */ /* Table of Password reset requests */ /* Table of Password reset requests */
+.Reset-Table {
+    overflow-y: auto;
+    width: 100%; 
+    height: 50%;
+}
+.Reset-Table table {
+    border-collapse: collapse;
+    width: 100%;  
+}
+.Reset-Table th{
+    background-color: antiquewhite;
+}
+.Reset-Table th, td {
+    padding: 8px;
+    border: 1px solid #ccc;
+    word-wrap: break-word;  
+    overflow: hidden;  
+}
+.Reset-Table td{
+    background-color:azure;
+}
+/* Table of Password reset requests */ /* Table of Password reset requests */ /* Table of Password reset requests */ /* Table of Password reset requests */
+
+/* Approval of passwords request and sending of emails */ /* Approval of passwords request and sending of emails */ /* Approval of passwords request and sending of emails */
+.Reset-form{
+    display: flex;
+    width: 100%; 
+    height: 50%;
+}
+.button-container{
+    display: flex;
+    flex-direction: column; 
+}
+.Form-Status{
+    background-color: yellowgreen;
+    width: 40%; 
+}
+.Form-Email{
+    background-color: orange;
+    width: 60%; 
+}
+
+/* Approval of passwords request and sending of emails */ /* Approval of passwords request and sending of emails */ /* Approval of passwords request and sending of emails */
