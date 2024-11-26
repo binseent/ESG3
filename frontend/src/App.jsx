@@ -5,11 +5,9 @@ import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 function App() {
   return (
     <>
-      {" "}
-      <StudentDashboard />{" "}
+    <AdminPage />
     </>
-    //<> <AdminPage /> </>
-    // <> <LoginPage /> </>
+      
   );
 }
 
