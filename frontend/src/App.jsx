@@ -4,9 +4,15 @@
 
 function App() {
   return (
+    main
+    <>
+      <StudentDashboard />
+    </>
+=======
     // <> <StudentDashboard /> </>
      <> <AdminPage /> </>
     // <> <LoginPage /> </>
+    main
   );
 }
 

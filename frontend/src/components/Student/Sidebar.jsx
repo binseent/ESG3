@@ -1,5 +1,4 @@
 import React from "react";
-import "./Sidebar.css";
 import Logo from "../../assets/icon.png";
 
 const Sidebar = ({ activeSection, setActiveSection }) => (
@@ -26,24 +25,15 @@ const Sidebar = ({ activeSection, setActiveSection }) => (
         Enrollment Details
       </li>
       <li
-        className={activeSection === "Course" ? "active" : ""}
-        onClick={() => setActiveSection("Course")}
+        className={activeSection === "Checklist" ? "active" : ""}
+        onClick={() => setActiveSection("Checklist")}
       >
-        Course Schedule
-      </li>
-      <li
-        className={activeSection === "Academic" ? "active" : ""}
-        onClick={() => setActiveSection("Academic")}
-      >
-        Academic Records
-      </li>
-      <li
-        className={activeSection === "Documents" ? "active" : ""}
-        onClick={() => setActiveSection("Documents")}
-      >
-        Documents
+        Course Checklist
       </li>
     </ul>
+    <div className="logout">
+      <button>Log Out</button>
+    </div>
   </aside>
 );
 

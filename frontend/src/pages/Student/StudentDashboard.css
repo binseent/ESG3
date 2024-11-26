@@ -4,40 +4,84 @@
   height: 100vh;
   font-family: Arial, sans-serif;
   background-color: #f3f3f3;
-  overflow: hidden;
 }
 
 .dashboard-content {
   display: flex;
   flex: 1;
-  overflow: hidden;
 }
 
-.sidebar h3 {
-  font-size: 1.2rem;
-  margin-bottom: 1rem;
-  color: #333;
+/* Sidebar styles */
+
+.dashboard-content .sidebar-profile {
+  margin-left: 25px;
+  margin-bottom: 25px;
+  display: flex;
+  flex-direction: row;
 }
 
-.sidebar ul {
+.dashboard-content .profile-name {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.dashboard-content .profile-name h4 {
+  margin-bottom: 0;
+}
+
+.dashboard-content .profile-name p {
+  margin-bottom: 0;
+}
+
+.dashboard-content .sidebar-profile img {
+  margin-top: 15px;
+  padding-right: 20px;
+  width: 100px;
+  height: 100px;
+}
+
+.dashboard-content .sidebar {
+  background-color: #f3f3f3;
+  width: 250px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content .sidebar ul {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
-.sidebar li {
-  margin-bottom: 1rem;
+.dashboard-content .sidebar li {
+  margin-top: 20px;
+  padding: 0.7rem 1rem;
   cursor: pointer;
   color: #333;
   font-size: 1rem;
-  transition: color 0.3s, font-weight 0.3s;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.dashboard-main {
+.dashboard-content .sidebar li.active {
+  background-color: #d9d9d9c0;
+  color: #000;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-content .sidebar li:hover:not(.active) {
+  background-color: #d9d9d9;
+  color: #000;
+}
+
+.dashboard .dashboard-main {
   flex: 1;
-  padding: 2rem;
-  padding-left: 100px;
+  padding: 2.5rem;
+  padding-left: 3rem;
   overflow-y: auto;
-  border-radius: 8px;
 }
 
 /* Styling for StudentInfo */
@@ -46,12 +90,12 @@
   background: #ffffff;
   padding: 15px;
   border-radius: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .dashboard-main .profile {
   display: flex;
-  gap: 20px;
+  gap: 25px;
   align-items: center;
 }
 
@@ -69,6 +113,7 @@
 
 .dashboard-main .profile-details input {
   background-color: transparent;
+  color: #000;
   border: 0px solid;
 }
 
@@ -78,16 +123,13 @@
   align-items: center;
   margin-bottom: 10px;
   padding: 2px;
+  padding-bottom: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .dashboard-main .info-row span:nth-child(2) {
   flex: 1;
   text-align: center;
-}
-
-.dashboard-main .info-row button {
-  margin-left: auto;
 }
 
 .dashboard-main .info-row input {
@@ -109,10 +151,32 @@
   background-color: #d9d9d9;
 }
 
+.sidebar .logout {
+  margin-top: 290px;
+}
+
+.sidebar .logout button {
+  margin-top: 0px;
+  padding: 0.7rem 1rem;
+  padding-right: 170px;
+  cursor: pointer;
+  color: #333;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s, color 0.3s;
+  border: none;
+}
+
+.sidebar .logout button:hover {
+  background-color: #d9d9d9c0;
+  color: #000;
+  box-shadow: 1px 1px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
 /* Student info end */
 
 @media (max-width: 768px) {
-  .sidebar {
+  .dashboard-content .sidebar {
     display: none;
   }
 
@@ -120,7 +184,8 @@
     flex-direction: column;
   }
 
-  .dashboard-main {
-    padding: 1rem;
+  .dashboard .dashboard-main {
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }
