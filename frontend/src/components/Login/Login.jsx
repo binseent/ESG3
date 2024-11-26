@@ -23,33 +23,15 @@ function Login() {
     setEmail(event.target.value); 
   };
 
-  const handleResetPassword = async (event) => {
+  const handleResetPassword = (event) => {
     event.preventDefault();
-
-  
+    
     if (!email) {
       alert("Please enter an email address!");
       return;
     }
 
-    try {
-      const response = await fetch("http://localhost:5000", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }), 
-      });
-
-      if (response.ok) {
-        alert("Password reset email sent!");
-      } else {
-        alert("Error sending password reset email.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Error connecting to the server.");
-    }
+    alert(`Password reset request send to admin!`);
   };
 
   return (
@@ -108,7 +90,6 @@ function Login() {
               >
                 Forgot Password?
               </button>
-              
             </div>
           )}
         </>
@@ -119,8 +100,6 @@ function Login() {
             type="email"
             placeholder="Email"
             className="input"
-            value={email}  
-            onChange={handleEmailChange}  
           />
           <button
             className="resetButton"
