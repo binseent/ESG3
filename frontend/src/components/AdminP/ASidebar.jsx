@@ -5,10 +5,10 @@ const ASidebar = ({ activeSection, setActiveSection }) => (
   <aside className="sidebar">
     <ul>
       <li
-        className={activeSection === "Home" ? "active" : ""}
-        onClick={() => setActiveSection("Home")}
+        className={activeSection === "StudentManageTable" ? "active" : ""}
+        onClick={() => setActiveSection("StudentManageTable")}
       >
-        Home
+        Student Manage 
       </li>
       <li 
         className={activeSection === "AEnrolleesTable" ? "active" : ""}
