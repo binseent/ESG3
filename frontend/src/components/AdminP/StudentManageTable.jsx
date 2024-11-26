@@ -9,14 +9,62 @@ const StudentManageTable = () => {
 
   // Student data
   const students = [
-    { id: "202410001", name: "John Doe", course: "Computer Science", year: "1st Year", status: "Enrolled" },
-    { id: "202410002", name: "Jane Smith", course: "Information Technology", year: "2nd Year", status: "Pending" },
-    { id: "202410003", name: "Mike Johnson", course: "Engineering", year: "3rd Year", status: "Enrolled" },
-    { id: "202410004", name: "Emily Davis", course: "Computer Science", year: "4th Year", status: "Dropped" },
-    { id: "202410005", name: "Matthew Lee", course: "Information Technology", year: "1st Year", status: "Pending" },
-    { id: "202410006", name: "Amanda Brown", course: "Engineering", year: "2nd Year", status: "Enrolled" },
-    { id: "202410007", name: "Chris Wilson", course: "Computer Science", year: "3rd Year", status: "Pending" },
-    { id: "202410008", name: "Jessica White", course: "Information Technology", year: "4th Year", status: "Enrolled" },
+    {
+      id: "202410001",
+      name: "John Doe",
+      course: "Computer Science",
+      year: "1st Year",
+      status: "Enrolled",
+    },
+    {
+      id: "202410002",
+      name: "Jane Smith",
+      course: "Information Technology",
+      year: "2nd Year",
+      status: "Pending",
+    },
+    {
+      id: "202410003",
+      name: "Mike Johnson",
+      course: "Engineering",
+      year: "3rd Year",
+      status: "Enrolled",
+    },
+    {
+      id: "202410004",
+      name: "Emily Davis",
+      course: "Computer Science",
+      year: "4th Year",
+      status: "Dropped",
+    },
+    {
+      id: "202410005",
+      name: "Matthew Lee",
+      course: "Information Technology",
+      year: "1st Year",
+      status: "Pending",
+    },
+    {
+      id: "202410006",
+      name: "Amanda Brown",
+      course: "Engineering",
+      year: "2nd Year",
+      status: "Enrolled",
+    },
+    {
+      id: "202410007",
+      name: "Chris Wilson",
+      course: "Computer Science",
+      year: "3rd Year",
+      status: "Pending",
+    },
+    {
+      id: "202410008",
+      name: "Jessica White",
+      course: "Information Technology",
+      year: "4th Year",
+      status: "Enrolled",
+    },
   ];
 
   // Filtered students based on the search and filter values
@@ -26,9 +74,14 @@ const StudentManageTable = () => {
       student.id.toLowerCase().includes(searchInput.toLowerCase()) ||
       student.course.toLowerCase().includes(searchInput.toLowerCase());
 
-    const matchesCourse = !filterCourse || student.course.toLowerCase() === filterCourse.toLowerCase();
-    const matchesYear = !filterYear || student.year.toLowerCase() === filterYear.toLowerCase();
-    const matchesStatus = !filterStatus || student.status.toLowerCase() === filterStatus.toLowerCase();
+    const matchesCourse =
+      !filterCourse ||
+      student.course.toLowerCase() === filterCourse.toLowerCase();
+    const matchesYear =
+      !filterYear || student.year.toLowerCase() === filterYear.toLowerCase();
+    const matchesStatus =
+      !filterStatus ||
+      student.status.toLowerCase() === filterStatus.toLowerCase();
 
     return matchesSearch && matchesCourse && matchesYear && matchesStatus;
   });
@@ -86,7 +139,11 @@ const StudentManageTable = () => {
           <option value="Pending">Pending</option>
           <option value="Dropped">Dropped</option>
         </select>
-        <button id="resetFilters" className="student-manage-reset-button" onClick={resetFilters}>
+        <button
+          id="resetFilters"
+          className="student-manage-reset-button"
+          onClick={resetFilters}
+        >
           Reset
         </button>
       </div>
@@ -126,7 +183,9 @@ const StudentManageTable = () => {
 
       {/* Additional Info Box */}
       <div className="student-manage-box">
-        <p>Note: This section can contain controls or additional information.</p>
+        <p>
+          Note: This section can contain controls or additional information.
+        </p>
       </div>
     </div>
   );
