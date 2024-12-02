@@ -8,7 +8,7 @@ const ASidebar = ({ activeSection, setActiveSection }) => (
         className={activeSection === "StudentManageTable" ? "active" : ""}
         onClick={() => setActiveSection("StudentManageTable")}
       >
-        Student Manage 
+        Enrolled Students
       </li>
       <li 
         className={activeSection === "AEnrolleesTable" ? "active" : ""}

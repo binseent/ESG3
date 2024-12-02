@@ -3,7 +3,7 @@ import Header from "../../components/AdminP/AHeader.jsx";
 import Sidebar from "../../components/AdminP/ASidebar.jsx";
 import AEnrolleesTable from "../../components/AdminP/AEnrolleesTable.jsx";
 import ResetPass from "../../components/AdminP/ResetPass.jsx";
-import StudentManageTable from "../../components/AdminP/StudentManageTable.jsx"; 
+import StudentManageTable from "../../components/AdminP/StudentManageTable.jsx";
 import "./AdminPage.css";
 
 const AdminPage = () => {

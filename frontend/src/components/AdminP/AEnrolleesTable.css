@@ -1,8 +1,11 @@
 /* Container for the Table Section */
 .enrollees-container {
-  margin-top: 80px;
-  margin-left: -75px;
+  margin-top: 30px;
+  margin-left: -20px;
   padding: 0 20px;
+  overflow: hidden; /* Prevents scrolling */
+  max-height: 100vh; /* Ensures it doesn't exceed the viewport height */
+  box-sizing: border-box; /* Ensures padding is included in height calculation */
 }
 
 /* Table Heading */
@@ -19,11 +22,12 @@
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
-  width: 120%; /* Responsive width */
-  max-width: 100%; /* Optional maximum width */
+  width: 100%; /* Adjust width to avoid content overflow */
+  max-width: 100%;
   border-collapse: collapse;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  table-layout: fixed; /* Ensures consistent column widths */
 }
 
 /* Table Header Row */
@@ -66,6 +70,64 @@
       font-size: 14px;
   }
 }
+/* Search and Filter Section */
+.enrollees-search-filter {
+  position: absolute;
+  top: 230px;
+  right: 55px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.enrollees-search-box {
+  display: block;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  width: 300px; /* Adjust this value to make it longer */
+  max-width: 100%; /* Ensures it doesn't overflow the container */
+}
+
+.enrollees-filter-dropdown {
+  padding: 10px 15px;
+  font-size: 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #f9fafb;
+}
+
+.enrollees-reset-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #3b82f6;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.enrollees-reset-button:hover {
+  background-color: #2563eb;
+}
+
+/* Adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+  .enrollees-search-filter {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .enrollees-search-box,
+  .enrollees-filter-dropdown,
+  .enrollees-reset-button {
+    width: 100%;
+  }
+}
+
+
 
 
 

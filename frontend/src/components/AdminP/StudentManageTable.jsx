@@ -2,13 +2,7 @@ import React, { useState } from "react";
 import "./StudentManageTable.css";
 
 const StudentManageTable = () => {
-  const [searchInput, setSearchInput] = useState("");
-  const [filterCourse, setFilterCourse] = useState("");
-  const [filterYear, setFilterYear] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
-
-  // Student data
-  const students = [
+  const [students, setStudents] = useState([
     {
       id: "202410001",
       name: "John Doe",
@@ -37,37 +31,24 @@ const StudentManageTable = () => {
       year: "4th Year",
       status: "Dropped",
     },
-    {
-      id: "202410005",
-      name: "Matthew Lee",
-      course: "Information Technology",
-      year: "1st Year",
-      status: "Pending",
-    },
-    {
-      id: "202410006",
-      name: "Amanda Brown",
-      course: "Engineering",
-      year: "2nd Year",
-      status: "Enrolled",
-    },
-    {
-      id: "202410007",
-      name: "Chris Wilson",
-      course: "Computer Science",
-      year: "3rd Year",
-      status: "Pending",
-    },
-    {
-      id: "202410008",
-      name: "Jessica White",
-      course: "Information Technology",
-      year: "4th Year",
-      status: "Enrolled",
-    },
-  ];
+  ]);
 
-  // Filtered students based on the search and filter values
+  const [searchInput, setSearchInput] = useState("");
+  const [filterCourse, setFilterCourse] = useState("");
+  const [filterYear, setFilterYear] = useState("");
+  const [filterStatus, setFilterStatus] = useState("");
+
+  const [modalType, setModalType] = useState(""); // 'view', 'add', 'edit'
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [newStudent, setNewStudent] = useState({
+    id: "",
+    name: "",
+    course: "",
+    year: "",
+    status: "",
+  });
+
+  // Filtered students
   const filteredStudents = students.filter((student) => {
     const matchesSearch =
       student.name.toLowerCase().includes(searchInput.toLowerCase()) ||
@@ -86,11 +67,51 @@ const StudentManageTable = () => {
     return matchesSearch && matchesCourse && matchesYear && matchesStatus;
   });
 
+  // Reset filters
   const resetFilters = () => {
     setSearchInput("");
     setFilterCourse("");
     setFilterYear("");
     setFilterStatus("");
+  };
+
+  // Open modal
+  const openModal = (type, student = null) => {
+    setModalType(type);
+    setSelectedStudent(student);
+    setNewStudent(
+      student || { id: "", name: "", course: "", year: "", status: "" }
+    );
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setModalType("");
+    setSelectedStudent(null);
+    setNewStudent({ id: "", name: "", course: "", year: "", status: "" });
+  };
+
+  // Add new student
+  const handleAdd = () => {
+    setStudents([...students, newStudent]);
+    closeModal();
+  };
+
+  // Edit student
+  const handleEdit = () => {
+    setStudents(
+      students.map((student) =>
+        student.id === selectedStudent.id ? newStudent : student
+      )
+    );
+    closeModal();
+  };
+
+  // Delete student
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this student?")) {
+      setStudents(students.filter((student) => student.id !== id));
+    }
   };
 
   return (
@@ -99,14 +120,12 @@ const StudentManageTable = () => {
       <div className="student-manage-search-filter">
         <input
           type="text"
-          id="searchInput"
           className="student-manage-search-box"
           placeholder="Search by Name, Student ID, or Course"
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
         />
         <select
-          id="filterCourse"
           className="student-manage-filter-dropdown"
           value={filterCourse}
           onChange={(e) => setFilterCourse(e.target.value)}
@@ -117,7 +136,6 @@ const StudentManageTable = () => {
           <option value="Engineering">Engineering</option>
         </select>
         <select
-          id="filterYear"
           className="student-manage-filter-dropdown"
           value={filterYear}
           onChange={(e) => setFilterYear(e.target.value)}
@@ -129,7 +147,6 @@ const StudentManageTable = () => {
           <option value="4th Year">4th Year</option>
         </select>
         <select
-          id="filterStatus"
           className="student-manage-filter-dropdown"
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value)}
@@ -139,12 +156,14 @@ const StudentManageTable = () => {
           <option value="Pending">Pending</option>
           <option value="Dropped">Dropped</option>
         </select>
-        <button
-          id="resetFilters"
-          className="student-manage-reset-button"
-          onClick={resetFilters}
-        >
+        <button className="student-manage-reset-button" onClick={resetFilters}>
           Reset
+        </button>
+        <button
+          className="student-manage-reset-button"
+          onClick={() => openModal("add")}
+        >
+          Add Student
         </button>
       </div>
 
@@ -158,6 +177,7 @@ const StudentManageTable = () => {
             <th>Course</th>
             <th>Year Level</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -169,11 +189,22 @@ const StudentManageTable = () => {
                 <td>{student.course}</td>
                 <td>{student.year}</td>
                 <td>{student.status}</td>
+                <td>
+                  <button onClick={() => openModal("view", student)}>
+                    View
+                  </button>
+                  <button onClick={() => openModal("edit", student)}>
+                    Edit
+                  </button>
+                  <button onClick={() => handleDelete(student.id)}>
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
             <tr>
-              <td colSpan="5" style={{ textAlign: "center" }}>
+              <td colSpan="6" style={{ textAlign: "center" }}>
                 No students found.
               </td>
             </tr>
@@ -181,12 +212,72 @@ const StudentManageTable = () => {
         </tbody>
       </table>
 
-      {/* Additional Info Box */}
-      <div className="student-manage-box">
-        <p>
-          Note: This section can contain controls or additional information.
-        </p>
-      </div>
+      {/* Modal */}
+      {modalType && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>
+              {modalType === "view"
+                ? "View Student"
+                : modalType === "add"
+                ? "Add Student"
+                : "Edit Student"}
+            </h3>
+            <form>
+              <label>Student ID:</label>
+              <input
+                type="text"
+                value={newStudent.id}
+                onChange={(e) =>
+                  setNewStudent({ ...newStudent, id: e.target.value })
+                }
+                disabled={modalType === "view"}
+              />
+              <label>Name:</label>
+              <input
+                type="text"
+                value={newStudent.name}
+                onChange={(e) =>
+                  setNewStudent({ ...newStudent, name: e.target.value })
+                }
+                disabled={modalType === "view"}
+              />
+              <label>Course:</label>
+              <input
+                type="text"
+                value={newStudent.course}
+                onChange={(e) =>
+                  setNewStudent({ ...newStudent, course: e.target.value })
+                }
+                disabled={modalType === "view"}
+              />
+              <label>Year Level:</label>
+              <input
+                type="text"
+                value={newStudent.year}
+                onChange={(e) =>
+                  setNewStudent({ ...newStudent, year: e.target.value })
+                }
+                disabled={modalType === "view"}
+              />
+              <label>Status:</label>
+              <input
+                type="text"
+                value={newStudent.status}
+                onChange={(e) =>
+                  setNewStudent({ ...newStudent, status: e.target.value })
+                }
+                disabled={modalType === "view"}
+              />
+              {modalType === "add" && <button onClick={handleAdd}>Add</button>}
+              {modalType === "edit" && (
+                <button onClick={handleEdit}>Save</button>
+              )}
+              <button onClick={closeModal}>Close</button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
