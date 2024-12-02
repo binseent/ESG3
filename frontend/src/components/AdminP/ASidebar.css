@@ -1,34 +1,33 @@
 /* Sidebar Container */
 .sidebar {
-    width: 250px; /* Fixed width for the sidebar */
-    background-color: white; /* White background */
-    border-right: 1px solid #e5e7eb; /* Light gray border on the right */
-    padding: 16px; /* Inner padding */
-  }
-  
-  /* Sidebar List */
-  .sidebar ul {
-    list-style: none; /* Remove bullet points */
-    padding: 0; /* Remove default padding */
-    margin: 0; /* Remove default margin */
-  }
-  
-  /* Sidebar List Items */
-  .sidebar li {
-    padding: 10px; /* Add padding inside list items */
-    border-radius: 8px; /* Rounded corners */
-    cursor: pointer; /* Show pointer cursor on hover */
-    transition: background-color 0.2s ease; /* Smooth hover effect */
-  }
-  
-  /* Active Item Styling */
-  .sidebar li.active {
-    background-color: #f3f4f6; /* Light gray background for active item */
-    font-weight: bold; /* Bold text for active item */
-  }
-  
-  /* Hover Effect */
-  .sidebar li:hover {
-    background-color: #f9fafb; /* Slightly lighter gray background on hover */
-  }
-  
+  width: 250px; /* Fixed width for the sidebar */
+  background-color: rgb(255, 255, 255); /* White background */
+  border-right: 1px solid #e5e7eb; /* Light gray border on the right */
+  padding: 16px; /* Inner padding */
+}
+
+/* Sidebar List */
+.sidebar ul {
+  list-style: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
+  margin: 0; /* Remove default margin */
+}
+
+/* Sidebar List Items */
+.sidebar li {
+  padding: 10px; /* Add padding inside list items */
+  border-radius: 8px; /* Rounded corners */
+  cursor: pointer; /* Show pointer cursor on hover */
+  transition: background-color 0.2s ease; /* Smooth hover effect */
+}
+
+/* Active Item Styling */
+.sidebar li.active {
+  background-color: #f3f4f6; /* Light gray background for active item */
+  font-weight: bold; /* Bold text for active item */
+}
+
+/* Hover Effect */
+.sidebar li:hover {
+  background-color: #f9fafb; /* Slightly lighter gray background on hover */
+}
