@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ResetPass.css";
+import axios from 'axios';
 
 const ResetPass = () => {
     const [showApproveForm, setShowApproveForm] = useState(false);
@@ -7,7 +8,9 @@ const ResetPass = () => {
     const [requestStatus, setRequestStatus] = useState("");
     const [password, setPassword] = useState("");
     const [reason, setReason] = useState("");
-    const [email, setEmail] = useState("");  
+    const [email, setEmail] = useState("");
+    const [message, setMessage] = useState("");
+    const [isError, setIsError] = useState(false);
 
     const handleApprove = () => {
         setShowApproveForm(true);
@@ -28,17 +31,19 @@ const ResetPass = () => {
     };
 
     const handleSendData = () => {
-        axios.post('/api/sendMail', {
+        axios.post('http://localhost:3000/api/sendMail', {
             status: requestStatus,
             password: password,
             reason: reason,
-            email: email
+            email: email,
         })
         .then(response => {
-            console.log(response.data.message);
+            setMessage("Email sent successfully!");
+            setIsError(false);
         })
         .catch(error => {
-            console.error('Error:', error);
+            setMessage("Failed to send email. Please try again.");
+            setIsError(true);
         });
     };
 
@@ -46,120 +51,35 @@ const ResetPass = () => {
         <div className="Reset-Container">
             <h2 className="Reset-Title">Reset Password Requests</h2>
             <div className="Reset-Table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>User_ID</th>
-                        <th>Email</th>
-                        <th>Request_Date</th>
-                        <th>Approval_Status</th>
-                        <th>Admin_ID</th>
-                        <th>Approval_Date</th>
-                        <th>Remarks</th>
-                        <th>Is_Processed</th>
-                    </tr>
-                </thead>
-              <tr>
-                  <td>1</td>
-                  <td>12345</td>
-                  <td>user1@example.com</td>
-                  <td>2023-01-01</td>
-                  <td>Approved</td>
-                  <td>admin001</td>
-                  <td>2023-01-02</td>
-                  <td>All good</td>
-                  <td>Yes</td>
-              </tr>
-              <tr>
-                  <td>2</td>
-                  <td>67890</td>
-                  <td>user2@example.com</td>
-                  <td>2023-02-01</td>
-                  <td>Pending</td>
-                  <td>admin002</td>
-                  <td>2023-02-05</td>
-                  <td>Needs review</td>
-                  <td>No</td>
-              </tr>
-              <tr>
-                  <td>3</td>
-                  <td>11223</td>
-                  <td>user3@example.com</td>
-                  <td>2023-03-01</td>
-                  <td>Rejected</td>
-                  <td>admin003</td>
-                  <td>2023-03-03</td>
-                  <td>Incomplete data</td>
-                  <td>No</td>
-              </tr>
-              <tr>
-                  <td>4</td>
-                  <td>44556</td>
-                  <td>user4@example.com</td>
-                  <td>2023-04-01</td>
-                  <td>Approved</td>
-                  <td>admin004</td>
-                  <td>2023-04-02</td>
-                  <td>Verified</td>
-                  <td>Yes</td>
-              </tr>
-              <tr>
-                  <td>5</td>
-                  <td>77889</td>
-                  <td>user5@example.com</td>
-                  <td>2023-05-01</td>
-                  <td>Pending</td>
-                  <td>admin005</td>
-                  <td>2023-05-06</td>
-                  <td>Under Review</td>
-                  <td>No</td>
-              </tr>
-              <tr>
-                  <td>6</td>
-                  <td>99100</td>
-                  <td>user6@example.com</td>
-                  <td>2023-06-01</td>
-                  <td>Rejected</td>
-                  <td>admin006</td>
-                  <td>2023-06-04</td>
-                  <td>Not eligible</td>
-                  <td>No</td>
-              </tr>
-              <tr>
-                  <td>7</td>
-                  <td>22334</td>
-                  <td>user7@example.com</td>
-                  <td>2023-07-01</td>
-                  <td>Approved</td>
-                  <td>admin007</td>
-                  <td>2023-07-02</td>
-                  <td>All set</td>
-                  <td>Yes</td>
-              </tr>
-              <tr>
-                  <td>8</td>
-                  <td>55667</td>
-                  <td>user8@example.com</td>
-                  <td>2023-08-01</td>
-                  <td>Pending</td>
-                  <td>admin008</td>
-                  <td>2023-08-05</td>
-                  <td>Awaiting info</td>
-                  <td>No</td>
-              </tr>
-              <tr>
-                  <td>9</td>
-                  <td>88990</td>
-                  <td>user9@example.com</td>
-                  <td>2023-09-01</td>
-                  <td>Rejected</td>
-                  <td>admin009</td>
-                  <td>2023-09-03</td>
-                  <td>Incorrect details</td>
-                  <td>No</td>
-              </tr>                    
-            </table>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User_ID</th>
+                            <th>Email</th>
+                            <th>Request_Date</th>
+                            <th>Approval_Status</th>
+                            <th>Admin_ID</th>
+                            <th>Approval_Date</th>
+                            <th>Remarks</th>
+                            <th>Is_Processed</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {/* Hardcoded rows for demonstration */}
+                        <tr>
+                            <td>1</td>
+                            <td>12345</td>
+                            <td>user1@example.com</td>
+                            <td>2023-01-01</td>
+                            <td>Approved</td>
+                            <td>admin001</td>
+                            <td>2023-01-02</td>
+                            <td>All good</td>
+                            <td>Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <h2 className="Reset-Title">Email Form</h2>
@@ -209,9 +129,14 @@ const ResetPass = () => {
                     )}
                 </div>
             </div>
+
+            {message && (
+                <div className={`feedback ${isError ? "error" : "success"}`}>
+                    {message}
+                </div>
+            )}
         </div>
     );
 };
 
 export default ResetPass;
-
