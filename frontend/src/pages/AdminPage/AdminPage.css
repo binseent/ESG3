@@ -32,11 +32,11 @@
   transition: color 0.3s, font-weight 0.3s;
 }
 
-.dashboard-main {
+.dashboard .dashboard-main {
   flex: 1;
   padding: 2rem;
   padding-left: 100px;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 @media (max-width: 768px) {

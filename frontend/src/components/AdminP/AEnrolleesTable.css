@@ -3,9 +3,10 @@
   margin-top: 30px;
   margin-left: -20px;
   padding: 0 20px;
-  overflow: hidden; /* Prevents scrolling */
-  max-height: 100vh; /* Ensures it doesn't exceed the viewport height */
-  box-sizing: border-box; /* Ensures padding is included in height calculation */
+  max-height: 100vh; /* Ensures the container doesn't exceed the viewport height */
+  box-sizing: border-box; /* Includes padding in height calculation */
+  display: flex;
+  flex-direction: column; /* Ensures content stacks properly */
 }
 
 /* Table Heading */
@@ -13,82 +14,26 @@
   text-align: left;
   font-size: 38px;
   font-weight: normal;
-  margin-bottom: 90px;
+  margin-bottom: 20px; /* Reduced margin for better alignment */
 }
 
-/* Table Styles */
-.enrollees-table {
-  margin-top: 50px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 30px;
-  width: 100%; /* Adjust width to avoid content overflow */
-  max-width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  table-layout: fixed; /* Ensures consistent column widths */
-}
-
-/* Table Header Row */
-.enrollees-table thead tr {
-  background-color: #e5e7eb;
-}
-
-/* Table Header Cells */
-.enrollees-table th {
-  border: 1px solid #d1d5db;
-  padding: 12px;
-  text-align: left;
-  font-weight: bold;
-}
-
-/* Table Body Cells */
-.enrollees-table td {
-  border: 1px solid #d1d5db;
-  padding: 15px;
-  text-align: left;
-}
-
-/* Table Row Hover Effect */
-.enrollees-table tbody tr:hover {
-  background-color: #f3f4f6;
-}
-
-.enrollees-table-box p {
-  margin: 0; /* Remove default margin */
-  font-size: 14px; /* Adjust font size if needed */
-  color: #4b5563; /* Optional: dark gray text color */
-}
-/* Responsive Adjustments */
-@media screen and (max-width: 768px) {
-  .enrollees-title {
-      font-size: 28px;
-  }
-
-  .enrollees-table {
-      font-size: 14px;
-  }
-}
 /* Search and Filter Section */
 .enrollees-search-filter {
-  position: absolute;
-  top: 230px;
-  right: 55px;
+  position: relative; /* Adjusted to avoid interference with scrolling */
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  margin-left: 30%;
 }
 
 .enrollees-search-box {
-  display: block;
   padding: 10px 15px;
   font-size: 16px;
   border: 1px solid #d1d5db;
   border-radius: 8px;
-  width: 300px; /* Adjust this value to make it longer */
-  max-width: 100%; /* Ensures it doesn't overflow the container */
+  width: 300px;
+  max-width: 100%; /* Prevents overflow */
 }
 
 .enrollees-filter-dropdown {
@@ -113,8 +58,182 @@
   background-color: #2563eb;
 }
 
-/* Adjustments for smaller screens */
+/* Scrollable Table Section */
+.enrollees-table-container {
+  overflow-y: auto; /* Enables vertical scrolling */
+  max-height: calc(82vh - 200px); /* Adjust height to fit within viewport, accounting for title and filters */
+  border: 1px solid #d1d5db; /* Optional: border for the scrollable area */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
+}
+
+/* Table Styles */
+.enrollees-table {
+  width: 100%; /* Ensures the table spans the container */
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.enrollees-table thead tr {
+  background-color: #e5e7eb;
+}
+
+.enrollees-table th,
+.enrollees-table td {
+  border: 1px solid #d1d5db;
+  padding: 12px;
+  text-align: left;
+}
+
+.enrollees-table td {
+  padding: 15px;
+}
+
+.enrollees-table tbody tr:hover {
+  background-color: #f3f4f6;
+}
+
+/* Placeholder Row for Empty Table */
+.enrollees-table tbody td[colspan] {
+  text-align: center;
+  font-size: 14px;
+  color: #6b7280; /* Gray text for "No enrollees found" row */
+}
+
+/* Modal Overlay */
+.modal2 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* Modal Content */
+.modal-content2 {
+  background-color: white;
+  padding: 20px;
+  width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Modal Header */
+.modal-content2 h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+/* Form Labels */
+.modal-content2 label {
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+/* Form Inputs */
+.modal-content2 input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.modal-content2 input[type="number"] {
+  -moz-appearance: textfield; /* Removes spinner from number inputs */
+}
+
+.modal-content2 input:focus {
+  border-color: #3b82f6;
+  outline: none;
+}
+
+/* Buttons */
+.modal-content2 button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  margin-top: 10px;
+}
+
+.modal-content2 button:hover {
+  background-color: #2563eb;
+}
+
+.modal-content2 button:last-child {
+  background-color: #f3f4f6;
+  color: #000;
+  border: 1px solid #ccc;
+}
+
+.modal-content2 button:last-child:hover {
+  background-color: #e5e7eb;
+  color: #000;
+}
+
+/* Close Button */
+.modal-content2 button:first-child {
+  background-color: #f44336;
+  color: white;
+}
+
+.modal-content2 button:first-child:hover {
+  background-color: #d32f2f;
+}
+
+/* Scrollable Area for Larger Content */
+.modal-content2 div {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* Responsive Adjustments */
 @media screen and (max-width: 768px) {
+  .modal-content2 {
+    width: 90%;
+    padding: 15px;
+  }
+
+  .modal-content2 h3 {
+    font-size: 20px;
+  }
+
+  .modal-content2 input {
+    font-size: 14px;
+  }
+
+  .modal-content2 button {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .enrollees-title {
+    font-size: 28px;
+  }
+
+  .enrollees-table {
+    font-size: 14px;
+  }
+
   .enrollees-search-filter {
     flex-direction: column;
     gap: 15px;
@@ -125,9 +244,9 @@
   .enrollees-reset-button {
     width: 100%;
   }
+
+  .enrollees-table-container {
+    max-height: calc(100vh - 150px); /* Adjusted height for smaller screens */
+  }
+  
 }
-
-
-
-
-

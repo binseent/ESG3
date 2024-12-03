@@ -8,7 +8,7 @@ const Background = () => {
       <img
         src={Logo}
         alt="University Logo"
-        className="logo"
+        className="bglogo"
         draggable="false"
       />
       <p className="slogan">Truth, Excellence, Service</p>

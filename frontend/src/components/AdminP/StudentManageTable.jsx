@@ -14,8 +14,8 @@ const StudentManageTable = () => {
       id: "202410002",
       name: "Jane Smith",
       course: "Information Technology",
-      year: "2nd Year",
-      status: "Pending",
+      year: "4th Year",
+      status: "Graduated", // Changed from Pending to Graduated
     },
     {
       id: "202410003",
@@ -28,8 +28,50 @@ const StudentManageTable = () => {
       id: "202410004",
       name: "Emily Davis",
       course: "Computer Science",
-      year: "4th Year",
+      year: "2nd Year",
       status: "Dropped",
+    },
+    {
+      id: "202410005",
+      name: "Sarah Lee",
+      course: "Mathematics",
+      year: "1st Year",
+      status: "Enrolled",
+    },
+    {
+      id: "202410006",
+      name: "David Wang",
+      course: "Electrical Engineering",
+      year: "4th Year",
+      status: "Graduated", // Changed from Pending to Graduated
+    },
+    {
+      id: "202410007",
+      name: "Olivia Martinez",
+      course: "Physics",
+      year: "3rd Year",
+      status: "Enrolled",
+    },
+    {
+      id: "202410008",
+      name: "Daniel Kim",
+      course: "Chemistry",
+      year: "2nd Year",
+      status: "Dropped",
+    },
+    {
+      id: "202410009",
+      name: "Lucas Chen",
+      course: "Mechanical Engineering",
+      year: "1st Year",
+      status: "Enrolled",
+    },
+    {
+      id: "202410010",
+      name: "Sophia Brown",
+      course: "Civil Engineering",
+      year: "4th Year",
+      status: "Graduated", // Changed from Pending to Graduated
     },
   ]);
 
@@ -153,7 +195,7 @@ const StudentManageTable = () => {
         >
           <option value="">Status</option>
           <option value="Enrolled">Enrolled</option>
-          <option value="Pending">Pending</option>
+          <option value="Graduated">Graduated</option> {/* Updated filter option */}
           <option value="Dropped">Dropped</option>
         </select>
         <button className="student-manage-reset-button" onClick={resetFilters}>
@@ -169,48 +211,52 @@ const StudentManageTable = () => {
 
       {/* Table */}
       <h2 className="student-manage-title">Students Management</h2>
-      <table className="student-manage-table">
-        <thead>
-          <tr>
-            <th>Student ID</th>
-            <th>Name</th>
-            <th>Course</th>
-            <th>Year Level</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredStudents.length > 0 ? (
-            filteredStudents.map((student) => (
-              <tr key={student.id}>
-                <td>{student.id}</td>
-                <td>{student.name}</td>
-                <td>{student.course}</td>
-                <td>{student.year}</td>
-                <td>{student.status}</td>
-                <td>
-                  <button onClick={() => openModal("view", student)}>
-                    View
-                  </button>
-                  <button onClick={() => openModal("edit", student)}>
-                    Edit
-                  </button>
-                  <button onClick={() => handleDelete(student.id)}>
-                    Delete
-                  </button>
+      
+      {/* Table container with scroll functionality */}
+      <div className="student-manage-table-container">
+        <table className="student-manage-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Name</th>
+              <th>Course</th>
+              <th>Year Level</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student) => (
+                <tr key={student.id}>
+                  <td>{student.id}</td>
+                  <td>{student.name}</td>
+                  <td>{student.course}</td>
+                  <td>{student.year}</td>
+                  <td>{student.status}</td>
+                  <td>
+                    <button onClick={() => openModal("view", student)}>
+                      View
+                    </button>
+                    <button onClick={() => openModal("edit", student)}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(student.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" style={{ textAlign: "center" }}>
+                  No students found.
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="6" style={{ textAlign: "center" }}>
-                No students found.
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Modal */}
       {modalType && (

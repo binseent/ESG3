@@ -22,7 +22,7 @@
 /* Active Item Styling */
 .sidebar li.active {
   background-color: #f3f4f6; /* Light gray background for active item */
-  font-weight: bold; /* Bold text for active item */
+  font-weight: normal; /* Bold text for active item */
 }
 
 /* Hover Effect */
