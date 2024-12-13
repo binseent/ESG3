@@ -6,9 +6,8 @@ import Login from "./components/Login/Login.jsx";
 function App() {
   return (
     <>
-    <AdminPage />
+      <StudentDashboard />
     </>
-      
   );
 }
 
