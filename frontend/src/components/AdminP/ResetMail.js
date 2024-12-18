@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
 
 const sendEmail = (req, res) => {
   const { status, password, reason, email } = req.body;
-
+//.
   let mailOptions = {};
   if (status === "Approved") {
     mailOptions = {
