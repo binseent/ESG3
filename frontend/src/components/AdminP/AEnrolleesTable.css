@@ -61,7 +61,9 @@
 /* Scrollable Table Section */
 .enrollees-table-container {
   overflow-y: auto; /* Enables vertical scrolling */
-  max-height: calc(82vh - 200px); /* Adjust height to fit within viewport, accounting for title and filters */
+  max-height: calc(
+    82vh - 200px
+  ); /* Adjust height to fit within viewport, accounting for title and filters */
   border: 1px solid #d1d5db; /* Optional: border for the scrollable area */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
@@ -222,7 +224,7 @@
     font-size: 14px;
     padding: 8px 15px;
   }
-
+}
 
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
@@ -248,5 +250,4 @@
   .enrollees-table-container {
     max-height: calc(100vh - 150px); /* Adjusted height for smaller screens */
   }
-  
 }
