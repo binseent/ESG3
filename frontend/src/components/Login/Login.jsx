@@ -16,7 +16,7 @@ function Login() {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:5000/login", { studentId, password })
+    axios.post("http://localhost:3000/login", { studentId, password })
       .then((response) => {
         alert(response.data.message);  
       })
@@ -27,7 +27,7 @@ function Login() {
 
   const handleRegister = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:5000/register", {
+    axios.post("http://localhost:3000/register", {
       firstName,
       middleName,
       lastName,
