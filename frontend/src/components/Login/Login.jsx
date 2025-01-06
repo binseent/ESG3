@@ -5,7 +5,7 @@ import "./Login.css";
 function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [email, setEmail] = useState("");  
+  const [email, setEmail] = useState("");
 
   const [studentId, setStudentId] = useState(""); 
   const [password, setPassword] = useState(""); 
@@ -57,12 +57,12 @@ function Login() {
   };
 
   const handleEmailChange = (event) => {
-    setEmail(event.target.value); 
+    setEmail(event.target.value);
   };
 
   const handleResetPassword = (event) => {
     event.preventDefault();
-    
+
     if (!email) {
       alert("Please enter an email address!");
       return;
@@ -115,8 +115,16 @@ function Login() {
       ) : (
         <div className="forgotPasswordForm">
           <h2 className="title">Enter your email for password reset</h2>
+
+          <input type="email" placeholder="Email" className="input" />
+          <button className="resetButton" onClick={handleResetPassword}>
+            Reset
+          </button>
+
+
           <input type="email" placeholder="Email" className="input" value={email} onChange={handleEmailChange} />
           <button className="resetButton" onClick={handleResetPassword}>Reset</button>
+
           <button className="goBackButton" onClick={handleGoBack}>
             <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Back" className="backIcon" />
           </button>
