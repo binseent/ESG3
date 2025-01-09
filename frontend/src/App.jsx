@@ -1,18 +1,21 @@
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
 import StudentDashboard from "./pages/Student/StudentDashboard";
 import AdminPage from "./pages/AdminPage/AdminPage.jsx";
-import Login from "./components/Login/Login.jsx";
 
 function App() {
   return (
 
-    <> <AdminPage /> </>
-    //<> <LoginPage/> </>
-    //<> <StudentDashboard /> </>
-    //<> <LoginPage/> </>
-
-      
-
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/" element={<LoginPage />} />
+        <Route path="*" element={<h1>404: Page Not Found</h1>} />
+      </Routes>
+    </Router>
   );
 }
 
