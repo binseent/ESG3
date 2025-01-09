@@ -6,12 +6,11 @@ import Login from "./components/Login/Login.jsx";
 function App() {
   return (
 
-    <>
-      <StudentDashboard />
-    </>
+    <> <AdminPage /> </>
+    //<> <LoginPage/> </>
+    //<> <StudentDashboard /> </>
+    //<> <LoginPage/> </>
 
-
-    <> <LoginPage/> </>
       
 
   );
