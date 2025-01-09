@@ -66,7 +66,6 @@ const ResetPass = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* Hardcoded rows for demonstration */}
                         <tr>
                             <td>1</td>
                             <td>12345</td>
