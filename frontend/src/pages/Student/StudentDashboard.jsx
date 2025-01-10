@@ -5,6 +5,7 @@ import StudentInfo from "../../components/Student/StudentInfo.jsx";
 import EnrollmentDetails from "../../components/Student/EnrollmentDetails.jsx";
 import "./StudentDashboard.css";
 import Checklist from "../../components/Student/Checklist.jsx";
+import EnrollmentForm from "../../components/Student/EnrollmentForm.jsx";
 
 const StudentDashboard = () => {
   const [activeSection, setActiveSection] = useState("StudentInfo");
@@ -16,6 +17,8 @@ const StudentDashboard = () => {
       return <EnrollmentDetails />;
     } else if (activeSection === "Checklist") {
       return <Checklist />;
+    } else if (activeSection === "EnrollmentForm") {
+      return <EnrollmentForm />;
     }
     return <p>Select a section from the sidebar.</p>;
   };

@@ -16,7 +16,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => (
         className={activeSection === "StudentInfo" ? "active" : ""}
         onClick={() => setActiveSection("StudentInfo")}
       >
-        Your Info
+        Student Info
       </li>
       <li
         className={activeSection === "EnrollmentDetails" ? "active" : ""}
@@ -29,6 +29,12 @@ const Sidebar = ({ activeSection, setActiveSection }) => (
         onClick={() => setActiveSection("Checklist")}
       >
         Course Checklist
+      </li>
+      <li
+        className={activeSection === "EnrollmentForm" ? "active" : ""}
+        onClick={() => setActiveSection("EnrollmentForm")}
+      >
+        Enrollment Form
       </li>
     </ul>
     <div className="logout">

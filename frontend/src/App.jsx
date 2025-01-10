@@ -6,7 +6,6 @@ import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 
 function App() {
   return (
-
     <Router>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
