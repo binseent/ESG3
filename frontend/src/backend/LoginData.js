@@ -4,10 +4,10 @@ import mysql from 'mysql2';
 const router = express.Router();
 
 const db = mysql.createConnection({
-  host: "Connect niyo sa database pag meron na",  
-  user: "",       
-  password: "",  
-  database: ""  
+  host: "127.0.0.1", 
+  user: "root", 
+  password: "",
+  database: "checklist-1"
 });
 
 //-- Login --//  //-- Login --// //-- Login --//  //-- Login --// //-- Login --//  //-- Login --// //-- Login --//  //-- Login --//
