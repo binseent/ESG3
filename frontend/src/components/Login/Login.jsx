@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import "./Login.css";
 
 function Login() {
@@ -18,7 +19,7 @@ function Login() {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:3000/login", { studentId, password })
+    axios.post("http://localhost:3000/api/login", { studentId, password })
       .then((response) => {
         alert(response.data.message);  
         if (response.status === 200) {
@@ -33,7 +34,7 @@ function Login() {
 
   const handleRegister = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:3000/register", {
+    axios.post("http://localhost:3000/api/register", {
       firstName,
       middleName,
       lastName,
@@ -47,6 +48,23 @@ function Login() {
     .catch((error) => {
       alert(error.response.data.message);
     });
+  };
+
+  const handleResetPassword = (event) => {
+    event.preventDefault();
+
+    if (!email) {
+      alert("Please enter an email address!");
+      return;
+    }
+
+    axios.post("http://localhost:3000/api/forgot-password", { email })
+      .then((response) => {
+        alert(response.data.message);
+      })
+      .catch((error) => {
+        alert(error.response.data.message);
+      });
   };
 
   const handleToggle = () => {
@@ -64,17 +82,6 @@ function Login() {
 
   const handleEmailChange = (event) => {
     setEmail(event.target.value);
-  };
-
-  const handleResetPassword = (event) => {
-    event.preventDefault();
-
-    if (!email) {
-      alert("Please enter an email address!");
-      return;
-    }
-
-    alert(`Password reset request sent to admin!`);
   };
 
   return (
@@ -121,16 +128,9 @@ function Login() {
       ) : (
         <div className="forgotPasswordForm">
           <h2 className="title">Enter your email for password reset</h2>
-
-          <input type="email" placeholder="Email" className="input" />
-          <button className="resetButton" onClick={handleResetPassword}>
-            Reset
-          </button>
-
-
           <input type="email" placeholder="Email" className="input" value={email} onChange={handleEmailChange} />
           <button className="resetButton" onClick={handleResetPassword}>Reset</button>
-
+          
           <button className="goBackButton" onClick={handleGoBack}>
             <img src="https://cdn-icons-png.flaticon.com/512/93/93634.png" alt="Back" className="backIcon" />
           </button>
@@ -141,4 +141,3 @@ function Login() {
 }
 
 export default Login;
-

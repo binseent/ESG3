@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 app.use(bodyParser.json());
 import cors from 'cors'; 
 app.use(cors());
+
 //-- Password Reset Email --// 
 import sendEmail from './ResetMail.js';
 app.post('/api/sendMail', sendEmail);
