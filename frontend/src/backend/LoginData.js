@@ -22,7 +22,12 @@ router.post("/login", (req, res) => {
     }
 
     if (result.length > 0) {
-      res.status(200).send({ message: "Login successful" });
+      // Store studentId in localStorage
+      localStorage.setItem("studentId", result[0].studentId);
+      res.status(200).send({ 
+        message: "Login successful",
+        studentId: result[0].studentId
+      });
     } else {
       res.status(400).send({ message: "Invalid student ID or password" });
     }

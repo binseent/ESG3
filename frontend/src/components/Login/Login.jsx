@@ -14,11 +14,17 @@ function Login() {
   const [middleName, setMiddleName] = useState(""); 
   const [lastName, setLastName] = useState(""); 
 
+  const navigate = useNavigate();
+
   const handleLogin = (event) => {
     event.preventDefault();
     axios.post("http://localhost:3000/login", { studentId, password })
       .then((response) => {
         alert(response.data.message);  
+        if (response.status === 200) {
+          localStorage.setItem("studentId", response.data.studentId); 
+          navigate("/student"); 
+        }
       })
       .catch((error) => {
         alert(error.response.data.message);
