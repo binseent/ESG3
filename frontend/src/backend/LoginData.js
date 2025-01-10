@@ -22,7 +22,12 @@ router.post("/login", (req, res) => {
     }
 
     if (result.length > 0) {
-      res.status(200).send({ message: "Login successful" });
+      // Store studentId in localStorage
+      localStorage.setItem("studentId", result[0].studentId);
+      res.status(200).send({ 
+        message: "Login successful",
+        studentId: result[0].studentId
+      });
     } else {
       res.status(400).send({ message: "Invalid student ID or password" });
     }
@@ -50,5 +55,35 @@ router.post("/register", (req, res) => {
   });
 });
 //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --//
+
+//-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// 
+router.post("/forgot-password", (req, res) => {
+  const { email } = req.body;
+
+  const query = "SELECT * FROM users WHERE email = ?";
+  
+  db.query(query, [email], (err, result) => {
+    if (err) {
+      res.status(500).send({ message: "Database error" });
+      return;
+    }
+
+    if (result.length > 0) {
+      const insertQuery = "INSERT INTO password_resets (email) VALUES (?)";
+      db.query(insertQuery, [email], (insertErr, insertResult) => {
+        if (insertErr) {
+          res.status(500).send({ message: "Database error" });
+          return;
+        }
+
+        // Here you would send the email for password reset
+        res.status(200).send({ message: "Password reset request sent to admin!" });
+      });
+    } else {
+      res.status(400).send({ message: "Email not found" });
+    }
+  });
+});
+//-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// 
 
 export default router;
