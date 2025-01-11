@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Icon from "../../assets/icon.png";
 
 const StudentInfo = () => {
@@ -11,7 +11,16 @@ const StudentInfo = () => {
     email: "Email address",
     phone: "639",
   });
+  const [studentId, setStudentId] = useState("");
 
+  //gathering studen id from logged in user
+  useEffect(() => {
+    const storedStudentId = localStorage.getItem("studentId");
+    if (storedStudentId) {
+      setStudentId(storedStudentId);
+    }
+  }, []);
+  
   const openPopup = (section) => {
     setEditSection(section);
     setIsPopupOpen(true);
@@ -51,7 +60,7 @@ const StudentInfo = () => {
                 disabled
               />
             </h4>
-            <p>Student Number</p>
+            <p>Student Number: {studentId}</p>
             <button>Change photo</button>
           </div>
         </div>
