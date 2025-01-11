@@ -351,7 +351,7 @@ table input {
   text-align: center;
   margin-left: 40%;
 }
-.enrollment-form .form-section h2{
+.enrollment-form .form-section h2 {
   margin-right: 10%;
 }
 
@@ -436,10 +436,66 @@ table input {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  margin-right: 10%;
+  margin-top: 5%;
 }
 
 .enrollment-form .submit-button:hover {
   background-color: #e0e0e0;
   color: #000;
   border: 1px solid #418550;
+}
+
+/* Pop-up styling */
+.enrollment-form .popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.enrollment-form .popup {
+  background: #ffffff;
+  border-radius: 18px;
+  text-align: center;
+  width: 500px;
+  height: 500px;
+  justify-content: center;
+  margin-left: 40%;
+  margin-top: 10%;
+  display: flex;
+  flex-direction: column;
+}
+
+.enrollment-form .popup img {
+  width: 100px;
+  height: 100px;
+  filter: invert(1);
+}
+
+.enrollment-form .popup h2 {
+  margin-bottom: 10px;
+  color: #000000;
+  margin-left: 55px;
+}
+
+.enrollment-form .close-popup {
+  padding: 10px 20px;
+  background-color: #418550;
+  color: #fff;
+  font-size: 14px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.enrollment-form .close-popup:hover {
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #000;
 }

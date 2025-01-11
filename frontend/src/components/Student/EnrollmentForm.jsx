@@ -1,10 +1,21 @@
 import React, { useState } from "react";
+import Check from "../../assets/confirm-icon.png";
 
 const EnrollmentForm = () => {
-  const [selectedType, setSelectedType] = useState("new student"); // State for selected student type
+  const [selectedType, setSelectedType] = useState("new student");
+  const [showPopup, setShowPopup] = useState(false);
 
   const handleTypeChange = (event) => {
-    setSelectedType(event.target.value); // Update the state based on the selected option
+    setSelectedType(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setShowPopup(true);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -31,7 +42,7 @@ const EnrollmentForm = () => {
 
       <section className="form-section">
         {selectedType === "new student" && (
-          <form>
+          <form onSubmit={handleSubmit}>
             <h2>New Student Enrollment</h2>
             <div className="form-grid">
               <div className="form-left">
@@ -251,6 +262,20 @@ const EnrollmentForm = () => {
               </button>
             </div>
           </form>
+        )}
+        {showPopup && (
+          <div className="popup-overlay">
+            <div className="popup">
+              <img src={Check} alt="check.png" />
+              <h2>Enrollment Form Submitted</h2>
+              <p>
+                To track your enrollment process, go to “Enrollment Details”
+              </p>
+              <button onClick={closePopup} className="close-popup">
+                Close
+              </button>
+            </div>
+          </div>
         )}
       </section>
     </div>
