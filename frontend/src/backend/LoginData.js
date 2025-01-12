@@ -1,11 +1,9 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
+import axios from 'axios';
 import db from './Database.js';
 
 const router = express.Router();
-
-
-
 
 //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --//
 router.post("/login", (req, res) => {
@@ -19,18 +17,26 @@ router.post("/login", (req, res) => {
       return;
     }
 
-    if (result.length > 0) {
-      const validPassword = await bcrypt.compare(password, result[0].password);
-      if (validPassword) {
-        res.status(200).send({ 
-          message: "Login successful",
-          email: result[0].email
-        });
-      } else {
-        res.status(400).send({ message: "Invalid email or password" });
-      }
-    } else {
+    if (result.length === 0) {
       res.status(400).send({ message: "Invalid email or password" });
+      return;
+    }
+
+    const user = result[0];
+    const passwordMatch = await bcrypt.compare(password, user.password);
+
+    if (!passwordMatch) {
+      res.status(400).send({ message: "Invalid email or password" });
+      return;
+    }
+
+    // Send email to StudentInfoData.js
+    try {
+      await axios.post('http://localhost:3000/student-info', { email });
+      res.status(200).send({ message: "Login successful" });
+    } catch (error) {
+      console.error("Error sending email to StudentInfoData:", error);
+      res.status(500).send({ message: "Internal server error" });
     }
   });
 });

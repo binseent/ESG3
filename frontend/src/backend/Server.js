@@ -20,9 +20,13 @@ app.use("/api", loginRoutes);
 import enrolleesRoutes from './AEnrolleesTable.js';
 app.use("/api", enrolleesRoutes);
 
-//-- Reset request table--//
+//-- Reset request table --//
 import passwordResetRoutes from './ResetPassTable.js';
 app.use('/api', passwordResetRoutes);
+
+//-- Student Information --//
+import studentInfoRouter from './StudentInfoData.js';
+app.use('/student-info', studentInfoRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
