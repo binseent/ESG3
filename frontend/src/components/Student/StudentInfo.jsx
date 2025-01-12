@@ -1,9 +1,27 @@
 import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import Icon from "../../assets/icon.png";
 
 const StudentInfo = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [editSection, setEditSection] = useState("");
+
+  const [studentInfo, setStudentInfo] = useState({
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: ''
+  });
+  const fetchStudentInfo = async (email) => {
+    try {
+      const response = await axios.post('/student-info', { email });
+      setStudentInfo(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the student info!", error);
+    }
+  };
+
+
   const [formData, setFormData] = useState({
     course: "Bachelor of Science in Computer Science",
     birthday: "",
@@ -11,16 +29,7 @@ const StudentInfo = () => {
     email: "Email address",
     phone: "639",
   });
-  const [studentId, setStudentId] = useState("");
-  const [email, setEmail] = useState("");
 
-  /// Gather email from logged-in user
-  useEffect(() => {
-    const storedEmail = localStorage.getItem("email");
-    if (storedEmail) {
-      setEmail(storedEmail);
-    }
-  }, []);
 
   const openPopup = (section) => {
     setEditSection(section);
@@ -54,14 +63,14 @@ const StudentInfo = () => {
           </div>
           <div className="profile-details">
             <h4>
-              Welcome,{" "}
+              Welcome,{studentInfo.firstName} {studentInfo.middleName} {studentInfo.lastName}
               <input
                 type="text"
                 placeholder="Full Name (get data from db)"
                 disabled
               />
             </h4>
-            <p>Email: {email}</p>
+            <p>Email: {studentInfo.email}</p>
             <button>Change photo</button>
           </div>
         </div>
