@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Display Enrolless on table
 router.get('/enrollees', (req, res) => {
-  const sql = 'SELECT * FROM enrollees';
+  const sql = 'SELECT * FROM enrollments';
   db.query(sql, (err, results) => {
     if (err) {
       console.error('Error fetching enrollees:', err);

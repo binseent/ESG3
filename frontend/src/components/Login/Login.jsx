@@ -6,9 +6,7 @@ import "./Login.css";
 function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [email, setEmail] = useState("");
-
-  const [studentId, setStudentId] = useState(""); 
+  const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState(""); 
   const [confirmPassword, setConfirmPassword] = useState(""); 
   const [firstName, setFirstName] = useState(""); 
@@ -19,7 +17,7 @@ function Login() {
 
   const handleLogin = (event) => {
     event.preventDefault();
-    axios.post("http://localhost:3000/api/login", { studentId, password })
+    axios.post("http://localhost:3000/api/login", { email, password })
       .then((response) => {
         alert(response.data.message);  
         if (response.status === 200) {
@@ -118,7 +116,7 @@ function Login() {
             </div>
           ) : (
             <div className="loginForm">
-              <input type="text" placeholder="Student ID" className="input" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
+              <input type="email" placeholder="Email" className="input" value={email} onChange={(e) => setEmail(e.target.value)} />
               <input type="password" placeholder="Password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
               <button className="loginButton" onClick={handleLogin}>Log in</button>
               <button type="button" onClick={handleForgotPasswordClick} className="forgotPassword">Forgot Password?</button>
