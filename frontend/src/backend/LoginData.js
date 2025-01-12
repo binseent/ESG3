@@ -4,7 +4,14 @@ import db from './Database.js';
 
 const router = express.Router();
 
-//-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// 
+
+const db = mysql.createConnection({
+  host: "127.0.0.1", 
+  user: "root", 
+  password: "",
+  database: "checklist-1"
+});
+
 router.post("/login", (req, res) => {
   const { studentId, password } = req.body;
   const query = "SELECT * FROM users WHERE studentId = ?";
