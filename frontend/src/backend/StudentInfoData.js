@@ -1,12 +1,12 @@
+// StudentInfoData.js
 import express from 'express';
 import db from './Database.js';
 
 const router = express.Router();
 
-router.post("/student-info", (req, res) => {
-  const { email } = req.body;
+export const handleStudentInfo = (email, res) => {
   const query = "SELECT firstName, middleName, lastName FROM users WHERE email = ?";
-
+  
   db.query(query, [email], (err, result) => {
     if (err) {
       console.error("Database error:", err);
@@ -22,6 +22,11 @@ router.post("/student-info", (req, res) => {
     const { firstName, middleName, lastName } = result[0];
     res.status(200).send({ firstName, middleName, lastName, email });
   });
+};
+
+router.post("/student-info", (req, res) => {
+  const { email } = req.body;
+  handleStudentInfo(email, res);
 });
 
 export default router;

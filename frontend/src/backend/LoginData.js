@@ -1,44 +1,36 @@
+//LoginData.js
 import express from 'express';
 import bcrypt from 'bcrypt';
-import axios from 'axios';
 import db from './Database.js';
+import { handleStudentInfo } from './StudentInfoData.js';
 
 const router = express.Router();
 
 //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --//
-router.post("/login", (req, res) => {
+router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  const query = "SELECT * FROM users WHERE email = ?";
 
-  db.query(query, [email], async (err, result) => {
-    if (err) {
-      console.error("Database error:", err);
-      res.status(500).send({ message: "Database error" });
-      return;
-    }
+  if (!email || !password) {
+    return res.status(400).send({ message: "Email and password are required" });
+  }
+
+  const query = "SELECT * FROM users WHERE email = ?";
+  try {
+    const [result] = await db.promise().query(query, [email]);
 
     if (result.length === 0) {
-      res.status(400).send({ message: "Invalid email or password" });
-      return;
+      return res.status(400).send({ message: "Invalid email or password" });
     }
-
     const user = result[0];
     const passwordMatch = await bcrypt.compare(password, user.password);
-
     if (!passwordMatch) {
-      res.status(400).send({ message: "Invalid email or password" });
-      return;
+      return res.status(400).send({ message: "Invalid email or password" });
     }
-
-    // Send email to StudentInfoData.js
-    try {
-      await axios.post('http://localhost:3000/student-info', { email });
-      res.status(200).send({ message: "Login successful" });
-    } catch (error) {
-      console.error("Error sending email to StudentInfoData:", error);
-      res.status(500).send({ message: "Internal server error" });
-    }
-  });
+    handleStudentInfo(email, res);
+  } catch (dbError) {
+    console.error("Database error:", dbError);
+    return res.status(500).send({ message: "Database error" });
+  }
 });
 //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --//
 
