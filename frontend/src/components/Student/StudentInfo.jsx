@@ -12,12 +12,13 @@ const StudentInfo = () => {
     phone: "639",
   });
   const [studentId, setStudentId] = useState("");
+  const [email, setEmail] = useState("");
 
-  // Gathering studen id from logged in user
+  /// Gather email from logged-in user
   useEffect(() => {
-    const storedStudentId = localStorage.getItem("studentId");
-    if (storedStudentId) {
-      setStudentId(storedStudentId);
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setEmail(storedEmail);
     }
   }, []);
 
@@ -45,7 +46,7 @@ const StudentInfo = () => {
 
   return (
     <div className="contents">
-      <h3>Your info</h3>
+      <h3>Student info</h3>
       <div className="content">
         <div className="profile">
           <div className="profile-photo">
@@ -60,7 +61,7 @@ const StudentInfo = () => {
                 disabled
               />
             </h4>
-            <p>Student Number: {studentId}</p>
+            <p>Email: {email}</p>
             <button>Change photo</button>
           </div>
         </div>

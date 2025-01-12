@@ -9,7 +9,7 @@ import confirmIcon from "../../assets/confirm-icon.png";
 const Dashboard = () => {
   return (
     <>
-      <div className="head">
+      <div className="head-dashboard">
         <div className="headerLogo">
           <div>
             <img src={Logo} className="logo" alt="cvsu-logo" />
