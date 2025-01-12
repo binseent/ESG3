@@ -7,11 +7,12 @@ const router = express.Router();
 
 
 
+//-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --//
 router.post("/login", (req, res) => {
-  const { studentId, password } = req.body;
-  const query = "SELECT * FROM users WHERE studentId = ?";
-  
-  db.query(query, [studentId], async (err, result) => {
+  const { email, password } = req.body;
+  const query = "SELECT * FROM users WHERE email = ?";
+
+  db.query(query, [email], async (err, result) => {
     if (err) {
       console.error("Database error:", err);
       res.status(500).send({ message: "Database error" });
@@ -21,20 +22,19 @@ router.post("/login", (req, res) => {
     if (result.length > 0) {
       const validPassword = await bcrypt.compare(password, result[0].password);
       if (validPassword) {
-        req.session.studentId = result[0].studentId;
         res.status(200).send({ 
           message: "Login successful",
-          studentId: result[0].studentId
+          email: result[0].email
         });
       } else {
-        res.status(400).send({ message: "Invalid student ID or password" });
+        res.status(400).send({ message: "Invalid email or password" });
       }
     } else {
-      res.status(400).send({ message: "Invalid student ID or password" });
+      res.status(400).send({ message: "Invalid email or password" });
     }
   });
 });
-//-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// 
+//-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --//
 
 //-- Register --// //-- Register --////-- Register --////-- Register --////-- Register --////-- Register --////-- Register --//
 router.post("/register", async (req, res) => {
