@@ -1,7 +1,9 @@
 import express from 'express';
-import mysql from 'mysql2';
+import bcrypt from 'bcrypt';
+import db from './Database.js';
 
 const router = express.Router();
+
 
 const db = mysql.createConnection({
   host: "127.0.0.1", 
@@ -10,43 +12,49 @@ const db = mysql.createConnection({
   database: "checklist-1"
 });
 
-//-- Login --//  //-- Login --// //-- Login --//  //-- Login --// //-- Login --//  //-- Login --// //-- Login --//  //-- Login --//
 router.post("/login", (req, res) => {
   const { studentId, password } = req.body;
-  const query = "SELECT * FROM users WHERE studentId = ? AND password = ?";
+  const query = "SELECT * FROM users WHERE studentId = ?";
   
-  db.query(query, [studentId, password], (err, result) => {
+  db.query(query, [studentId], async (err, result) => {
     if (err) {
+      console.error("Database error:", err);
       res.status(500).send({ message: "Database error" });
       return;
     }
 
     if (result.length > 0) {
-      // Store studentId in localStorage
-      localStorage.setItem("studentId", result[0].studentId);
-      res.status(200).send({ 
-        message: "Login successful",
-        studentId: result[0].studentId
-      });
+      const validPassword = await bcrypt.compare(password, result[0].password);
+      if (validPassword) {
+        req.session.studentId = result[0].studentId;
+        res.status(200).send({ 
+          message: "Login successful",
+          studentId: result[0].studentId
+        });
+      } else {
+        res.status(400).send({ message: "Invalid student ID or password" });
+      }
     } else {
       res.status(400).send({ message: "Invalid student ID or password" });
     }
   });
 });
-//-- Login --//  //-- Login --// //-- Login --//  //-- Login --// //-- Login --//  //-- Login --// //-- Login --//  //-- Login --//
+//-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// 
 
-//-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --//
-router.post("/register", (req, res) => {
+//-- Register --// //-- Register --////-- Register --////-- Register --////-- Register --////-- Register --////-- Register --//
+router.post("/register", async (req, res) => {
   const { firstName, middleName, lastName, email, password, confirmPassword } = req.body;
 
   if (password !== confirmPassword) {
     return res.status(400).send({ message: "Passwords do not match" });
   }
 
+  const hashedPassword = await bcrypt.hash(password, 10);
   const query = "INSERT INTO users (firstName, middleName, lastName, email, password) VALUES (?, ?, ?, ?, ?)";
   
-  db.query(query, [firstName, middleName, lastName, email, password], (err, result) => {
+  db.query(query, [firstName, middleName, lastName, email, hashedPassword], (err, result) => {
     if (err) {
+      console.error("Database error:", err);
       res.status(500).send({ message: "Database error" });
       return;
     }
@@ -54,9 +62,9 @@ router.post("/register", (req, res) => {
     res.status(200).send({ message: "Registration successful" });
   });
 });
-//-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --// //-- Register --//
+//-- Register --////-- Register --////-- Register --////-- Register --////-- Register --////-- Register --////-- Register --////-- Register --//
 
-//-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// 
+//-- Password Reset --////-- Password Reset --////-- Password Reset --////-- Password Reset --////-- Password Reset --////-- Password Reset --//
 router.post("/forgot-password", (req, res) => {
   const { email } = req.body;
 
@@ -64,6 +72,7 @@ router.post("/forgot-password", (req, res) => {
   
   db.query(query, [email], (err, result) => {
     if (err) {
+      console.error("Database error:", err);
       res.status(500).send({ message: "Database error" });
       return;
     }
@@ -72,11 +81,10 @@ router.post("/forgot-password", (req, res) => {
       const insertQuery = "INSERT INTO password_resets (email) VALUES (?)";
       db.query(insertQuery, [email], (insertErr, insertResult) => {
         if (insertErr) {
+          console.error("Database error:", insertErr);
           res.status(500).send({ message: "Database error" });
           return;
         }
-
-        // Here you would send the email for password reset
         res.status(200).send({ message: "Password reset request sent to admin!" });
       });
     } else {
@@ -84,6 +92,6 @@ router.post("/forgot-password", (req, res) => {
     }
   });
 });
-//-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// //-- Password Reset --// 
+//-- Password Reset --////-- Password Reset --////-- Password Reset --////-- Password Reset --////-- Password Reset --////-- Password Reset --//
 
 export default router;

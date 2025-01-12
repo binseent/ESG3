@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./ResetPass.css";
 import axios from 'axios';
 
 const ResetPass = () => {
+    const [data, setData] = useState([]);
     const [showApproveForm, setShowApproveForm] = useState(false);
     const [showRejectForm, setShowRejectForm] = useState(false);
     const [requestStatus, setRequestStatus] = useState("");
@@ -11,6 +12,16 @@ const ResetPass = () => {
     const [email, setEmail] = useState("");
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
+
+    useEffect(() => {
+        axios.get('http://localhost:3000/api/password-reset-requests')
+            .then(response => {
+                setData(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }, []);
 
     const handleApprove = () => {
         setShowApproveForm(true);
@@ -66,17 +77,19 @@ const ResetPass = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>12345</td>
-                            <td>user1@example.com</td>
-                            <td>2023-01-01</td>
-                            <td>Approved</td>
-                            <td>admin001</td>
-                            <td>2023-01-02</td>
-                            <td>All good</td>
-                            <td>Yes</td>
-                        </tr>
+                        {data.map(request => (
+                            <tr key={request.id}>
+                                <td>{request.id}</td>
+                                <td>{request.user_id}</td>
+                                <td>{request.email}</td>
+                                <td>{new Date(request.request_date).toLocaleString()}</td>
+                                <td>{request.approval_status}</td>
+                                <td>{request.admin_id}</td>
+                                <td>{request.approval_date ? new Date(request.approval_date).toLocaleString() : 'N/A'}</td>
+                                <td>{request.remarks}</td>
+                                <td>{request.is_processed ? 'Yes' : 'No'}</td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

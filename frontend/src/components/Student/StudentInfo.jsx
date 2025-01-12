@@ -13,14 +13,14 @@ const StudentInfo = () => {
   });
   const [studentId, setStudentId] = useState("");
 
-  //gathering studen id from logged in user
+  // Gathering studen id from logged in user
   useEffect(() => {
     const storedStudentId = localStorage.getItem("studentId");
     if (storedStudentId) {
       setStudentId(storedStudentId);
     }
   }, []);
-  
+
   const openPopup = (section) => {
     setEditSection(section);
     setIsPopupOpen(true);
@@ -39,7 +39,7 @@ const StudentInfo = () => {
   };
 
   const saveChanges = () => {
-    // add logic here for saving data to db
+    // Add logic here for saving data to db
     closePopup();
   };
 

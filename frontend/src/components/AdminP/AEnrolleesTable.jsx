@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./AEnrolleesTable.css";
 
 const AEnrolleesTable = () => {
@@ -6,21 +6,10 @@ const AEnrolleesTable = () => {
   const [filterCourse, setFilterCourse] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
 
-  // Example Enrollees Data
-  const [enrollees, setEnrollees] = useState([
-    { id: 1, name: "John Doe", sex: "Male", age: 20, address: "123 Sample St.", contact: "09123456789", status: "Enrolled", course: "BSIT" },
-    { id: 2, name: "Jane Smith", sex: "Female", age: 21, address: "456 Elm St.", contact: "09234567890", status: "Enrolled", course: "BSCS" },
-    { id: 3, name: "Michael Brown", sex: "Male", age: 19, address: "789 Maple Ave.", contact: "09345678901", status: "Pending", course: "BSBA" },
-    { id: 4, name: "Emily Johnson", sex: "Female", age: 22, address: "101 Pine St.", contact: "09456789012", status: "Enrolled", course: "BSIT" },
-    { id: 5, name: "Chris Lee", sex: "Male", age: 20, address: "202 Oak Rd.", contact: "09567890123", status: "Enrolled", course: "BSEd" },
-    { id: 6, name: "Anna Davis", sex: "Female", age: 21, address: "303 Birch Ln.", contact: "09678901234", status: "Pending", course: "BSN" },
-    { id: 7, name: "James Wilson", sex: "Male", age: 23, address: "404 Cedar Ave.", contact: "09789012345", status: "Enrolled", course: "BSCS" },
-    { id: 8, name: "Olivia Martinez", sex: "Female", age: 19, address: "505 Spruce Blvd.", contact: "09890123456", status: "Enrolled", course: "BSIT" },
-    { id: 9, name: "Daniel Garcia", sex: "Male", age: 20, address: "606 Willow St.", contact: "09901234567", status: "Enrolled", course: "BSBA" },
-    { id: 10, name: "Sophia Robinson", sex: "Female", age: 18, address: "707 Aspen Rd.", contact: "09111234567", status: "Pending", course: "BSA" },
-  ]);
+  // Enrollees Data
+  const [enrollees, setEnrollees] = useState([]);
 
-  const [modalType, setModalType] = useState(""); // 'view', 'add', 'edit'
+  const [modalType, setModalType] = useState(""); 
   const [selectedEnrollee, setSelectedEnrollee] = useState(null);
   const [newEnrollee, setNewEnrollee] = useState({
     id: "",
@@ -32,6 +21,13 @@ const AEnrolleesTable = () => {
     status: "",
     course: "",
   });
+
+  useEffect(() => {
+    fetch('/api/enrollees')
+      .then(response => response.json())
+      .then(data => setEnrollees(data))
+      .catch(error => console.error('Error fetching enrollees:', error));
+  }, []);
 
   // Filter the enrollees based on search and filters
   const filteredEnrollees = enrollees.filter((enrollee) => {
