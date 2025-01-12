@@ -5,12 +5,7 @@ import db from './Database.js';
 const router = express.Router();
 
 
-const db = mysql.createConnection({
-  host: "127.0.0.1", 
-  user: "root", 
-  password: "",
-  database: "checklist-1"
-});
+
 
 router.post("/login", (req, res) => {
   const { studentId, password } = req.body;

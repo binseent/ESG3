@@ -45,7 +45,7 @@ const StudentInfo = () => {
 
   return (
     <div className="contents">
-      <h3>Your info</h3>
+      <h3>Student info</h3>
       <div className="content">
         <div className="profile">
           <div className="profile-photo">
