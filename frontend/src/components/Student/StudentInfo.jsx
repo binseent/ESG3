@@ -1,3 +1,4 @@
+//StudentInfo.jsx
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import Icon from "../../assets/icon.png";
@@ -12,14 +13,15 @@ const StudentInfo = () => {
     lastName: '',
     email: ''
   });
-  const fetchStudentInfo = async (email) => {
-    try {
-      const response = await axios.post('/student-info', { email });
-      setStudentInfo(response.data);
-    } catch (error) {
-      console.error("There was an error fetching the student info!", error);
-    }
-  };
+  useEffect(() => {
+    axios.post('/student-info', { email })
+      .then(response => {
+        setStudentInfo(response.data);
+      })
+      .catch(error => {
+        console.error("There was an error fetching the student info!", error);
+      });
+  }, [email])
 
 
   const [formData, setFormData] = useState({
