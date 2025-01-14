@@ -5,7 +5,7 @@ import db from './Database.js';
 const router = express.Router();
 
 export const handleStudentInfo = (email, res) => {
-  const query = "SELECT firstName, middleName, lastName FROM users WHERE email = ?";
+  const query = "SELECT firstName, middleName, lastName, email FROM users WHERE email = ?";
   
   db.query(query, [email], (err, result) => {
     if (err) {
@@ -19,13 +19,13 @@ export const handleStudentInfo = (email, res) => {
       return;
     }
 
-    const { firstName, middleName, lastName } = result[0];
+    const { firstName, middleName, lastName, email } = result[0];
     res.status(200).send({ firstName, middleName, lastName, email });
   });
 };
 
-router.post("/student-info", (req, res) => {
-  const { email } = req.body;
+router.get('/student-info/:email', (req, res) => {
+  const email = req.params.email;
   handleStudentInfo(email, res);
 });
 

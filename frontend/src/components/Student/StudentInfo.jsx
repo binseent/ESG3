@@ -1,9 +1,9 @@
-//StudentInfo.jsx
+// StudentInfo.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Icon from "../../assets/icon.png";
 
-const StudentInfo = () => {
+const StudentInfo = ({ email }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [editSection, setEditSection] = useState("");
 
@@ -13,6 +13,7 @@ const StudentInfo = () => {
     lastName: "",
     email: "",
   });
+
   useEffect(() => {
     if (studentInfo.email) {
       axios
@@ -25,6 +26,20 @@ const StudentInfo = () => {
         });
     }
   }, [studentInfo.email]);
+
+
+  useEffect(() => {
+    if (email) {
+      axios.get(`/api/student-info/${email}`)
+        .then(response => {
+          setStudentInfo(response.data);
+        })
+        .catch(error => {
+          console.error("There was an error fetching the student info!", error);
+        });
+    }
+  }, [email]);
+
 
   const [formData, setFormData] = useState({
     course: "Bachelor of Science in Computer Science",
@@ -66,11 +81,16 @@ const StudentInfo = () => {
           </div>
           <div className="profile-details">
             <h4>
+
               Welcome,{studentInfo.firstName} {studentInfo.middleName}{" "}
               {studentInfo.lastName}
+
+              Welcome, 
+
               <input
                 type="text"
                 placeholder="Full Name (get data from db)"
+                value={`${studentInfo.firstName} ${studentInfo.middleName} ${studentInfo.lastName}`}
                 disabled
               />
             </h4>
