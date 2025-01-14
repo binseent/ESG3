@@ -1,6 +1,6 @@
 // StudentInfo.jsx
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
+import axios from "axios";
 import Icon from "../../assets/icon.png";
 
 const StudentInfo = ({ email }) => {
@@ -8,11 +8,25 @@ const StudentInfo = ({ email }) => {
   const [editSection, setEditSection] = useState("");
 
   const [studentInfo, setStudentInfo] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    email: ''
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    email: "",
   });
+
+  useEffect(() => {
+    if (studentInfo.email) {
+      axios
+        .post("/student-info", { email: studentInfo.email })
+        .then((response) => {
+          setStudentInfo(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching student info:", error);
+        });
+    }
+  }, [studentInfo.email]);
+
 
   useEffect(() => {
     if (email) {
@@ -25,6 +39,7 @@ const StudentInfo = ({ email }) => {
         });
     }
   }, [email]);
+
 
   const [formData, setFormData] = useState({
     course: "Bachelor of Science in Computer Science",
@@ -66,7 +81,12 @@ const StudentInfo = ({ email }) => {
           </div>
           <div className="profile-details">
             <h4>
+
+              Welcome,{studentInfo.firstName} {studentInfo.middleName}{" "}
+              {studentInfo.lastName}
+
               Welcome, 
+
               <input
                 type="text"
                 placeholder="Full Name (get data from db)"
