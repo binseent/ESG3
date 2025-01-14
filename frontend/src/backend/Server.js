@@ -26,8 +26,8 @@ import passwordResetRoutes from './ResetPassTable.js';
 app.use('/api', passwordResetRoutes);
 
 //-- Student Information --//
-import studentInfoRouter from './StudentInfoData.js';
-app.use('/student-info', studentInfoRouter);
+import studentInfoRoutes from './StudentInfoData.js';
+app.use('/api', studentInfoRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

@@ -1,37 +1,22 @@
 // StudentInfo.jsx
 import React, { useState, useEffect } from "react";
-import axios from 'axios';
 import Icon from "../../assets/icon.png";
+import axios from 'axios'; 
 
-const StudentInfo = ({ email }) => {
+const StudentInfo = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [editSection, setEditSection] = useState("");
-
-  const [studentInfo, setStudentInfo] = useState({
-    firstName: '',
-    middleName: '',
-    lastName: '',
-    email: ''
-  });
-
-  useEffect(() => {
-    if (email) {
-      axios.get(`/api/student-info/${email}`)
-        .then(response => {
-          setStudentInfo(response.data);
-        })
-        .catch(error => {
-          console.error("There was an error fetching the student info!", error);
-        });
-    }
-  }, [email]);
-
   const [formData, setFormData] = useState({
     course: "Bachelor of Science in Computer Science",
     birthday: "",
     address: "Your address here!",
     email: "Email address",
     phone: "639",
+  });
+  const [studentData, setStudentData] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
   });
 
   const openPopup = (section) => {
@@ -56,6 +41,25 @@ const StudentInfo = ({ email }) => {
     closePopup();
   };
 
+  // Fetch student data when the component mounts
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        const response = await axios.get('/student-info-data', {
+          params: { email: formData.email }, // Make sure the correct email is passed
+        });
+        console.log("API Response:", response.data); // Check what data is returned from the API
+        setStudentData(response.data); // Set the student data if API returns the correct structure
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+      }
+    };
+
+    if (formData.email) { // Ensure email is not empty
+      fetchStudentData();
+    }
+  }, [formData.email]); // Fetch data when email changes
+
   return (
     <div className="contents">
       <h3>Student info</h3>
@@ -66,15 +70,17 @@ const StudentInfo = ({ email }) => {
           </div>
           <div className="profile-details">
             <h4>
-              Welcome, 
+              Welcome,{" "}
               <input
                 type="text"
                 placeholder="Full Name (get data from db)"
-                value={`${studentInfo.firstName} ${studentInfo.middleName} ${studentInfo.lastName}`}
+                value={`${studentData.firstName} ${studentData.middleName} ${studentData.lastName}`}
                 disabled
               />
             </h4>
-            <p>Email: {studentInfo.email}</p>
+            <p>First Name: {`${studentData.firstName}`}</p>
+            <p>Middle Name: {`${studentData.middleName}`}</p>
+            <p>Last Name: {`${studentData.lastName}`}</p>
             <button>Change photo</button>
           </div>
         </div>

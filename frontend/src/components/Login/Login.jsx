@@ -1,3 +1,4 @@
+//Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -6,15 +7,14 @@ import "./Login.css";
 function Login() {
   const [isRegister, setIsRegister] = useState(false);
   const [forgotPassword, setForgotPassword] = useState(false);
-  const [email, setEmail] = useState("");
 
-  const [studentId, setStudentId] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [studentIdOrEmail, setStudentIdOrEmail] = useState("");
+
 
   const navigate = useNavigate();
 
@@ -25,14 +25,22 @@ function Login() {
       .then((response) => {
         alert(response.data.message);
         if (response.status === 200) {
-          localStorage.setItem("studentId", response.data.studentId);
-          navigate("/student");
+          axios
+            .get(`http://localhost:3000/api/student-info-data?email=${email}`)        
+            .then((response) => {
+              console.log("Student Info:", response.data);
+              navigate("/student");
+            })
+            .catch((error) => {
+              alert(error.response.data.message);
+            });
         }
       })
       .catch((error) => {
         alert(error.response.data.message);
       });
   };
+  
 
   const handleRegister = (event) => {
     event.preventDefault();
