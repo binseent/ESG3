@@ -131,7 +131,7 @@ section {
 }
 
 .home a {
-  border: 1px solid green;
+  border: 1px solid #418550;
   text-decoration: none;
   background-color: #418550;
   padding: 10px 20px;
@@ -140,17 +140,18 @@ section {
   color: white;
   font-size: 35px;
   font-family: sans-serif;
-  border-radius: 20px;
+  border-radius: 14px;
   margin-top: 30px;
 }
 
 .home a:hover {
   background-color: #418550a6;
   color: white;
+  border: 1px solid #fff;
 }
 
 .choose {
-  background-color: #418550; /* Green background */
+  background-color: #418550; 
   padding: 2rem;
   border-radius: 10px;
   width: 95%;
@@ -177,7 +178,7 @@ section {
   background-color: white;
   color: black;
   padding: 1.5rem;
-  border-radius: 15px;
+  border-radius: 10px;
   width: 20%;
   min-width: 200px; 
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -186,7 +187,7 @@ section {
 }
 
 .card:hover {
-  transform: translateY(-5px); /* Hover effect */
+  transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -328,6 +329,10 @@ section {
   width: 50px;
   height: 50px;
   margin-bottom: 0.5rem;
+}
+.step img:hover {
+  transform: translateY(-5px);
+  transition: 0.3s ease-in-out;
 }
 
 .steps li:nth-child(1) img,

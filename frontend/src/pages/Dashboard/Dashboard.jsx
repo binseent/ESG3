@@ -42,7 +42,10 @@ const Dashboard = () => {
 
       <div className="main">
         <section className="home">
-          <h1>Welcome to CvSU Bacoor City Campus Online Enrollment Portal</h1>
+          <h1>
+            Welcome to Cavite State University - Bacoor City Campus Online
+            Enrollment Portal
+          </h1>
           <p>Join the Squad. Enroll in Minutes.</p>
           <a href="/login">Enroll Now</a>
 
@@ -111,11 +114,15 @@ const Dashboard = () => {
         <section className="courses" id="courses">
           <div className="course-card">
             <h2>INFORMATION TECHNOLOGY</h2>
-            <img src={ITIcon} alt="Information Technology" />
+            <a href="https://www.facebook.com/its.cvsubacoor">
+              <img src={ITIcon} alt="Information Technology" />
+            </a>
           </div>
           <div className="course-card">
             <h2>COMPUTER SCIENCE</h2>
-            <img src={CSIcon} alt="Computer Science" />
+            <a href="https://www.facebook.com/acscvsubacoor">
+              <img src={CSIcon} alt="Computer Science" />
+            </a>
           </div>
         </section>
 
