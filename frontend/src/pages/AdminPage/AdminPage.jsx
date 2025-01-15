@@ -5,6 +5,7 @@ import AEnrolleesTable from "../../components/AdminP/AEnrolleesTable.jsx";
 import ResetPass from "../../components/AdminP/ResetPass.jsx";
 import StudentManageTable from "../../components/AdminP/StudentManageTable.jsx";
 import "./AdminPage.css";
+import Checklist from "../../components/AdminP/Checklist.jsx";
 
 const AdminPage = () => {
   const [activeSection, setActiveSection] = useState("StudentManageTable");
@@ -16,6 +17,8 @@ const AdminPage = () => {
       return <AEnrolleesTable />;
     } else if (activeSection === "ResetPass") {
       return <ResetPass />;
+    } else if (activeSection === "Checklist") {
+      return <Checklist />;
     }
     return <p>Select a section from the sidebar.</p>;
   };

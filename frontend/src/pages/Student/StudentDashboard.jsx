@@ -4,7 +4,6 @@ import Sidebar from "../../components/Student/Sidebar.jsx";
 import StudentInfo from "../../components/Student/StudentInfo.jsx";
 import EnrollmentDetails from "../../components/Student/EnrollmentDetails.jsx";
 import "./StudentDashboard.css";
-import Checklist from "../../components/Student/Checklist.jsx";
 import EnrollmentForm from "../../components/Student/EnrollmentForm.jsx";
 
 const StudentDashboard = () => {
@@ -15,8 +14,6 @@ const StudentDashboard = () => {
       return <StudentInfo />;
     } else if (activeSection === "EnrollmentDetails") {
       return <EnrollmentDetails />;
-    } else if (activeSection === "Checklist") {
-      return <Checklist />;
     } else if (activeSection === "EnrollmentForm") {
       return <EnrollmentForm />;
     }
