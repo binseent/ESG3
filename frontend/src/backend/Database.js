@@ -1,10 +1,12 @@
+//Database.js
 import mysql from 'mysql2';
 
 const db = mysql.createConnection({
-  host: "127.0.0.1", 
+  host: "localhost", 
   user: "root", 
-  password: "Raysan091021",
-  database: "checklist-1"
+  password: 'estr301502aug!#2121',
+  database: "checklist-1",
+  port: 3307
 });
 
 // Connect to the database

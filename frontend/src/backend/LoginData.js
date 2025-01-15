@@ -2,7 +2,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import db from './Database.js';
-import { handleStudentInfo } from './StudentInfoData.js';
 
 const router = express.Router();
 
@@ -15,23 +14,25 @@ router.post("/login", async (req, res) => {
   }
 
   const query = "SELECT * FROM users WHERE email = ?";
-  try {
-    const [result] = await db.promise().query(query, [email]);
-
+  db.query(query, [email], async (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).send({ message: "Database error" });
+    }
     if (result.length === 0) {
       return res.status(400).send({ message: "Invalid email or password" });
     }
     const user = result[0];
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
       return res.status(400).send({ message: "Invalid email or password" });
     }
-    handleStudentInfo(email, res);
-  } catch (dbError) {
-    console.error("Database error:", dbError);
-    return res.status(500).send({ message: "Database error" });
-  }
+
+    res.status(200).send({ message: "Login successful", email: user.email });
+  });
 });
+
 //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --// //-- Login --//
 
 //-- Register --// //-- Register --////-- Register --////-- Register --////-- Register --////-- Register --////-- Register --//
