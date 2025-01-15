@@ -34,12 +34,6 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           Enrollment Details
         </li>
         <li
-          className={activeSection === "Checklist" ? "active" : ""}
-          onClick={() => setActiveSection("Checklist")}
-        >
-          Course Checklist
-        </li>
-        <li
           className={activeSection === "EnrollmentForm" ? "active" : ""}
           onClick={() => setActiveSection("EnrollmentForm")}
         >
