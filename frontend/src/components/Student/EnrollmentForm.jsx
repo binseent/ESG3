@@ -1,17 +1,53 @@
+//EnrollmentForm.jsx
 import React, { useState } from "react";
+import axios from "axios"; 
 import Check from "../../assets/confirm-icon.png";
 
 const EnrollmentForm = () => {
   const [selectedType, setSelectedType] = useState("new student");
   const [showPopup, setShowPopup] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    dob: "",
+    contactNumber: "",
+    email: "",
+    address: "",
+    prevSchoolName: "",
+    prevProgram: "",
+    studentId: "",
+    academicYear: "",
+    program: "",
+  });
 
   const handleTypeChange = (event) => {
     setSelectedType(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleChange = (event) => {
+    const { id, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setShowPopup(true);
+    
+    try {
+      const response = await axios.post('http://localhost:3000/api/enroll', {
+        studentType: selectedType,
+        ...formData,
+      });
+      
+      // If enrollment is successful, show the popup
+      if (response.status === 200) {
+        setShowPopup(true);
+      }
+    } catch (error) {
+      console.error("Error submitting enrollment form:", error);
+      alert("Failed to submit enrollment form. Please try again.");
+    }
   };
 
   const closePopup = () => {
@@ -21,10 +57,7 @@ const EnrollmentForm = () => {
   return (
     <div className="enrollment-form">
       <h1>Enrollment Form</h1>
-      <p>
-        Please select your student type and fill out the required fields
-        carefully.
-      </p>
+      <p>Please select your student type and fill out the required fields carefully.</p>
 
       <div className="form-header">
         <select
@@ -46,43 +79,52 @@ const EnrollmentForm = () => {
             <h2>New Student Enrollment</h2>
             <div className="form-grid">
               <div className="form-left">
-                <label htmlFor="full-name">Full Name</label>
+                <label htmlFor="fullName">Full Name</label>
                 <input
                   type="text"
-                  id="full-name"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   placeholder="Enter your full name"
                 />
                 <label htmlFor="dob">Date of Birth</label>
-                <input type="date" id="dob" />
-                <label htmlFor="contact-number">Contact Number</label>
+                <input
+                  type="date"
+                  id="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                />
+                <label htmlFor="contactNumber">Contact Number</label>
                 <input
                   type="number"
-                  id="contact-number"
+                  id="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
                   placeholder="Enter your contact number"
                 />
                 <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
                   id="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter your email address"
                 />
                 <label htmlFor="address">Home Address</label>
                 <textarea
                   id="address"
                   rows="2"
+                  value={formData.address}
+                  onChange={handleChange}
                   placeholder="Enter your home address"
                 ></textarea>
               </div>
               <div className="form-right">
                 <h2>Upload Required Documents</h2>
                 <div className="upload-documents">
-                  <button type="button">
-                    Birth Certificate (PSA/NSO Certified)
-                  </button>
+                  <button type="button">Birth Certificate (PSA/NSO Certified)</button>
                   <button type="button">Certificate of Grades</button>
-                  <button type="button">
-                    Certificate of Good Moral Character
-                  </button>
+                  <button type="button">Certificate of Good Moral Character</button>
                   <button type="button">Medical Certificate</button>
                   <button type="button">Transcript of Records</button>
                 </div>
@@ -97,32 +139,50 @@ const EnrollmentForm = () => {
         )}
 
         {selectedType === "old student" && (
-          <form>
+          <form onSubmit={handleSubmit}>
             <h2>Old Student Re-enrollment</h2>
             <div className="form-grid">
               <div className="form-left">
-                <label htmlFor="full-name">Student ID</label>
+                <label htmlFor="studentId">Student ID</label>
                 <input
                   type="text"
-                  id="student_id"
+                  id="studentId"
+                  value={formData.studentId}
+                  onChange={handleChange}
                   placeholder="Enter Student ID"
                 />
-                <label htmlFor="dob">Full Name</label>
-                <input type="text" id="full_name" placeholder="Full Name" />
-                <label htmlFor="contact-number">Program/Department</label>
+                <label htmlFor="fullName">Full Name</label>
                 <input
                   type="text"
-                  id="progam"
-                  placeholder="Program/Department"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter Full Name"
                 />
-                <label htmlFor="email">Academic Term & Year Level</label>
+                <label htmlFor="program">Program/Department</label>
                 <input
                   type="text"
-                  id="academic_year"
-                  placeholder="Academic Year"
+                  id="program"
+                  value={formData.program}
+                  onChange={handleChange}
+                  placeholder="Enter Program/Department"
                 />
-                <label htmlFor="address">Contact Information</label>
-                <input type="number" id="contact" placeholder="Contact" />
+                <label htmlFor="academicYear">Academic Term & Year Level</label>
+                <input
+                  type="text"
+                  id="academicYear"
+                  value={formData.academicYear}
+                  onChange={handleChange}
+                  placeholder="Enter Academic Year"
+                />
+                <label htmlFor="contactNumber">Contact Information</label>
+                <input
+                  type="number"
+                  id="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  placeholder="Enter Contact Number"
+                />
               </div>
 
               <div className="form-right">
@@ -143,34 +203,48 @@ const EnrollmentForm = () => {
         )}
 
         {selectedType === "irregular" && (
-          <form>
+          <form onSubmit={handleSubmit}>
             <h2>Irregular Student Enrollment</h2>
             <div className="form-grid">
               <div className="form-left">
-                <label htmlFor="full-name">Student ID</label>
+                <label htmlFor="studentId">Student ID</label>
                 <input
                   type="text"
-                  id="student_id"
+                  id="studentId"
+                  value={formData.studentId}
+                  onChange={handleChange}
                   placeholder="Enter your Student ID"
                 />
-                <label htmlFor="dob">Full Name</label>
-                <input type="text" id="fullname" />
-                <label htmlFor="contact-number">Program/Department</label>
+                <label htmlFor="fullName">Full Name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                />
+                <label htmlFor="program">Program/Department</label>
                 <input
                   type="text"
                   id="program"
+                  value={formData.program}
+                  onChange={handleChange}
                   placeholder="Enter Program/Department"
                 />
-                <label htmlFor="email">Contact Number</label>
+                <label htmlFor="contactNumber">Contact Number</label>
                 <input
                   type="number"
-                  id="contact-number"
+                  id="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
                   placeholder="Enter Contact Number"
                 />
-                <label htmlFor="address">Email Address</label>
+                <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
                   id="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter Email Address"
                 />
               </div>
@@ -193,67 +267,65 @@ const EnrollmentForm = () => {
         )}
 
         {selectedType === "transferee" && (
-          <form>
+          <form onSubmit={handleSubmit}>
             <h2>Transferee Student Enrollment</h2>
             <div className="form-grid">
               <div className="form-left">
-                <label htmlFor="full-name">Full Name</label>
+                <label htmlFor="fullName">Full Name</label>
                 <input
                   type="text"
-                  id="full-name"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
                   placeholder="Enter your full name"
                 />
                 <label htmlFor="dob">Date of Birth</label>
-                <input type="date" id="dob" />
-                <label htmlFor="contact-number">Contact Number</label>
+                <input
+                  type="date"
+                  id="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                />
+                <label htmlFor="contactNumber">Contact Number</label>
                 <input
                   type="number"
-                  id="contact-number"
+                  id="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
                   placeholder="Enter your contact number"
                 />
                 <label htmlFor="email">Email Address</label>
                 <input
                   type="email"
                   id="email"
+                  value={formData.email}
+                  onChange={handleChange}
                   placeholder="Enter your email address"
                 />
                 <label htmlFor="address">Home Address</label>
                 <input
                   type="text"
                   id="address"
+                  value={formData.address}
+                  onChange={handleChange}
                   placeholder="Enter your home address"
                 />
-                <label htmlFor="prev-school">Previous Shool Name</label>
+                <label htmlFor="prevSchoolName">Previous School Name</label>
                 <input
                   type="text"
-                  id="address"
-                  placeholder="Enter your home address"
+                  id="prevSchoolName"
+                  value={formData.prevSchoolName}
+                  onChange={handleChange}
+                  placeholder="Enter your previous school name"
                 />
-                <label htmlFor="address">Previous Program</label>
+                <label htmlFor="prevProgram">Previous Program</label>
                 <input
                   type="text"
-                  id="address"
-                  placeholder="Enter your home address"
+                  id="prevProgram"
+                  value={formData.prevProgram}
+                  onChange={handleChange}
+                  placeholder="Enter your previous program"
                 />
-                <label type="text" htmlFor="address">
-                  Previous Program/Department
-                </label>
-                <input id="address" placeholder="Enter your home address" />
-              </div>
-              <div className="form-right">
-                <h2>Upload Required Documents</h2>
-                <div className="upload-documents">
-                  <button type="button">
-                    Birth Certificate (PSA/NSO Certified)
-                  </button>
-                  <button type="button">Certificate of Grades</button>
-                  <button type="button">
-                    Certificate of Good Moral Character
-                  </button>
-                  <button type="button">Medical Certificate</button>
-                  <button type="button">Transcript of Records</button>
-                  <button type="button">2x2 ID Picture</button>
-                </div>
               </div>
             </div>
             <div className="form-footer">
@@ -263,14 +335,13 @@ const EnrollmentForm = () => {
             </div>
           </form>
         )}
+
         {showPopup && (
           <div className="popup-overlay">
             <div className="popup">
               <img src={Check} alt="check.png" />
               <h2>Enrollment Form Submitted</h2>
-              <p>
-                To track your enrollment process, go to “Enrollment Details”
-              </p>
+              <p>To track your enrollment process, go to “Enrollment Details”</p>
               <button onClick={closePopup} className="close-popup">
                 Close
               </button>

@@ -29,6 +29,15 @@ app.use('/api', passwordResetRoutes);
 import studentInfoRoutes from './StudentInfoData.js';
 app.use('/api', studentInfoRoutes);
 
+//-- Manage Student Information //
+import studentManageRoutes from './StudentManageData.js';
+app.use('/api', studentManageRoutes);
+
+
+// Enrollmnt entries to database //
+import enrollmentProcess from './EnrollmentProcess.jsx';
+app.use('/api', enrollmentProcess);
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
