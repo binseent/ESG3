@@ -67,6 +67,20 @@
   border: 1px solid #d1d5db; /* Optional: border for the scrollable area */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
+.enrollees-table td button {
+  margin: 5px; /* Adds spacing between buttons */
+  padding: 10px 15px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+.enrollees-table td button:hover {
+  background-color: #2563eb;
+}
+
 
 /* Table Styles */
 .enrollees-table {
@@ -205,6 +219,7 @@
   overflow-y: auto;
 }
 
+
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
   .modal-content2 {
@@ -249,5 +264,9 @@
 
   .enrollees-table-container {
     max-height: calc(100vh - 150px); /* Adjusted height for smaller screens */
+  }
+  .enrollees-table td {
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+    gap: 8px;
   }
 }

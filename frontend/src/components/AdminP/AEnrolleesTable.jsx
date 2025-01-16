@@ -9,7 +9,7 @@ const AEnrolleesTable = () => {
   // Enrollees Data
   const [enrollees, setEnrollees] = useState([]);
 
-  const [modalType, setModalType] = useState(""); 
+  const [modalType, setModalType] = useState("");
   const [selectedEnrollee, setSelectedEnrollee] = useState(null);
   const [newEnrollee, setNewEnrollee] = useState({
     id: "",
@@ -23,10 +23,10 @@ const AEnrolleesTable = () => {
   });
 
   useEffect(() => {
-    fetch('/api/enrollees')
-      .then(response => response.json())
-      .then(data => setEnrollees(data))
-      .catch(error => console.error('Error fetching enrollees:', error));
+    fetch("/api/enrollees")
+      .then((response) => response.json())
+      .then((data) => setEnrollees(data))
+      .catch((error) => console.error("Error fetching enrollees:", error));
   }, []);
 
   // Filter the enrollees based on search and filters
@@ -36,9 +36,11 @@ const AEnrolleesTable = () => {
       enrollee.id.toString().includes(searchInput) ||
       enrollee.course.toLowerCase().includes(searchInput.toLowerCase());
     const matchesCourse =
-      !filterCourse || enrollee.course.toLowerCase() === filterCourse.toLowerCase();
+      !filterCourse ||
+      enrollee.course.toLowerCase() === filterCourse.toLowerCase();
     const matchesStatus =
-      !filterStatus || enrollee.status.toLowerCase() === filterStatus.toLowerCase();
+      !filterStatus ||
+      enrollee.status.toLowerCase() === filterStatus.toLowerCase();
 
     return matchesSearch && matchesCourse && matchesStatus;
   });
@@ -104,6 +106,42 @@ const AEnrolleesTable = () => {
     if (window.confirm("Are you sure you want to delete this enrollee?")) {
       setEnrollees(enrollees.filter((enrollee) => enrollee.id !== id));
     }
+  };
+
+  const generateReferenceNumber = () => {
+    return `REF-${Date.now()}`;
+  };
+
+  const approveEnrollee = (id) => {
+    setEnrollees(
+      enrollees.map((enrollee) =>
+        enrollee.id === id
+          ? {
+              ...enrollee,
+              status: "Approved",
+              paymentReference: generateReferenceNumber(),
+            }
+          : enrollee
+      )
+    );
+  };
+
+  const rejectEnrollee = (id, reason) => {
+    alert(`Enrollee rejected. Reason: ${reason}`);
+    setEnrollees(
+      enrollees.map((enrollee) =>
+        enrollee.id === id ? { ...enrollee, status: "Rejected" } : enrollee
+      )
+    );
+  };
+
+  const handlePaymentVerification = (id) => {
+    setEnrollees(
+      enrollees.map((enrollee) =>
+        enrollee.id === id ? { ...enrollee, paymentVerified: true } : enrollee
+      )
+    );
+    alert("Payment verified successfully!");
   };
 
   return (
@@ -190,6 +228,26 @@ const AEnrolleesTable = () => {
                     <button onClick={() => handleDelete(enrollee.id)}>
                       Delete
                     </button>
+                    <button onClick={() => approveEnrollee(enrollee.id)}>
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => handlePaymentVerification(enrollee.id)}
+                    >
+                      Verify Payment
+                    </button>
+                    <button
+                      onClick={() => {
+                        const reason = prompt(
+                          "Please enter the reason for rejection:"
+                        );
+                        if (reason) {
+                          rejectEnrollee(enrollee.id, reason);
+                        }
+                      }}
+                    >
+                      Reject
+                    </button>
                   </td>
                 </tr>
               ))
@@ -217,14 +275,30 @@ const AEnrolleesTable = () => {
             </h3>
             {modalType === "view" ? (
               <div>
-                <p><strong>ID:</strong> {selectedEnrollee?.id}</p>
-                <p><strong>Name:</strong> {selectedEnrollee?.name}</p>
-                <p><strong>Sex:</strong> {selectedEnrollee?.sex}</p>
-                <p><strong>Age:</strong> {selectedEnrollee?.age}</p>
-                <p><strong>Address:</strong> {selectedEnrollee?.address}</p>
-                <p><strong>Contact No.:</strong> {selectedEnrollee?.contact}</p>
-                <p><strong>Status:</strong> {selectedEnrollee?.status}</p>
-                <p><strong>Course:</strong> {selectedEnrollee?.course}</p>
+                <p>
+                  <strong>ID:</strong> {selectedEnrollee?.id}
+                </p>
+                <p>
+                  <strong>Name:</strong> {selectedEnrollee?.name}
+                </p>
+                <p>
+                  <strong>Sex:</strong> {selectedEnrollee?.sex}
+                </p>
+                <p>
+                  <strong>Age:</strong> {selectedEnrollee?.age}
+                </p>
+                <p>
+                  <strong>Address:</strong> {selectedEnrollee?.address}
+                </p>
+                <p>
+                  <strong>Contact No.:</strong> {selectedEnrollee?.contact}
+                </p>
+                <p>
+                  <strong>Status:</strong> {selectedEnrollee?.status}
+                </p>
+                <p>
+                  <strong>Course:</strong> {selectedEnrollee?.course}
+                </p>
               </div>
             ) : (
               <>
@@ -284,9 +358,7 @@ const AEnrolleesTable = () => {
                     setNewEnrollee({ ...newEnrollee, course: e.target.value })
                   }
                 />
-                <button
-                  onClick={modalType === "edit" ? handleEdit : handleAdd}
-                >
+                <button onClick={modalType === "edit" ? handleEdit : handleAdd}>
                   {modalType === "edit" ? "Save Changes" : "Add Enrollee"}
                 </button>
               </>
