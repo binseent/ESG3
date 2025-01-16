@@ -25,7 +25,7 @@ router.get('/student-info-data', (req, res) => {
 
     const { firstName, middleName, lastName } = result[0];
     console.log("New user log in: ",firstName, middleName, lastName, email)
-    res.status(200).send({ firstName, middleName, lastName,});
+    res.status(200).send({ firstName, middleName, lastName, email});
   });
 });
 

@@ -77,29 +77,32 @@ const StudentInfo = () => {
   };
 
   const saveChanges = () => {
-    // Add logic here for saving data to db
     closePopup();
   };
 
-  // Fetch student data when the component mounts
   useEffect(() => {
-    const fetchStudentData = async () => {
-      try {
-        const response = await axios.get('/student-info-data', {
-          params: { email: formData.email }, // Make sure the correct email is passed
-        });
-        console.log("API Response:", response.data); // Check what data is returned from the API
-        setStudentData(response.data); // Set the student data if API returns the correct structure
-      } catch (error) {
-        console.error("Error fetching student data:", error);
+  const fetchStudentData = async () => {
+    try {
+      const response = await axios.get('/student-info-data', {
+        params: { email: formData.email },  
+      });
+      if (response.data) {
+        setStudentData(response.data);  
+        console.log("Student Data After Fetch:", response.data);  
+      } else {
+        console.error("Empty response data");
       }
-    };
-
-    if (formData.email) { // Ensure email is not empty
-      fetchStudentData();
+    } catch (error) {
+      console.error("Error fetching student data:", error);
     }
-  }, [formData.email]); // Fetch data when email changes
+  };
 
+  if (formData.email) {
+    fetchStudentData();
+  }
+}, [formData.email]); 
+
+  
   return (
     <div className="contents">
       <h3>Student info</h3>
@@ -130,6 +133,7 @@ const StudentInfo = () => {
             <p>First Name: {`${studentData.firstName}`}</p>
             <p>Middle Name: {`${studentData.middleName}`}</p>
             <p>Last Name: {`${studentData.lastName}`}</p>
+            <p>Email: {`${studentData.email}`}</p>
             <button>Change photo</button>
           </div>
         </div>
