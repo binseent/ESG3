@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 import Icon from "../../assets/icon.png";
-import axios from 'axios'; 
 
 const StudentInfo = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
