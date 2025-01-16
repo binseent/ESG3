@@ -35,7 +35,7 @@ app.use('/api', studentManageRoutes);
 
 
 // Enrollmnt entries to database //
-import enrollmentProcess from './EnrollmentProcess.jsx';
+import enrollmentProcess from './EnrollmentProcess.js';
 app.use('/api', enrollmentProcess);
 
 app.listen(port, () => {
