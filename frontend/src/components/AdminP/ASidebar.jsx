@@ -1,6 +1,10 @@
 import React from "react";
 import "./ASidebar.css";
 
+const handleLogout = () => {
+  alert("You have been logged out");
+  navigate("/");
+};
 const ASidebar = ({ activeSection, setActiveSection }) => (
   <aside className="sidebar">
     <ul>
@@ -29,6 +33,9 @@ const ASidebar = ({ activeSection, setActiveSection }) => (
         Reset Password Request
       </li>
     </ul>
+    <div className="logout">
+      <button onClick={handleLogout}>Log Out</button>
+    </div>
   </aside>
 );
 

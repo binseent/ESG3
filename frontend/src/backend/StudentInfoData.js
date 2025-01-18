@@ -12,7 +12,7 @@ router.get('/student-info-data', (req, res) => {
     return res.status(400).send({ message: "Email is required" });
   }
 
-  const query = "SELECT firstName, middleName, lastName, email FROM users WHERE email = ?";
+  const query = "SELECT firstName, middleName, lastName, email FROM students WHERE email = ?";
   db.query(query, [email], (err, result) => {
     if (err) {
       console.error("Database error:", err);

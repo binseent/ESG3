@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Header from "../../components/AdminP/AHeader.jsx";
+import Header from "../../components/Student/Header.jsx";
 import Sidebar from "../../components/AdminP/ASidebar.jsx";
 import AEnrolleesTable from "../../components/AdminP/AEnrolleesTable.jsx";
 import ResetPass from "../../components/AdminP/ResetPass.jsx";
