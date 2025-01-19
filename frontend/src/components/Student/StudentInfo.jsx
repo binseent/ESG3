@@ -71,27 +71,27 @@ const StudentInfo = () => {
 
       const response = await axios.put(
         "http://localhost:3000/api/update-student-info",
-        formData // Send updated form data to backend
+        formData // Send updated form data
       );
 
       if (response.status === 200) {
-        // Assuming the backend returns the updated data in response
         const updatedData = response.data.updatedData;
 
-        // Update the studentData state with the newly saved data
+        // Update the state
         setStudentData({
           ...studentData,
           ...updatedData,
         });
 
+        // Save updated data to localStorage
+        localStorage.setItem("studentData", JSON.stringify(updatedData));
+
         alert("Changes saved successfully!");
         setIsPopupOpen(false); // Close the popup
       } else {
-        console.error("Failed to save changes:", response.data);
         alert("Failed to save changes.");
       }
     } catch (error) {
-      console.error("Error during saving changes:", error);
       alert(
         "An error occurred while saving your changes. Check the console for details."
       );

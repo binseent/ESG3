@@ -37,9 +37,8 @@ router.put('/update-student-info', (req, res) => {
   if (!email) {
     return res.status(400).send({ message: "Email is required" });
   }
-  if (!course || !birthday || !address || !contact_number) {
-    return res.status(400).send({ message: "All fields are required" });
-  }
+
+  console.log("Received data to update:", req.body); // Log the received data
 
   const query = "UPDATE students SET course = ?, birthday = ?, address = ?, contact_number = ? WHERE email = ?";
   db.query(query, [course, birthday, address, contact_number, email], (err) => {
@@ -47,12 +46,14 @@ router.put('/update-student-info', (req, res) => {
       console.error("Database update error:", err);
       return res.status(500).send({ message: "Database error", error: err });
     }
-    res.status(200).send({ message: "Student info updated successfully" });
+
+    // Send the updated data back to the frontend to confirm the update
+    res.status(200).send({
+      message: "Student info updated successfully",
+      updatedData: { course, birthday, address, contact_number, email },
+    });
   });
 });
-
-
-
 
 
 

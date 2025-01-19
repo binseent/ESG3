@@ -172,19 +172,14 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.dashboard-main .info-row span {
+.dashboard-main .info-row span:nth-child(2) {
   flex: 1;
-  display: flex; 
-  justify-content: left; 
-  align-items: left; 
+  text-align: center;
 }
 
-.dashboard-main .info-row span input {
+.dashboard-main .info-row input {
   background-color: transparent;
-  border: none;
-  text-align: left; 
-  width: 100%; 
-  outline: none; 
+  border: 0px solid;
 }
 
 .dashboard-main .info-row span:nth-child(2) {
