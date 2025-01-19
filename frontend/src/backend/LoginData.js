@@ -15,7 +15,7 @@ router.post("/login", async (req, res) => {
   const query = "SELECT * FROM students WHERE email = ?";
   db.query(query, [email], async (err, result) => {
     if (err) {
-      console.error("Database error:", err); // Debug log
+      console.error("Database error:", err); 
       return res.status(500).send({ message: "Database error" });
     }
 
@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
         return res.status(400).send({ message: "Invalid email or password" });
       }
 
-      // Ensure only one response is sent
+
       return res.status(200).send({
         message: "Login successful",
         student: {
@@ -42,7 +42,7 @@ router.post("/login", async (req, res) => {
         },
       });
     } catch (compareError) {
-      console.error("Error comparing passwords:", compareError); // Debug log
+      console.error("Error comparing passwords:", compareError); 
       return res.status(500).send({ message: "Internal server error" });
     }
   });
@@ -84,7 +84,7 @@ router.post("/register", async (req, res) => {
       ],
       (err, result) => {
         if (err) {
-          console.error("Database error:", err); // Debug log
+          console.error("Database error:", err); 
           res.status(500).send({ message: "Database error" });
           return;
         }
@@ -92,7 +92,7 @@ router.post("/register", async (req, res) => {
       }
     );
   } catch (err) {
-    console.error("Error hashing password:", err); // Debug log
+    console.error("Error hashing password:", err); 
     res.status(500).send({ message: "Internal server error" });
   }
 });
@@ -106,7 +106,7 @@ router.post("/forgot-password", (req, res) => {
   
   db.query(query, [email], (err, result) => {
     if (err) {
-      console.error("Database error:", err); // Debug log
+      console.error("Database error:", err); 
       res.status(500).send({ message: "Database error" });
       return;
     }
@@ -115,7 +115,7 @@ router.post("/forgot-password", (req, res) => {
       const insertQuery = "INSERT INTO password_resets (email) VALUES (?)";
       db.query(insertQuery, [email], (insertErr) => {
         if (insertErr) {
-          console.error("Database error:", insertErr); // Debug log
+          console.error("Database error:", insertErr); 
           res.status(500).send({ message: "Database error" });
           return;
         }
