@@ -4,7 +4,7 @@ import db from './Database.js';
 const router = express.Router();
 
 router.get('/password-reset-requests', (req, res) => {
-    const query = 'SELECT * FROM PasswordResetRequests';
+    const query = 'SELECT * FROM password_reset_request';
     db.query(query, (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);
