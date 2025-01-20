@@ -13,7 +13,10 @@ router.get("/student-info-data", (req, res) => {
     return res.status(400).send({ message: "Email is required" });
   }
 
-  const query = "SELECT student_id, firstName, middleName, lastName, email, course, birthday, address, contactNumber FROM students WHERE email = ?";
+  const query = `
+    SELECT student_id, firstName, middleName, lastName, email, course, birthday, address, contactNumber 
+    FROM students WHERE email = ?
+  `;
 
   db.query(query, [email], (err, result) => {
     if (err) {
@@ -25,36 +28,10 @@ router.get("/student-info-data", (req, res) => {
       return res.status(404).send({ message: "User not found" });
     }
 
+    // Only send one response
     const studentData = result[0];
     console.log("Returning data for user:", studentData);
-    res.status(200).send(studentData);
-    const {
-      firstName,
-      middleName,
-      lastName,
-      email,
-      course,
-
-      address,
-      contact_number,
-    } = result[0];
-    console.log(
-      "Returning data for user:",
-      firstName,
-      middleName,
-      lastName,
-      email
-    );
-    res.status(200).send({
-      firstName,
-      middleName,
-      lastName,
-      email,
-      course,
-
-      address,
-      contact_number,
-    });
+    return res.status(200).send(studentData);
   });
 });
 
