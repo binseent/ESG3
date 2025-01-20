@@ -218,37 +218,24 @@ const AEnrolleesTable = () => {
                   <td>{enrollee.contact}</td>
                   <td>{enrollee.status}</td>
                   <td>{enrollee.course}</td>
-                  <td>
-                    <button onClick={() => openModal("view", enrollee)}>
-                      View
-                    </button>
-                    <button onClick={() => openModal("edit", enrollee)}>
-                      Edit
-                    </button>
-                    <button onClick={() => handleDelete(enrollee.id)}>
-                      Delete
-                    </button>
-                    <button onClick={() => approveEnrollee(enrollee.id)}>
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => handlePaymentVerification(enrollee.id)}
-                    >
-                      Verify Payment
-                    </button>
-                    <button
-                      onClick={() => {
-                        const reason = prompt(
-                          "Please enter the reason for rejection:"
-                        );
-                        if (reason) {
-                          rejectEnrollee(enrollee.id, reason);
-                        }
-                      }}
-                    >
-                      Reject
-                    </button>
-                  </td>
+<td>
+  <button onClick={() => openModal("view", enrollee)}>View</button>
+  <button onClick={() => openModal("edit", enrollee)}>Edit</button>
+  <button onClick={() => handleDelete(enrollee.id)}>Delete</button>
+  <button onClick={() => approveEnrollee(enrollee.id)}>Approve</button>
+  <button
+    onClick={() => {
+      const reason = prompt("Please enter the reason for rejection:");
+      if (reason) {
+        rejectEnrollee(enrollee.id, reason);
+      }
+    }}
+  >
+    Reject
+  </button>
+  <button onClick={() => openModal("viewDocuments", enrollee)}>Documents</button>
+</td>
+
                 </tr>
               ))
             ) : (

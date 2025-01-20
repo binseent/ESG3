@@ -69,8 +69,77 @@ const EnrollmentForm = () => {
           <option value="old student">Old Student</option>
           <option value="irregular">Irregular</option>
           <option value="transferee">Transferee</option>
+          <option value="shiftee">Shiftee</option>
         </select>
       </div>
+
+      <div className="form-left">
+  {selectedType !== "new student" && (
+    <>
+      <label htmlFor="studentId">Student ID</label>
+      <input
+        type="text"
+        id="studentId"
+        value={formData.studentId}
+        onChange={handleChange}
+        placeholder="Enter your Student ID"
+      />
+    </>
+  )}
+  <label htmlFor="academicYear">Academic Year</label>
+  <input
+    type="text"
+    id="academicYear"
+    value={formData.academicYear}
+    onChange={handleChange}
+    placeholder="e.g., 2025-2026"
+  />
+  {selectedType !== "new student" && (
+    <>
+      <label htmlFor="program">Program</label>
+      <input
+        type="text"
+        id="program"
+        value={formData.program}
+        onChange={handleChange}
+        placeholder="Enter your current program"
+      />
+      <label htmlFor="yearLevel">Year Level</label>
+      <select
+        id="yearLevel"
+        value={formData.yearLevel || ""}
+        onChange={handleChange}
+      >
+        <option value="" disabled>Select your year level</option>
+        <option value="1st Year">1st Year</option>
+        <option value="2nd Year">2nd Year</option>
+        <option value="3rd Year">3rd Year</option>
+        <option value="4th Year">4th Year</option>
+      </select>
+    </>
+  )}
+  {selectedType === "new student" && (
+    <>
+      <label htmlFor="prevSchoolName">Previous School Name</label>
+      <input
+        type="text"
+        id="prevSchoolName"
+        value={formData.prevSchoolName}
+        onChange={handleChange}
+        placeholder="Enter your previous school name"
+      />
+      <label htmlFor="prevProgram">Previous Program (if applicable)</label>
+      <input
+        type="text"
+        id="prevProgram"
+        value={formData.prevProgram}
+        onChange={handleChange}
+        placeholder="Enter your previous program"
+      />
+    </>
+  )}
+</div>
+
 
       <section className="form-section">
         {selectedType === "new student" && (
@@ -118,6 +187,7 @@ const EnrollmentForm = () => {
                   placeholder="Enter your home address"
                 ></textarea>
               </div>
+              
               <div className="form-right">
                 <h2>Upload Required Documents</h2>
                 <div className="upload-documents">
@@ -327,6 +397,66 @@ const EnrollmentForm = () => {
                 />
               </div>
             </div>
+            </form>
+        )}
+          
+          {selectedType === "shiftee" && (
+          <form onSubmit={handleSubmit}>
+            <h2>Shiftee Student Enrollment</h2>
+            <div className="form-grid">
+              <div className="form-left">
+                <label htmlFor="studentId">Student ID</label>
+                <input
+                  type="text"
+                  id="studentId"
+                  value={formData.studentId}
+                  onChange={handleChange}
+                  placeholder="Enter your Student ID"
+                />
+                <label htmlFor="fullName">Full Name</label>
+                <input
+                  type="text"
+                  id="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                />
+                <label htmlFor="currentProgram">Current Program/Department</label>
+                <input
+                  type="text"
+                  id="currentProgram"
+                  value={formData.currentProgram}
+                  onChange={handleChange}
+                  placeholder="Enter your current program"
+                />
+                <label htmlFor="newProgram">New Program/Department</label>
+                <input
+                  type="text"
+                  id="newProgram"
+                  value={formData.newProgram}
+                  onChange={handleChange}
+                  placeholder="Enter your desired program"
+                />
+                <label htmlFor="contactNumber">Contact Number</label>
+                <input
+                  type="number"
+                  id="contactNumber"
+                  value={formData.contactNumber}
+                  onChange={handleChange}
+                  placeholder="Enter Contact Number"
+                />
+              </div>
+
+              <div className="form-right">
+                <h2>Upload Required Documents</h2>
+                <div className="upload-documents">
+                  <button type="button">Certificate of Grades</button>
+                  <button type="button">Program Shift Form</button>
+                  <button type="button">Course Checklist</button>
+                  <button type="button">Society Fee Receipt</button>
+                </div>
+              </div>
+            </div>
             <div className="form-footer">
               <button type="submit" className="submit-button">
                 Confirm Enrollment
@@ -334,6 +464,7 @@ const EnrollmentForm = () => {
             </div>
           </form>
         )}
+            
 
         {showPopup && (
           <div className="popup-overlay">

@@ -1,24 +1,43 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import Header from "../../components/Student/Header.jsx";
 import Sidebar from "../../components/Student/Sidebar.jsx";
 import StudentInfo from "../../components/Student/StudentInfo.jsx";
 import EnrollmentDetails from "../../components/Student/EnrollmentDetails.jsx";
-import "./StudentDashboard.css";
 import EnrollmentForm from "../../components/Student/EnrollmentForm.jsx";
+import "./StudentDashboard.css";
+
+const componentsMap = {
+  StudentInfo: StudentInfo,
+  EnrollmentDetails: EnrollmentDetails,
+  EnrollmentForm: EnrollmentForm,
+};
 
 const StudentDashboard = () => {
   const [activeSection, setActiveSection] = useState("StudentInfo");
+  const [studentData, setStudentData] = useState(null);
 
-  const renderContent = () => {
-    if (activeSection === "StudentInfo") {
-      return <StudentInfo />;
-    } else if (activeSection === "EnrollmentDetails") {
-      return <EnrollmentDetails />;
-    } else if (activeSection === "EnrollmentForm") {
-      return <EnrollmentForm />;
+  useEffect(() => {
+    const loggedInStudent = JSON.parse(localStorage.getItem("loggedInStudent"));
+    if (loggedInStudent) {
+      axios
+        .get(
+          `http://localhost:3000/api/student-info-data?email=${loggedInStudent.email}`
+        )
+        .then((response) => {
+          setStudentData(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching student data:", error);
+        });
     }
-    return <p>Select a section from the sidebar.</p>;
-  };
+  }, []);
+
+  if (!studentData) return <p>Loading...</p>;
+
+  const ActiveComponent =
+    componentsMap[activeSection] ||
+    (() => <p>Select a section from the sidebar.</p>);
 
   return (
     <div className="dashboard">
@@ -28,7 +47,11 @@ const StudentDashboard = () => {
           activeSection={activeSection}
           setActiveSection={setActiveSection}
         />
-        <main className="dashboard-main">{renderContent()}</main>
+        <main className="dashboard-main">
+          <div>
+            <ActiveComponent studentData={studentData} />
+          </div>
+        </main>
       </div>
     </div>
   );

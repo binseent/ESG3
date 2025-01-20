@@ -1,4 +1,3 @@
-//Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -14,7 +13,12 @@ function Login() {
   const [firstName, setFirstName] = useState("");
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
-
+  const [age, setAge] = useState("");
+  const [birthday, setBirthday] = useState("");
+  const [address, setAddress] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [status, setStatus] = useState("New");
+  const [course, setCourse] = useState("IT");
 
   const navigate = useNavigate();
 
@@ -25,22 +29,17 @@ function Login() {
       .then((response) => {
         alert(response.data.message);
         if (response.status === 200) {
-          axios
-            .get(`http://localhost:3000/api/student-info-data?email=${email}`)        
-            .then((response) => {
-              console.log("Student Info:", response.data);
-              navigate("/student");
-            })
-            .catch((error) => {
-              alert(error.response.data.message);
-            });
+          localStorage.setItem(
+            "loggedInStudent",
+            JSON.stringify(response.data.student)
+          );
+          navigate("/student");
         }
       })
       .catch((error) => {
         alert(error.response.data.message);
       });
   };
-  
 
   const handleRegister = (event) => {
     event.preventDefault();
@@ -52,6 +51,12 @@ function Login() {
         email,
         password,
         confirmPassword,
+        age,
+        birthday,
+        address,
+        contactNumber,
+        status,
+        course,
       })
       .then((response) => {
         alert(response.data.message);
@@ -59,6 +64,10 @@ function Login() {
       .catch((error) => {
         alert(error.response.data.message);
       });
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      alert("Please fill in all required fields!");
+      return;
+    }
   };
 
   const handleResetPassword = (event) => {
@@ -90,10 +99,6 @@ function Login() {
 
   const handleGoBack = () => {
     setForgotPassword(false);
-  };
-
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
   };
 
   return (
@@ -166,6 +171,59 @@ function Login() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
+              <input
+                type="number"
+                placeholder="Age"
+                className="input"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+              />
+              <input
+                type="date"
+                placeholder="Birthday"
+                className="input"
+                value={birthday}
+                onChange={(e) => setBirthday(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Address"
+                className="input"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Contact Number"
+                className="input"
+                value={contactNumber}
+                onChange={(e) => setContactNumber(e.target.value)}
+              />
+              <select
+                className="input"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                <option value="New">New Student</option>
+                <option value="Old">Old Student</option>
+                <option value="Irregular">Irregular</option>
+                <option value="Transferee">Transferee</option>
+                <option value="Shiftee">Shiftee</option>
+                <option value="Graduated">Graduated</option>
+                <option value="DROP">DROP</option>
+              </select>
+              <select
+                className="input"
+                value={course}
+                onChange={(e) => setCourse(e.target.value)}
+              >
+                <option value="IT">
+                  Bachelor of Science in Information Technology
+                </option>
+                <option value="CS">
+                  Bachelor of Science in Computer Science
+                </option>
+              </select>
               <button className="registerButton" onClick={handleRegister}>
                 Register
               </button>
@@ -207,7 +265,7 @@ function Login() {
             placeholder="Email"
             className="input"
             value={email}
-            onChange={handleEmailChange}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <button className="resetButton" onClick={handleResetPassword}>
             Reset
