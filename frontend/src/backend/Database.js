@@ -8,7 +8,6 @@ const db = mysql.createConnection({
 
   database: "enrollment-1"
 
-  database: "enrollment-1",
 });
 
 // Connect to the database
