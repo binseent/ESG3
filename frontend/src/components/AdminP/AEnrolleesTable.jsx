@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./AEnrolleesTable.css";
 
 const AEnrolleesTable = () => {
-  const [searchInput, setSearchInput] = useState("");
-  const [filterCourse, setFilterCourse] = useState("");
-  const [filterStatus, setFilterStatus] = useState("");
-
-  // Enrollees Data
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
   const [enrollees, setEnrollees] = useState([]);
-
+  
   const [modalType, setModalType] = useState("");
   const [selectedEnrollee, setSelectedEnrollee] = useState(null);
   const [newEnrollee, setNewEnrollee] = useState({
@@ -22,33 +20,31 @@ const AEnrolleesTable = () => {
     course: "",
   });
 
+  // Function to fetch enrollees data
+  const fetchEnrolleesTable = () => {
+    axios.get('http://localhost:3000/api/enrollees-table')
+      .then(response => {
+        setEnrollees(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching enrollees:', error);
+      });
+  };
+
+  // Fetch enrollees data when the component mounts
   useEffect(() => {
-    fetch("/api/enrollees")
-      .then((response) => response.json())
-      .then((data) => setEnrollees(data))
-      .catch((error) => console.error("Error fetching enrollees:", error));
+    fetchEnrolleesTable();
   }, []);
 
-  // Filter the enrollees based on search and filters
-  const filteredEnrollees = enrollees.filter((enrollee) => {
-    const matchesSearch =
-      enrollee.name.toLowerCase().includes(searchInput.toLowerCase()) ||
-      enrollee.id.toString().includes(searchInput) ||
-      enrollee.course.toLowerCase().includes(searchInput.toLowerCase());
-    const matchesCourse =
-      !filterCourse ||
-      enrollee.course.toLowerCase() === filterCourse.toLowerCase();
-    const matchesStatus =
-      !filterStatus ||
-      enrollee.status.toLowerCase() === filterStatus.toLowerCase();
-
-    return matchesSearch && matchesCourse && matchesStatus;
-  });
+  // Filter enrollees based on the search query and selected course
+  const filteredEnrollees = enrollees.filter(enrollee =>
+    enrollee.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
+    (selectedCourse ? enrollee.program === selectedCourse : true) // Filter by course if selected
+  );
 
   const resetFilters = () => {
-    setSearchInput("");
-    setFilterCourse("");
-    setFilterStatus("");
+    setSearchQuery("");
+    setSelectedCourse("");
   };
 
   // Open modal
@@ -108,42 +104,6 @@ const AEnrolleesTable = () => {
     }
   };
 
-  const generateReferenceNumber = () => {
-    return `REF-${Date.now()}`;
-  };
-
-  const approveEnrollee = (id) => {
-    setEnrollees(
-      enrollees.map((enrollee) =>
-        enrollee.id === id
-          ? {
-              ...enrollee,
-              status: "Approved",
-              paymentReference: generateReferenceNumber(),
-            }
-          : enrollee
-      )
-    );
-  };
-
-  const rejectEnrollee = (id, reason) => {
-    alert(`Enrollee rejected. Reason: ${reason}`);
-    setEnrollees(
-      enrollees.map((enrollee) =>
-        enrollee.id === id ? { ...enrollee, status: "Rejected" } : enrollee
-      )
-    );
-  };
-
-  const handlePaymentVerification = (id) => {
-    setEnrollees(
-      enrollees.map((enrollee) =>
-        enrollee.id === id ? { ...enrollee, paymentVerified: true } : enrollee
-      )
-    );
-    alert("Payment verified successfully!");
-  };
-
   return (
     <div className="enrollees-container">
       <h1 className="enrollees-title">New Enrollees</h1>
@@ -154,13 +114,13 @@ const AEnrolleesTable = () => {
           type="text"
           className="enrollees-search-box"
           placeholder="Search by Name, ID, or Course"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
         <select
           className="enrollees-filter-dropdown"
-          value={filterCourse}
-          onChange={(e) => setFilterCourse(e.target.value)}
+          value={selectedCourse}
+          onChange={(e) => setSelectedCourse(e.target.value)}
         >
           <option value="">Course</option>
           <option value="BSIT">BSIT</option>
@@ -169,15 +129,6 @@ const AEnrolleesTable = () => {
           <option value="BSEd">BSEd</option>
           <option value="BSN">BSN</option>
           <option value="BSA">BSA</option>
-        </select>
-        <select
-          className="enrollees-filter-dropdown"
-          value={filterStatus}
-          onChange={(e) => setFilterStatus(e.target.value)}
-        >
-          <option value="">Status</option>
-          <option value="Enrolled">Enrolled</option>
-          <option value="Pending">Pending</option>
         </select>
         <button className="enrollees-reset-button" onClick={resetFilters}>
           Reset
@@ -195,35 +146,42 @@ const AEnrolleesTable = () => {
         <table className="enrollees-table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Sex</th>
-              <th>Age</th>
-              <th>Address</th>
+              <th>Enrollment ID</th>
+              <th>Student ID</th>
+              <th>Course Code</th>
+              <th>Enrollment Date</th>
+              <th>Full Name</th>
+              <th>Date of Birth</th>
               <th>Contact No.</th>
-              <th>Status</th>
-              <th>Course</th>
+              <th>Email</th>
+              <th>Address</th>
+              <th>Previous School</th>
+              <th>Previous Program</th>
+              <th>Academic Year</th>
+              <th>Current Program</th>
               <th>Actions</th>
+
             </tr>
           </thead>
           <tbody>
             {filteredEnrollees.length > 0 ? (
               filteredEnrollees.map((enrollee) => (
                 <tr key={enrollee.id}>
-                  <td>{enrollee.id}</td>
-                  <td>{enrollee.name}</td>
-                  <td>{enrollee.sex}</td>
-                  <td>{enrollee.age}</td>
-                  <td>{enrollee.address}</td>
-                  <td>{enrollee.contact}</td>
-                  <td>{enrollee.status}</td>
-                  <td>{enrollee.course}</td>
+                  <td>{enrollee.enrollment_id}</td>
+                <td>{enrollee.student_id}</td>
+                <td>{enrollee.course_code}</td>
+                <td>{enrollee.enrollment_date}</td>
+                <td>{enrollee.full_name}</td>
+                <td>{enrollee.dob}</td>
+                <td>{enrollee.contact_number}</td>
+                <td>{enrollee.email}</td>
+                <td>{enrollee.address}</td>
+                <td>{enrollee.prev_school_name}</td>
+                <td>{enrollee.prev_program}</td>
+                <td>{enrollee.academic_year}</td>
+                <td>{enrollee.program}</td>
+
                   <td>
-                    <button
-                      onClick={() => openModal("viewDocuments", enrollee)}
-                    >
-                      Documents
-                    </button>
                     <button onClick={() => openModal("view", enrollee)}>
                       View
                     </button>
@@ -232,21 +190,6 @@ const AEnrolleesTable = () => {
                     </button>
                     <button onClick={() => handleDelete(enrollee.id)}>
                       Delete
-                    </button>
-                    <button onClick={() => approveEnrollee(enrollee.id)}>
-                      Approve
-                    </button>
-                    <button
-                      onClick={() => {
-                        const reason = prompt(
-                          "Please enter the reason for rejection:"
-                        );
-                        if (reason) {
-                          rejectEnrollee(enrollee.id, reason);
-                        }
-                      }}
-                    >
-                      Reject
                     </button>
                   </td>
                 </tr>
@@ -263,25 +206,6 @@ const AEnrolleesTable = () => {
       </div>
 
       {/* Modal Section */}
-      {modalType === "viewDocuments" && (
-        <div>
-          <h3>Uploaded Documents</h3>
-          {selectedEnrollee?.documents.length > 0 ? (
-            <ul>
-              {selectedEnrollee.documents.map((doc, index) => (
-                <li key={index}>
-                  <a href={doc.url} target="_blank" rel="noopener noreferrer">
-                    {doc.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No documents uploaded.</p>
-          )}
-        </div>
-      )}
-
       {modalType && (
         <div className="modal2">
           <div className="modal-content2">
@@ -298,7 +222,7 @@ const AEnrolleesTable = () => {
                   <strong>ID:</strong> {selectedEnrollee?.id}
                 </p>
                 <p>
-                  <strong>Name:</strong> {selectedEnrollee?.name}
+                  <strong>Name:</strong> {selectedEnrollee?.full_name}
                 </p>
                 <p>
                   <strong>Sex:</strong> {selectedEnrollee?.sex}
@@ -316,7 +240,7 @@ const AEnrolleesTable = () => {
                   <strong>Status:</strong> {selectedEnrollee?.status}
                 </p>
                 <p>
-                  <strong>Course:</strong> {selectedEnrollee?.course}
+                  <strong>Course:</strong> {selectedEnrollee?.program}
                 </p>
               </div>
             ) : (
