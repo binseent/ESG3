@@ -38,8 +38,8 @@ import studentManageRoutes from "./StudentManageData.js";
 app.use("/api", studentManageRoutes);
 
 // Enrollmnt entries to database //
-import enrollmentProcess from "./EnrollmentProcess.js";
-app.use("/api", enrollmentProcess);
+import enrollmentProcess from './EnrollmentProcess.js';
+app.use('/api', enrollmentProcess);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
