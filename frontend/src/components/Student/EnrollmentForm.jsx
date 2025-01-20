@@ -36,7 +36,6 @@ const EnrollmentForm = () => {
     
     try {
       const response = await axios.post('http://localhost:3000/api/enroll', {
-        studentType: selectedType,
         ...formData,
       });
       
