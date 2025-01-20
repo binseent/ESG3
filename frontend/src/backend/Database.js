@@ -6,8 +6,10 @@ const db = mysql.createConnection({
   user: "root",
 
   password: "bensint",
+
   database: "enrollment-1"
 
+});
 
 // Connect to the database
 db.connect((err) => {
