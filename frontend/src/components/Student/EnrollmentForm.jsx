@@ -1,6 +1,6 @@
 //EnrollmentForm.jsx
 import React, { useState } from "react";
-import axios from "axios"; 
+import axios from "axios";
 import Check from "../../assets/confirm-icon.png";
 
 const EnrollmentForm = () => {
@@ -33,13 +33,13 @@ const EnrollmentForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    
+
     try {
-      const response = await axios.post('http://localhost:3000/api/enroll', {
+      const response = await axios.post("http://localhost:3000/api/enroll", {
         studentType: selectedType,
         ...formData,
       });
-      
+
       // If enrollment is successful, show the popup
       if (response.status === 200) {
         setShowPopup(true);
@@ -50,6 +50,12 @@ const EnrollmentForm = () => {
     }
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    // Handle the file upload logic here
+    console.log(file);
+  };
+
   const closePopup = () => {
     setShowPopup(false);
   };
@@ -57,7 +63,10 @@ const EnrollmentForm = () => {
   return (
     <div className="enrollment-form">
       <h1>Enrollment Form</h1>
-      <p>Please select your student type and fill out the required fields carefully.</p>
+      <p>
+        Please select your student type and fill out the required fields
+        carefully.
+      </p>
 
       <div className="form-header">
         <select
@@ -75,72 +84,75 @@ const EnrollmentForm = () => {
       </div>
 
       <div className="form-left">
-  {selectedType !== "new student" && (
-    <>
-      <label htmlFor="studentId">Student ID</label>
-      <input
-        type="text"
-        id="studentId"
-        value={formData.studentId}
-        onChange={handleChange}
-        placeholder="Enter your Student ID"
-      />
-    </>
-  )}
-  <label htmlFor="academicYear">Academic Year</label>
-  <input
-    type="text"
-    id="academicYear"
-    value={formData.academicYear}
-    onChange={handleChange}
-    placeholder="e.g., 2025-2026"
-  />
-  {selectedType !== "new student" && (
-    <>
-      <label htmlFor="program">Program</label>
-      <input
-        type="text"
-        id="program"
-        value={formData.program}
-        onChange={handleChange}
-        placeholder="Enter your current program"
-      />
-      <label htmlFor="yearLevel">Year Level</label>
-      <select
-        id="yearLevel"
-        value={formData.yearLevel || ""}
-        onChange={handleChange}
-      >
-        <option value="" disabled>Select your year level</option>
-        <option value="1st Year">1st Year</option>
-        <option value="2nd Year">2nd Year</option>
-        <option value="3rd Year">3rd Year</option>
-        <option value="4th Year">4th Year</option>
-      </select>
-    </>
-  )}
-  {selectedType === "new student" && (
-    <>
-      <label htmlFor="prevSchoolName">Previous School Name</label>
-      <input
-        type="text"
-        id="prevSchoolName"
-        value={formData.prevSchoolName}
-        onChange={handleChange}
-        placeholder="Enter your previous school name"
-      />
-      <label htmlFor="prevProgram">Previous Program (if applicable)</label>
-      <input
-        type="text"
-        id="prevProgram"
-        value={formData.prevProgram}
-        onChange={handleChange}
-        placeholder="Enter your previous program"
-      />
-    </>
-  )}
-</div>
-
+        {selectedType !== "new student" && (
+          <>
+            <label htmlFor="studentId">Student ID</label>
+            <input
+              type="text"
+              id="studentId"
+              value={formData.studentId}
+              onChange={handleChange}
+              placeholder="Enter your Student ID"
+            />
+          </>
+        )}
+        <label htmlFor="academicYear">Academic Year</label>
+        <input
+          type="text"
+          id="academicYear"
+          value={formData.academicYear}
+          onChange={handleChange}
+          placeholder="e.g., 2025-2026"
+        />
+        {selectedType !== "new student" && (
+          <>
+            <label htmlFor="program">Program</label>
+            <input
+              type="text"
+              id="program"
+              value={formData.program}
+              onChange={handleChange}
+              placeholder="Enter your current program"
+            />
+            <label htmlFor="yearLevel">Year Level</label>
+            <select
+              id="yearLevel"
+              value={formData.yearLevel || ""}
+              onChange={handleChange}
+            >
+              <option value="" disabled>
+                Select your year level
+              </option>
+              <option value="1st Year">1st Year</option>
+              <option value="2nd Year">2nd Year</option>
+              <option value="3rd Year">3rd Year</option>
+              <option value="4th Year">4th Year</option>
+            </select>
+          </>
+        )}
+        {selectedType === "new student" && (
+          <>
+            <label htmlFor="prevSchoolName">Previous School Name</label>
+            <input
+              type="text"
+              id="prevSchoolName"
+              value={formData.prevSchoolName}
+              onChange={handleChange}
+              placeholder="Enter your previous school name"
+            />
+            <label htmlFor="prevProgram">
+              Previous Program (if applicable)
+            </label>
+            <input
+              type="text"
+              id="prevProgram"
+              value={formData.prevProgram}
+              onChange={handleChange}
+              placeholder="Enter your previous program"
+            />
+          </>
+        )}
+      </div>
 
       <section className="form-section">
         {selectedType === "new student" && (
@@ -188,15 +200,84 @@ const EnrollmentForm = () => {
                   placeholder="Enter your home address"
                 ></textarea>
               </div>
-              
+
               <div className="form-right">
                 <h2>Upload Required Documents</h2>
                 <div className="upload-documents">
-                  <button type="button">Birth Certificate (PSA/NSO Certified)</button>
-                  <button type="button">Certificate of Grades</button>
-                  <button type="button">Certificate of Good Moral Character</button>
-                  <button type="button">Medical Certificate</button>
-                  <button type="button">Transcript of Records</button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("birthCertificate").click()
+                    }
+                  >
+                    Birth Certificate (PSA/NSO Certified)
+                  </button>
+                  <input
+                    type="file"
+                    id="birthCertificate"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("certificateOfGrades").click()
+                    }
+                  >
+                    Certificate of Grades
+                  </button>
+                  <input
+                    type="file"
+                    id="certificateOfGrades"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("goodMoralCharacter").click()
+                    }
+                  >
+                    Certificate of Good Moral Character
+                  </button>
+                  <input
+                    type="file"
+                    id="goodMoralCharacter"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("medicalCertificate").click()
+                    }
+                  >
+                    Medical Certificate
+                  </button>
+                  <input
+                    type="file"
+                    id="medicalCertificate"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("transcriptOfRecords").click()
+                    }
+                  >
+                    Transcript of Records
+                  </button>
+                  <input
+                    type="file"
+                    id="transcriptOfRecords"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>
@@ -258,9 +339,50 @@ const EnrollmentForm = () => {
               <div className="form-right">
                 <h2>Upload Required Documents</h2>
                 <div className="upload-documents">
-                  <button type="button">Certificate of Grades</button>
-                  <button type="button">Course Checklist</button>
-                  <button type="button">Society Fee Receipt</button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("certificateOfGrades").click()
+                    }
+                  >
+                    Certificate of Grades
+                  </button>
+                  <input
+                    type="file"
+                    id="certificateOfGrades"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("courseChecklist").click()
+                    }
+                  >
+                    Course Checklist
+                  </button>
+                  <input
+                    type="file"
+                    id="courseChecklist"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("societyFeeReceipt").click()
+                    }
+                  >
+                    Society Fee Receipt
+                  </button>
+                  <input
+                    type="file"
+                    id="societyFeeReceipt"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>
@@ -321,10 +443,65 @@ const EnrollmentForm = () => {
               <div className="form-right">
                 <h2>Upload Required Documents</h2>
                 <div className="upload-documents">
-                  <button type="button">Certificate of Grades</button>
-                  <button type="button">Pre-Enrollment Form</button>
-                  <button type="button">Course Checklist</button>
-                  <button type="button">Society Fee Receipt</button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("certificateOfGrades").click()
+                    }
+                  >
+                    Certificate of Grades
+                  </button>
+                  <input
+                    type="file"
+                    id="certificateOfGrades"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("preEnrollmentForm").click()
+                    }
+                  >
+                    Pre-Enrollment Form
+                  </button>
+                  <input
+                    type="file"
+                    id="preEnrollmentForm"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("courseChecklist").click()
+                    }
+                  >
+                    Course Checklist
+                  </button>
+                  <input
+                    type="file"
+                    id="courseChecklist"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("societyFeeReceipt").click()
+                    }
+                  >
+                    Society Fee Receipt
+                  </button>
+                  <input
+                    type="file"
+                    id="societyFeeReceipt"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>
@@ -336,72 +513,166 @@ const EnrollmentForm = () => {
           </form>
         )}
 
-        {selectedType === "transferee" && (
-          <form onSubmit={handleSubmit}>
-            <h2>Transferee Student Enrollment</h2>
-            <div className="form-grid">
-              <div className="form-left">
-                <label htmlFor="fullName">Full Name</label>
-                <input
-                  type="text"
-                  id="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Enter your full name"
-                />
-                <label htmlFor="dob">Date of Birth</label>
-                <input
-                  type="date"
-                  id="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
-                />
-                <label htmlFor="contactNumber">Contact Number</label>
-                <input
-                  type="number"
-                  id="contactNumber"
-                  value={formData.contactNumber}
-                  onChange={handleChange}
-                  placeholder="Enter your contact number"
-                />
-                <label htmlFor="email">Email Address</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="Enter your email address"
-                />
-                <label htmlFor="address">Home Address</label>
-                <input
-                  type="text"
-                  id="address"
-                  value={formData.address}
-                  onChange={handleChange}
-                  placeholder="Enter your home address"
-                />
-                <label htmlFor="prevSchoolName">Previous School Name</label>
-                <input
-                  type="text"
-                  id="prevSchoolName"
-                  value={formData.prevSchoolName}
-                  onChange={handleChange}
-                  placeholder="Enter your previous school name"
-                />
-                <label htmlFor="prevProgram">Previous Program</label>
-                <input
-                  type="text"
-                  id="prevProgram"
-                  value={formData.prevProgram}
-                  onChange={handleChange}
-                  placeholder="Enter your previous program"
-                />
-              </div>
-            </div>
-            </form>
-        )}
-          
-          {selectedType === "shiftee" && (
+{selectedType === "transferee" && (
+  <>
+    <label htmlFor="prevCollegeName">Previous College/University Name</label>
+    <input
+      type="text"
+      id="prevCollegeName"
+      value={formData.prevCollegeName}
+      onChange={handleChange}
+      placeholder="Enter your previous college/university name"
+    />
+    <label htmlFor="prevProgram">
+      Previous Program/Course (if applicable)
+    </label>
+    <input
+      type="text"
+      id="prevProgram"
+      value={formData.prevProgram}
+      onChange={handleChange}
+      placeholder="Enter your previous program/course"
+    />
+  </>
+)}
+
+
+  {selectedType === "transferee" && (
+    <form onSubmit={handleSubmit}>
+      <h2>Transferee Student Enrollment</h2>
+      <div className="form-grid">
+        <div className="form-left">
+          <label htmlFor="fullName">Full Name</label>
+          <input
+            type="text"
+            id="fullName"
+            value={formData.fullName}
+            onChange={handleChange}
+            placeholder="Enter your full name"
+          />
+          <label htmlFor="dob">Date of Birth</label>
+          <input
+            type="date"
+            id="dob"
+            value={formData.dob}
+            onChange={handleChange}
+          />
+          <label htmlFor="contactNumber">Contact Number</label>
+          <input
+            type="number"
+            id="contactNumber"
+            value={formData.contactNumber}
+            onChange={handleChange}
+            placeholder="Enter your contact number"
+          />
+          <label htmlFor="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Enter your email address"
+          />
+          <label htmlFor="address">Home Address</label>
+          <textarea
+            id="address"
+            rows="2"
+            value={formData.address}
+            onChange={handleChange}
+            placeholder="Enter your home address"
+          ></textarea>
+        </div>
+
+        <div className="form-right">
+          <h2>Upload Required Documents</h2>
+          <div className="upload-documents">
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("birthCertificate").click()
+              }
+            >
+              Birth Certificate (PSA/NSO Certified)
+            </button>
+            <input
+              type="file"
+              id="birthCertificate"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("transcriptOfRecords").click()
+              }
+            >
+              Transcript of Records
+            </button>
+            <input
+              type="file"
+              id="transcriptOfRecords"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("goodMoralCharacter").click()
+              }
+            >
+              Certificate of Good Moral Character
+            </button>
+            <input
+              type="file"
+              id="goodMoralCharacter"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("honorableDismissal").click()
+              }
+            >
+              Honorable Dismissal
+            </button>
+            <input
+              type="file"
+              id="honorableDismissal"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                document.getElementById("medicalCertificate").click()
+              }
+            >
+              Medical Certificate
+            </button>
+            <input
+              type="file"
+              id="medicalCertificate"
+              style={{ display: "none" }}
+              onChange={handleFileChange}
+            />
+          </div>
+        </div>
+      </div>
+      <div className="form-footer">
+        <button type="submit" className="submit-button">
+          Confirm Enrollment
+        </button>
+      </div>
+    </form>
+  )}
+
+
+        {selectedType === "shiftee" && (
           <form onSubmit={handleSubmit}>
             <h2>Shiftee Student Enrollment</h2>
             <div className="form-grid">
@@ -422,7 +693,9 @@ const EnrollmentForm = () => {
                   onChange={handleChange}
                   placeholder="Enter your full name"
                 />
-                <label htmlFor="currentProgram">Current Program/Department</label>
+                <label htmlFor="currentProgram">
+                  Current Program/Department
+                </label>
                 <input
                   type="text"
                   id="currentProgram"
@@ -451,10 +724,65 @@ const EnrollmentForm = () => {
               <div className="form-right">
                 <h2>Upload Required Documents</h2>
                 <div className="upload-documents">
-                  <button type="button">Certificate of Grades</button>
-                  <button type="button">Program Shift Form</button>
-                  <button type="button">Course Checklist</button>
-                  <button type="button">Society Fee Receipt</button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("certificateOfGrades").click()
+                    }
+                  >
+                    Certificate of Grades
+                  </button>
+                  <input
+                    type="file"
+                    id="certificateOfGrades"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("programShiftForm").click()
+                    }
+                  >
+                    Program Shift Form
+                  </button>
+                  <input
+                    type="file"
+                    id="programShiftForm"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("courseChecklist").click()
+                    }
+                  >
+                    Course Checklist
+                  </button>
+                  <input
+                    type="file"
+                    id="courseChecklist"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      document.getElementById("societyFeeReceipt").click()
+                    }
+                  >
+                    Society Fee Receipt
+                  </button>
+                  <input
+                    type="file"
+                    id="societyFeeReceipt"
+                    style={{ display: "none" }}
+                    onChange={handleFileChange}
+                  />
                 </div>
               </div>
             </div>
@@ -465,14 +793,15 @@ const EnrollmentForm = () => {
             </div>
           </form>
         )}
-            
 
         {showPopup && (
           <div className="popup-overlay">
             <div className="popup">
               <img src={Check} alt="check.png" />
               <h2>Enrollment Form Submitted</h2>
-              <p>To track your enrollment process, go to “Enrollment Details”</p>
+              <p>
+                To track your enrollment process, go to “Enrollment Details”
+              </p>
               <button onClick={closePopup} className="close-popup">
                 Close
               </button>

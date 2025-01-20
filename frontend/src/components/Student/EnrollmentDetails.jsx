@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 
 const EnrollmentDetails = () => {
-  // Example enrollment steps
-  const enrollmentSteps = [
+  const [enrollmentSteps, setEnrollmentSteps] = useState([
     {
       step: 1,
       title: "Log In",
@@ -12,8 +11,7 @@ const EnrollmentDetails = () => {
     {
       step: 2,
       title: "Choose Courses",
-      description:
-        "Select the courses you want to enroll in from the course catalog.",
+      description: "Select the courses you want to enroll in from the course catalog.",
       status: "In Progress",
     },
     {
@@ -31,71 +29,71 @@ const EnrollmentDetails = () => {
     {
       step: 5,
       title: "Payment",
-      description: "Complete the payment process to finalize your enrollment.",
+      description: "Complete the payment for your selected courses.",
       status: "Pending",
     },
-  ];
+  ]);
+
+  const updateStepStatus = (step, status) => {
+    setEnrollmentSteps((prevSteps) =>
+      prevSteps.map((s) =>
+        s.step === step ? { ...s, status } : s
+      )
+    );
+  };
 
   return (
-    <div style={styles.container}>
-      <h2 style={styles.heading}>Enrollment Process</h2>
-      <ul style={styles.list}>
-        {enrollmentSteps.map((step) => (
-          <li key={step.step} style={styles.listItem}>
-            <div style={styles.stepHeader}>
-              <span style={styles.stepNumber}>Step {step.step}:</span>
-              <span style={styles.stepTitle}>{step.title}</span>
-              <span style={styles.stepStatus}>({step.status})</span>
-            </div>
-            <p style={styles.stepDescription}>{step.description}</p>
-          </li>
-        ))}
-      </ul>
+    <div>
+      {enrollmentSteps.map((step) => (
+        <div key={step.step} style={styles.stepContainer}>
+          <div style={styles.stepNumber}>Step {step.step}</div>
+          <div style={styles.stepTitle}>{step.title}</div>
+          <div style={styles.stepStatus}>Status: {step.status}</div>
+          <div style={styles.stepDescription}>{step.description}</div>
+          <button onClick={() => updateStepStatus(step.step, "Completed")}>
+            Mark as Completed
+          </button>
+        </div>
+      ))}
     </div>
   );
 };
 
 const styles = {
   container: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: "20px",
-    fontFamily: "Arial, sans-serif",
-  },
-  heading: {
-    fontSize: "24px",
-    marginBottom: "20px",
-  },
-  list: {
-    listStyleType: "none",
-    padding: 0,
-  },
-  listItem: {
-    marginBottom: "15px",
-    padding: "10px",
-    border: "1px solid #ddd",
-    borderRadius: "5px",
     backgroundColor: "#f9f9f9",
   },
-  stepHeader: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: "5px",
+  stepContainer: {
+    width: "80%",
+    border: "1px solid #e0e0e0",
+    borderRadius: "8px",
+    padding: "20px",
+    marginBottom: "10px",
+    backgroundColor: "#fff",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   },
   stepNumber: {
     fontWeight: "bold",
-    color: "#333",
+    color: "#1976d2",
+    marginBottom: "10px",
   },
   stepTitle: {
-    fontSize: "18px",
+    fontSize: "20px",
     fontWeight: "bold",
+    marginBottom: "10px",
   },
   stepStatus: {
     fontStyle: "italic",
-    color: "#555",
+    color: "#757575",
+    marginBottom: "10px",
   },
   stepDescription: {
-    marginTop: "5px",
-    color: "#666",
+    marginTop: "10px",
+    color: "#424242",
   },
 };
 
