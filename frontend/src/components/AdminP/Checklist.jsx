@@ -73,7 +73,6 @@ const Checklist = () => {
               <th>Contact Lab Hrs</th>
               <th>Pre-requisite</th>
               <th>Semester Taken</th>
-              <th>Course Category</th>
               <th>Final Grade</th>
             </tr>
           </thead>
@@ -88,7 +87,6 @@ const Checklist = () => {
                 <td>{course.contact_lab_hrs}</td>
                 <td>{course.pre_requisite}</td>
                 <td>{course.semester_taken}</td>
-                <td>{course.course_category}</td>
                 <td>{course.grade_id}</td>
               </tr>
             ))}

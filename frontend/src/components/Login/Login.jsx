@@ -217,10 +217,10 @@ function Login() {
                 value={course}
                 onChange={(e) => setCourse(e.target.value)}
               >
-                <option value="IT">
+                <option value="Bachelor of Science in Information Technology">
                   Bachelor of Science in Information Technology
                 </option>
-                <option value="CS">
+                <option value="Bachelor of Science in Computer Science">
                   Bachelor of Science in Computer Science
                 </option>
               </select>

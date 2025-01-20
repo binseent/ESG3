@@ -4,7 +4,6 @@ import LoginPage from "./pages/Login/LoginPage";
 import StudentDashboard from "./pages/Student/StudentDashboard";
 import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard.jsx";
-import StudentInfo from "./components/Student/StudentInfo.jsx";
 
 function App() {
   return (
