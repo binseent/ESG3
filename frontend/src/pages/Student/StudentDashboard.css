@@ -182,6 +182,11 @@
   border: 0px solid;
 }
 
+.dashboard-main .info-row span:nth-child(2) {
+  flex: 1;
+  text-align: center;
+}
+
 .dashboard-main button {
   background-color: #fff;
   color: #000;

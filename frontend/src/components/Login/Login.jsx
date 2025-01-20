@@ -1,4 +1,3 @@
-//Login.jsx
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +14,6 @@ function Login() {
   const [middleName, setMiddleName] = useState("");
   const [lastName, setLastName] = useState("");
 
-
   const navigate = useNavigate();
 
   const handleLogin = (event) => {
@@ -25,22 +23,18 @@ function Login() {
       .then((response) => {
         alert(response.data.message);
         if (response.status === 200) {
-          axios
-            .get(`http://localhost:3000/api/student-info-data?email=${email}`)        
-            .then((response) => {
-              console.log("Student Info:", response.data);
-              navigate("/student");
-            })
-            .catch((error) => {
-              alert(error.response.data.message);
-            });
+          // Save the student's email in localStorage
+          localStorage.setItem(
+            "loggedInStudent",
+            JSON.stringify(response.data.student)
+          );
+          navigate("/student");
         }
       })
       .catch((error) => {
         alert(error.response.data.message);
       });
   };
-  
 
   const handleRegister = (event) => {
     event.preventDefault();

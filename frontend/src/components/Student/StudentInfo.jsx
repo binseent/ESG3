@@ -1,22 +1,26 @@
-// StudentInfo.jsx
 import React, { useState, useEffect } from "react";
 import Icon from "../../assets/icon.png";
+import axios from "axios";
 
 const StudentInfo = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [editSection, setEditSection] = useState("");
   const [formData, setFormData] = useState({
-    course: "Bachelor of Science in Computer Science",
+    course: "",
     birthday: "",
-    address: "Your address here!",
-    email: "Email address",
-    phone: "639",
+    address: "",
+    email: "",
+    phone: "",
   });
+
   const [studentData, setStudentData] = useState({
     firstName: "",
     middleName: "",
     lastName: "",
+    email: "",
   });
+
+  const [isFetching, setIsFetching] = useState(false); // Loading state for API call
 
   const openPopup = (section) => {
     setEditSection(section);
@@ -35,36 +39,71 @@ const StudentInfo = () => {
     }));
   };
 
-  const saveChanges = () => {
-    closePopup();
-  };
-
-  useEffect(() => {
   const fetchStudentData = async () => {
+    setIsFetching(true); // Start loading
     try {
-      const response = await axios.get('/student-info-data', {
-        params: { email: formData.email },  
-      });
-      if (response.data) {
-        setStudentData(response.data);  
-        console.log("Student Data After Fetch:", response.data);  
-      } else {
-        console.error("Empty response data");
-      }
+      const loggedInStudent = JSON.parse(
+        localStorage.getItem("loggedInStudent")
+      );
+      const response = await axios.get(
+        `http://localhost:3000/api/student-info-data?email=${loggedInStudent.email}`
+      );
+      setStudentData(response.data);
+      setFormData((prevData) => ({
+        ...prevData,
+        email: response.data.email, // Sync formData with fetched email
+      }));
     } catch (error) {
-      console.error("Error fetching student data:", error);
+      console.error("Error during API call:", error);
+    } finally {
+      setIsFetching(false); // End loading
     }
   };
 
-  if (formData.email) {
+  useEffect(() => {
     fetchStudentData();
-  }
-}, [formData.email]); 
+  }, []);
 
-  
+  // Function to handle saving changes to the database
+  const saveChanges = async () => {
+    try {
+      setIsFetching(true); // Show loading state
+
+      const response = await axios.put(
+        "http://localhost:3000/api/update-student-info",
+        formData // Send updated form data
+      );
+
+      if (response.status === 200) {
+        const updatedData = response.data.updatedData;
+
+        // Update the state
+        setStudentData({
+          ...studentData,
+          ...updatedData,
+        });
+
+        // Save updated data to localStorage
+        localStorage.setItem("studentData", JSON.stringify(updatedData));
+
+        alert("Changes saved successfully!");
+        setIsPopupOpen(false); // Close the popup
+      } else {
+        alert("Failed to save changes.");
+      }
+    } catch (error) {
+      alert(
+        "An error occurred while saving your changes. Check the console for details."
+      );
+    } finally {
+      setIsFetching(false); // Hide loading state
+    }
+  };
+
   return (
     <div className="contents">
       <h3>Student info</h3>
+
       <div className="content">
         <div className="profile">
           <div className="profile-photo">
@@ -73,21 +112,17 @@ const StudentInfo = () => {
           <div className="profile-details">
             <h4>
               Welcome,{" "}
-              <input
-                type="text"
-                placeholder="Full Name (get data from db)"
-                value={`${studentData.firstName} ${studentData.middleName} ${studentData.lastName}`}
-                disabled
-              />
+              {studentData.firstName
+                ? `${studentData.firstName} ${studentData.middleName} ${studentData.lastName}`
+                : "No data available"}
             </h4>
-            <p>First Name: {`${studentData.firstName}`}</p>
-            <p>Middle Name: {`${studentData.middleName}`}</p>
-            <p>Last Name: {`${studentData.lastName}`}</p>
-            <p>Email: {`${studentData.email}`}</p>
+            <p>{studentData.email || "N/A"}</p>
+
             <button>Change photo</button>
           </div>
         </div>
       </div>
+
       <div className="content">
         <div className="head">
           <h4>Student info</h4>
@@ -113,6 +148,7 @@ const StudentInfo = () => {
           <span>{formData.address}</span>
         </div>
       </div>
+
       <div className="content">
         <div className="head">
           <h4>Account info</h4>
