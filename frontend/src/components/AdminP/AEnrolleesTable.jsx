@@ -218,24 +218,37 @@ const AEnrolleesTable = () => {
                   <td>{enrollee.contact}</td>
                   <td>{enrollee.status}</td>
                   <td>{enrollee.course}</td>
-<td>
-  <button onClick={() => openModal("view", enrollee)}>View</button>
-  <button onClick={() => openModal("edit", enrollee)}>Edit</button>
-  <button onClick={() => handleDelete(enrollee.id)}>Delete</button>
-  <button onClick={() => approveEnrollee(enrollee.id)}>Approve</button>
-  <button
-    onClick={() => {
-      const reason = prompt("Please enter the reason for rejection:");
-      if (reason) {
-        rejectEnrollee(enrollee.id, reason);
-      }
-    }}
-  >
-    Reject
-  </button>
-  <button onClick={() => openModal("viewDocuments", enrollee)}>Documents</button>
-</td>
-
+                  <td>
+                    <button
+                      onClick={() => openModal("viewDocuments", enrollee)}
+                    >
+                      Documents
+                    </button>
+                    <button onClick={() => openModal("view", enrollee)}>
+                      View
+                    </button>
+                    <button onClick={() => openModal("edit", enrollee)}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(enrollee.id)}>
+                      Delete
+                    </button>
+                    <button onClick={() => approveEnrollee(enrollee.id)}>
+                      Approve
+                    </button>
+                    <button
+                      onClick={() => {
+                        const reason = prompt(
+                          "Please enter the reason for rejection:"
+                        );
+                        if (reason) {
+                          rejectEnrollee(enrollee.id, reason);
+                        }
+                      }}
+                    >
+                      Reject
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
@@ -250,6 +263,25 @@ const AEnrolleesTable = () => {
       </div>
 
       {/* Modal Section */}
+      {modalType === "viewDocuments" && (
+        <div>
+          <h3>Uploaded Documents</h3>
+          {selectedEnrollee?.documents.length > 0 ? (
+            <ul>
+              {selectedEnrollee.documents.map((doc, index) => (
+                <li key={index}>
+                  <a href={doc.url} target="_blank" rel="noopener noreferrer">
+                    {doc.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No documents uploaded.</p>
+          )}
+        </div>
+      )}
+
       {modalType && (
         <div className="modal2">
           <div className="modal-content2">
