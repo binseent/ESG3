@@ -1,7 +1,9 @@
-import db from "./Database.js"; 
+import express from "express";
+import db from "./Database.js";
 
-// Get all courses for the checklist 
-export const getCourseChecklist = (req, res) => {
+const router = express.Router();
+
+const getCourseChecklist = (req, res) => {
   const query = `
     SELECT 
       course_code, 
@@ -25,3 +27,7 @@ export const getCourseChecklist = (req, res) => {
     res.json(results);
   });
 };
+
+router.get("/course_checklist", getCourseChecklist);
+
+export default router;
