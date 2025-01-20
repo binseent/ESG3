@@ -5,12 +5,11 @@
   background-color: #418550;
   color: white;
   font-family: Arial, sans-serif;
-  position: sticky; 
-  top: 0; 
-  z-index: 1000; 
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
-
 
 .headerLogo {
   display: flex;
@@ -58,7 +57,7 @@
 }
 
 .nav nav ul li a:hover {
-  color: #f1f1f1;
+  color: darkgreen;
   text-decoration: underline;
 }
 
@@ -73,7 +72,7 @@
 }
 
 .rays a:hover {
-  color: #2130fd;
+  color: darkgreen;
   text-decoration: underline;
 }
 
@@ -94,16 +93,15 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  background-attachment: fixed; 
-  opacity: 0.5; 
-  z-index: -1; 
+  background-attachment: fixed;
+  opacity: 0.5;
+  z-index: -1;
 }
 
 .main > * {
   position: relative;
   z-index: 2;
 }
-
 
 section {
   padding: 1rem;
@@ -151,7 +149,7 @@ section {
 }
 
 .choose {
-  background-color: #418550; 
+  background-color: #418550;
   padding: 2rem;
   border-radius: 10px;
   width: 95%;
@@ -180,7 +178,7 @@ section {
   padding: 1.5rem;
   border-radius: 10px;
   width: 20%;
-  min-width: 200px; 
+  min-width: 200px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
   transition: transform 0.3s, box-shadow 0.3s;
@@ -212,7 +210,7 @@ section {
   padding: 20px 200px;
 }
 
-.about  .mission-vision-container {
+.about .mission-vision-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -221,7 +219,6 @@ section {
   width: 40%;
   padding: 20px;
   border-radius: 18px;
-
 }
 
 .about .box {
@@ -234,19 +231,19 @@ section {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.about  .box h2 {
+.about .box h2 {
   margin-bottom: 10px;
   color: #000;
 }
 
-.about  .location-container {
+.about .location-container {
   width: 60%;
   text-align: center;
   background-color: #418550;
   border-radius: 18px;
 }
 
-.about  .location-container .map-box {
+.about .location-container .map-box {
   margin-top: 10px;
   border: 5px solid #418550;
   border-radius: 12px;
@@ -289,11 +286,10 @@ section {
   background-color: #fff;
 }
 
-
 /* Footer */
 .footer {
-  background-color: #418550; 
-  padding: .5rem;
+  background-color: #418550;
+  padding: 0.5rem;
   border-radius: 10px;
   text-align: center;
   color: white;
@@ -350,8 +346,6 @@ section {
   font-size: 1.5rem;
   color: white;
 }
-
-
 
 /* Responsive design */
 @media (max-width: 768px) {

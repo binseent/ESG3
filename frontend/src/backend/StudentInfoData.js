@@ -1,10 +1,13 @@
 // StudentInfoData.js
 import express from "express";
 import db from "./Database.js";
+import express from "express";
+import db from "./Database.js";
 
 const router = express.Router();
 
 // Route to get student information based on email
+router.get("/student-info-data", (req, res) => {
 router.get("/student-info-data", (req, res) => {
   console.log("Query Parameters:", req.query);
   const { email } = req.query;
@@ -52,7 +55,7 @@ router.put("/update-student-info", (req, res) => {
     // Send the updated data back to the frontend to confirm the update
     res.status(200).send({
       message: "Student info updated successfully",
-      updatedData: { course, birthday, address, contactNumber, email },
+      updatedData: { course, address, contactNumber, email },
     });
   });
 });
