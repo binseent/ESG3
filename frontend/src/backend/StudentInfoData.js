@@ -52,7 +52,7 @@ router.put("/update-student-info", (req, res) => {
     // Send the updated data back to the frontend to confirm the update
     res.status(200).send({
       message: "Student info updated successfully",
-      updatedData: { course, birthday, address, contactNumber, email },
+      updatedData: { course, address, contactNumber, email },
     });
   });
 });

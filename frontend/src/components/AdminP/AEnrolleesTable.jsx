@@ -1,12 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './AEnrolleesTable.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./AEnrolleesTable.css";
 
 const AEnrolleesTable = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
   const [enrollees, setEnrollees] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); // State for search input
-  const [selectedCourse, setSelectedCourse] = useState(""); // State for selected course filter
-  const [showModal, setShowModal] = useState(false); // For controlling the modal visibility
+  
+  const [modalType, setModalType] = useState("");
+  const [selectedEnrollee, setSelectedEnrollee] = useState(null);
+  const [newEnrollee, setNewEnrollee] = useState({
+    id: "",
+    name: "",
+    sex: "",
+    age: "",
+    address: "",
+    contact: "",
+    status: "",
+    course: "",
+  });
 
   // Function to fetch enrollees data
   const fetchEnrolleesTable = () => {
@@ -30,59 +42,106 @@ const AEnrolleesTable = () => {
     (selectedCourse ? enrollee.program === selectedCourse : true) // Filter by course if selected
   );
 
+  const resetFilters = () => {
+    setSearchQuery("");
+    setSelectedCourse("");
+  };
+
+  // Open modal
+  const openModal = (type, enrollee = null) => {
+    setModalType(type);
+    setSelectedEnrollee(enrollee);
+    setNewEnrollee(
+      enrollee || {
+        id: "",
+        name: "",
+        sex: "",
+        age: "",
+        address: "",
+        contact: "",
+        status: "",
+        course: "",
+      }
+    );
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setModalType("");
+    setSelectedEnrollee(null);
+    setNewEnrollee({
+      id: "",
+      name: "",
+      sex: "",
+      age: "",
+      address: "",
+      contact: "",
+      status: "",
+      course: "",
+    });
+  };
+
+  // Add new enrollee
+  const handleAdd = () => {
+    setEnrollees([...enrollees, newEnrollee]);
+    closeModal();
+  };
+
+  // Edit enrollee
+  const handleEdit = () => {
+    setEnrollees(
+      enrollees.map((enrollee) =>
+        enrollee.id === selectedEnrollee.id ? newEnrollee : enrollee
+      )
+    );
+    closeModal();
+  };
+
+  // Delete enrollee
+  const handleDelete = (id) => {
+    if (window.confirm("Are you sure you want to delete this enrollee?")) {
+      setEnrollees(enrollees.filter((enrollee) => enrollee.id !== id));
+    }
+  };
+
   return (
     <div className="enrollees-container">
       <h1 className="enrollees-title">New Enrollees</h1>
 
-      {/* Filters Section */}
+      {/* Search and Filter Section */}
       <div className="enrollees-search-filter">
+        <input
+          type="text"
+          className="enrollees-search-box"
+          placeholder="Search by Name, ID, or Course"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
         <select
           className="enrollees-filter-dropdown"
           value={selectedCourse}
-          onChange={e => setSelectedCourse(e.target.value)}
+          onChange={(e) => setSelectedCourse(e.target.value)}
         >
-          <option value="">All Courses</option> {/* Option to not filter */}
+          <option value="">Course</option>
           <option value="BSIT">BSIT</option>
           <option value="BSCS">BSCS</option>
+          <option value="BSBA">BSBA</option>
+          <option value="BSEd">BSEd</option>
+          <option value="BSN">BSN</option>
           <option value="BSA">BSA</option>
         </select>
+        <button className="enrollees-reset-button" onClick={resetFilters}>
+          Reset
+        </button>
+        <button
+          className="enrollees-reset-button"
+          onClick={() => openModal("add")}
+        >
+          Add Enrollee
+        </button>
       </div>
 
-      {/* Search Input */}
-      <input
-        type="text"
-        placeholder="Search by Name"
-        className="enrollees-search-box"
-        value={searchQuery}
-        onChange={e => setSearchQuery(e.target.value)}
-      />
-
-      {/* Add Student Button */}
-      <div>
-        <button className="add-student-button" onClick={() => setShowModal(true)}>Add Student</button>
-      </div>
-
-      {/* Modal */}
-      {showModal && (
-        <div className="modal2">
-          <div className="modal-content2">
-            <span className="close" onClick={() => setShowModal(false)}>&times;</span>
-            <h2>Add New Student</h2>
-            {/* Add Student Form (You can customize this as needed) */}
-            <form>
-              <label>Full Name</label>
-              <input type="text" placeholder="Full Name" />
-              <label>Email</label>
-              <input type="email" placeholder="Email" />
-              <label>Course Program</label>
-              <input type="text" placeholder="Course Program" />
-              <button type="submit">Submit</button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Scrollable Table Section */}
+      {/* Table Section */}
       <div className="enrollees-table-container">
         <table className="enrollees-table">
           <thead>
@@ -101,12 +160,14 @@ const AEnrolleesTable = () => {
               <th>Academic Year</th>
               <th>Current Program</th>
               <th>Actions</th>
+
             </tr>
           </thead>
           <tbody>
-            {filteredEnrollees.map(enrollee => (
-              <tr key={enrollee.enrollment_id}>
-                <td>{enrollee.enrollment_id}</td>
+            {filteredEnrollees.length > 0 ? (
+              filteredEnrollees.map((enrollee) => (
+                <tr key={enrollee.id}>
+                  <td>{enrollee.enrollment_id}</td>
                 <td>{enrollee.student_id}</td>
                 <td>{enrollee.course_code}</td>
                 <td>{enrollee.enrollment_date}</td>
@@ -119,25 +180,136 @@ const AEnrolleesTable = () => {
                 <td>{enrollee.prev_program}</td>
                 <td>{enrollee.academic_year}</td>
                 <td>{enrollee.program}</td>
-                <td>
-                  {/* Action buttons */}
-                  <button className="action-button">View</button>
-                  <button className="action-button">Edit</button>
-                  <button className="action-button">Delete</button>
-                  <button className="action-button">Approve</button>
-                  <button className="action-button">Reject</button>
-                  <button className="action-button">Documents</button>
-                </td>
-              </tr>
-            ))}
-            {filteredEnrollees.length === 0 && (
+
+                  <td>
+                    <button onClick={() => openModal("view", enrollee)}>
+                      View
+                    </button>
+                    <button onClick={() => openModal("edit", enrollee)}>
+                      Edit
+                    </button>
+                    <button onClick={() => handleDelete(enrollee.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
               <tr>
-                <td colSpan="14">No enrollees found</td>
+                <td colSpan="9" style={{ textAlign: "center" }}>
+                  No enrollees found.
+                </td>
               </tr>
             )}
           </tbody>
         </table>
       </div>
+
+      {/* Modal Section */}
+      {modalType && (
+        <div className="modal2">
+          <div className="modal-content2">
+            <h3>
+              {modalType === "view"
+                ? "View Enrollee"
+                : modalType === "edit"
+                ? "Edit Enrollee"
+                : "Add Enrollee"}
+            </h3>
+            {modalType === "view" ? (
+              <div>
+                <p>
+                  <strong>ID:</strong> {selectedEnrollee?.id}
+                </p>
+                <p>
+                  <strong>Name:</strong> {selectedEnrollee?.full_name}
+                </p>
+                <p>
+                  <strong>Sex:</strong> {selectedEnrollee?.sex}
+                </p>
+                <p>
+                  <strong>Age:</strong> {selectedEnrollee?.age}
+                </p>
+                <p>
+                  <strong>Address:</strong> {selectedEnrollee?.address}
+                </p>
+                <p>
+                  <strong>Contact No.:</strong> {selectedEnrollee?.contact}
+                </p>
+                <p>
+                  <strong>Status:</strong> {selectedEnrollee?.status}
+                </p>
+                <p>
+                  <strong>Course:</strong> {selectedEnrollee?.program}
+                </p>
+              </div>
+            ) : (
+              <>
+                <label>Name:</label>
+                <input
+                  type="text"
+                  value={newEnrollee.name}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, name: e.target.value })
+                  }
+                />
+                <label>Sex:</label>
+                <input
+                  type="text"
+                  value={newEnrollee.sex}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, sex: e.target.value })
+                  }
+                />
+                <label>Age:</label>
+                <input
+                  type="number"
+                  value={newEnrollee.age}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, age: e.target.value })
+                  }
+                />
+                <label>Address:</label>
+                <input
+                  type="text"
+                  value={newEnrollee.address}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, address: e.target.value })
+                  }
+                />
+                <label>Contact No.:</label>
+                <input
+                  type="text"
+                  value={newEnrollee.contact}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, contact: e.target.value })
+                  }
+                />
+                <label>Status:</label>
+                <input
+                  type="text"
+                  value={newEnrollee.status}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, status: e.target.value })
+                  }
+                />
+                <label>Course:</label>
+                <input
+                  type="text"
+                  value={newEnrollee.course}
+                  onChange={(e) =>
+                    setNewEnrollee({ ...newEnrollee, course: e.target.value })
+                  }
+                />
+                <button onClick={modalType === "edit" ? handleEdit : handleAdd}>
+                  {modalType === "edit" ? "Save Changes" : "Add Enrollee"}
+                </button>
+              </>
+            )}
+            <button onClick={closeModal}>Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
