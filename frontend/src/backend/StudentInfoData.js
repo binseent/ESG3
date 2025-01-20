@@ -14,7 +14,7 @@ router.get("/student-info-data", (req, res) => {
   }
 
   const query =
-    "SELECT firstName, middleName, lastName, email, course, birthday, address, contactNumber FROM students WHERE email = ?";
+    "SELECT student_id, firstName, middleName, lastName, email, course, birthday, address, contactNumber FROM students WHERE email = ?";
   db.query(query, [email], (err, result) => {
     if (err) {
       console.error("Database error:", err);

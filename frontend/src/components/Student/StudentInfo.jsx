@@ -163,7 +163,7 @@ const StudentInfo = () => {
         </div>
         <div className="info-row">
           <span>Phone:</span>
-          <input type="number" value={formData.contactNumber} disabled />
+          <input type="tel" value={formData.contactNumber} disabled />
         </div>
       </div>
 
