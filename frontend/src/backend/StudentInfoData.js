@@ -1,13 +1,10 @@
 // StudentInfoData.js
 import express from "express";
 import db from "./Database.js";
-import express from "express";
-import db from "./Database.js";
 
 const router = express.Router();
 
 // Route to get student information based on email
-router.get("/student-info-data", (req, res) => {
 router.get("/student-info-data", (req, res) => {
   console.log("Query Parameters:", req.query);
   const { email } = req.query;
