@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
 
-import checklistRoutes from "./ChecklistRoutes.js";
+import checklistRoutes from "./Checklist.js";
 app.use("/api", checklistRoutes);
 
 //-- Password Reset Email --// 
