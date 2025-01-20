@@ -43,8 +43,6 @@ app.use('/api', studentManageRoutes);
 import enrollmentProcess from './EnrollmentProcess.js';
 app.use('/api', enrollmentProcess);
 
-
-
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
