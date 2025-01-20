@@ -4,9 +4,10 @@ import mysql from "mysql2";
 const db = mysql.createConnection({
   host: "127.0.0.1",
   user: "root",
-  password: "Raysan091021",
-  database: "enrollment-1",
-});
+
+  password: "bensint",
+  database: "enrollment-1"
+
 
 // Connect to the database
 db.connect((err) => {
