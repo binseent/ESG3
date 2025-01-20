@@ -10,7 +10,7 @@ const StudentInfo = () => {
     birthday: "",
     address: "",
     email: "",
-    phone: "",
+    contactNumber: "",
   });
 
   const [studentData, setStudentData] = useState({
@@ -20,7 +20,7 @@ const StudentInfo = () => {
     email: "",
   });
 
-  const [isFetching, setIsFetching] = useState(false); // Loading state for API call
+  const [isFetching, setIsFetching] = useState(false);
 
   const openPopup = (section) => {
     setEditSection(section);
@@ -40,7 +40,7 @@ const StudentInfo = () => {
   };
 
   const fetchStudentData = async () => {
-    setIsFetching(true); // Start loading
+    setIsFetching(true);
     try {
       const loggedInStudent = JSON.parse(
         localStorage.getItem("loggedInStudent")
@@ -51,12 +51,13 @@ const StudentInfo = () => {
       setStudentData(response.data);
       setFormData((prevData) => ({
         ...prevData,
-        email: response.data.email, // Sync formData with fetched email
+        ...response.data,
       }));
     } catch (error) {
-      console.error("Error during API call:", error);
+      console.error("Error fetching student data:", error);
+      alert("Failed to load student information. Please try again.");
     } finally {
-      setIsFetching(false); // End loading
+      setIsFetching(false);
     }
   };
 
@@ -64,46 +65,46 @@ const StudentInfo = () => {
     fetchStudentData();
   }, []);
 
-  // Function to handle saving changes to the database
   const saveChanges = async () => {
-    try {
-      setIsFetching(true); // Show loading state
+    if (!formData.email.includes("@")) {
+      alert("Please enter a valid email.");
+      return;
+    }
 
+    setIsFetching(true);
+    try {
       const response = await axios.put(
         "http://localhost:3000/api/update-student-info",
-        formData // Send updated form data
+        formData
       );
 
       if (response.status === 200) {
         const updatedData = response.data.updatedData;
 
-        // Update the state
         setStudentData({
           ...studentData,
           ...updatedData,
         });
 
-        // Save updated data to localStorage
         localStorage.setItem("studentData", JSON.stringify(updatedData));
-
         alert("Changes saved successfully!");
-        setIsPopupOpen(false); // Close the popup
+        setIsPopupOpen(false);
       } else {
         alert("Failed to save changes.");
       }
     } catch (error) {
-      alert(
-        "An error occurred while saving your changes. Check the console for details."
-      );
+      console.error("Error saving changes:", error);
+      alert("An error occurred while saving your changes.");
     } finally {
-      setIsFetching(false); // Hide loading state
+      setIsFetching(false);
     }
   };
 
   return (
     <div className="contents">
-      <h3>Student info</h3>
+      {isFetching && <div className="spinner">Loading...</div>}
 
+      <h3>Student info</h3>
       <div className="content">
         <div className="profile">
           <div className="profile-photo">
@@ -117,7 +118,6 @@ const StudentInfo = () => {
                 : "No data available"}
             </h4>
             <p>{studentData.email || "N/A"}</p>
-
             <button>Change photo</button>
           </div>
         </div>
@@ -135,17 +135,15 @@ const StudentInfo = () => {
         </div>
         <div className="info-row">
           <span>Program/Course:</span>
-          <span>{formData.course}</span>
+          <input type="text" value={formData.course} disabled />
         </div>
         <div className="info-row">
           <span>Birthday:</span>
-          <span>
-            <input type="date" value={formData.birthday} disabled />
-          </span>
+          <input type="text" value={formData.birthday} disabled />
         </div>
         <div className="info-row">
           <span>Address:</span>
-          <span>{formData.address}</span>
+          <input type="text" value={formData.address} disabled />
         </div>
       </div>
 
@@ -161,15 +159,11 @@ const StudentInfo = () => {
         </div>
         <div className="info-row">
           <span>Email:</span>
-          <span>
-            <input type="email" value={formData.email} disabled />
-          </span>
+          <input type="email" value={formData.email} disabled />
         </div>
         <div className="info-row">
           <span>Phone:</span>
-          <span>
-            <input type="number" value={formData.phone} disabled />
-          </span>
+          <input type="tel" value={formData.contactNumber} disabled />
         </div>
       </div>
 
@@ -180,58 +174,23 @@ const StudentInfo = () => {
               Edit{" "}
               {editSection === "studentInfo" ? "Student Info" : "Account Info"}
             </h4>
-            {editSection === "studentInfo" ? (
-              <>
-                <label>
-                  Program/Course:
+            {Object.entries(formData)
+              .filter(([key]) =>
+                editSection === "studentInfo"
+                  ? ["course", "birthday", "address"].includes(key)
+                  : ["email", "contactNumber"].includes(key)
+              )
+              .map(([key, value]) => (
+                <label key={key}>
+                  {key.charAt(0).toUpperCase() + key.slice(1)}:
                   <input
-                    type="text"
-                    name="course"
-                    value={formData.course}
+                    type={key === "birthday" ? "date" : "text"}
+                    name={key}
+                    value={value}
                     onChange={handleInputChange}
                   />
                 </label>
-                <label>
-                  Birthday:
-                  <input
-                    type="date"
-                    name="birthday"
-                    value={formData.birthday}
-                    onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Address:
-                  <input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </>
-            ) : (
-              <>
-                <label>
-                  Email:
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                  />
-                </label>
-                <label>
-                  Phone:
-                  <input
-                    type="number"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
-                  />
-                </label>
-              </>
-            )}
+              ))}
             <div className="popup-buttons">
               <button onClick={saveChanges}>Save</button>
               <button onClick={closePopup}>Cancel</button>

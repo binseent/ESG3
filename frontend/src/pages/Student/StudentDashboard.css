@@ -165,27 +165,20 @@
 .dashboard-main .info-row {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: left;
   margin-bottom: 10px;
   padding: 2px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-.dashboard-main .info-row span:nth-child(2) {
-  flex: 1;
-  text-align: center;
-}
-
 .dashboard-main .info-row input {
   background-color: transparent;
-  border: 0px solid;
+  border: none;
+  padding: 5px; 
+  width: 60%;
 }
 
-.dashboard-main .info-row span:nth-child(2) {
-  flex: 1;
-  text-align: center;
-}
 
 .dashboard-main button {
   background-color: #fff;

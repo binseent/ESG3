@@ -1,8 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../assets/icon.png";
+import axios from "axios";
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
+  const [studentData, setStudentData] = useState({
+    fullName: "",
+    studentNumber: "",
+    email: "",
+  });
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -10,14 +17,41 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
     navigate("/");
   };
 
+  useEffect(() => {
+    const fetchStudentData = async () => {
+      try {
+        const loggedInStudent = JSON.parse(
+          localStorage.getItem("loggedInStudent")
+        );
+        if (loggedInStudent) {
+          const response = await axios.get(
+            `http://localhost:3000/api/student-info-data?email=${loggedInStudent.email}`
+          );
+          setStudentData({
+            fullName: `${response.data.firstName} ${response.data.middleName} ${response.data.lastName}`,
+            studentNumber: response.data.student_id
+              ? response.data.student_id.toString()
+              : "N/A", // Ensure it’s a string or handle fallback
+            email: response.data.email,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching student data:", error);
+        alert("Failed to load student information. Please try again.");
+      }
+    };
+
+    fetchStudentData();
+  }, []);
+
   return (
     <aside className="sidebar">
       <div className="sidebar-profile">
         <img src={Logo} alt="profile photo" />
         <div className="profile-name">
-          <h4>Full Name</h4>
-          <p>Student Number</p>
-          <p>Email</p>
+          <h4>{studentData.fullName || "No data available"}</h4>
+          <p>{studentData.studentNumber || "N/A"}</p>
+          <p>{studentData.email || "N/A"}</p>
         </div>
       </div>
       <ul>
