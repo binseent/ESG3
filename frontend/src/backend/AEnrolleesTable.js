@@ -1,16 +1,16 @@
 //AEnrolleesTable.js
-import express from 'express';
-import db from './Database.js';
+import express from "express";
+import db from "./Database.js";
 
 const router = express.Router();
 
 // Display Enrollees on table
-router.get('/enrollees-table', (req, res) => {
-  const sql = 'SELECT * FROM enrollments';
+router.get("/enrollees-table", (req, res) => {
+  const sql = "SELECT * FROM enrollments";
   db.query(sql, (err, results) => {
     if (err) {
-      console.error('Error fetching enrollees:', err);
-      res.status(500).send('Error fetching enrollees.');
+      console.error("Error fetching enrollees:", err);
+      res.status(500).send("Error fetching enrollees.");
       return;
     }
     res.json(results);

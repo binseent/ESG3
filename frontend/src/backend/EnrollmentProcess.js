@@ -48,4 +48,14 @@ router.post('/enroll', async (req, res) => {
   }
 });
 
+router.get('/enrollees', async (req, res) => {
+  try {
+    const [rows] = await db.promise().query('SELECT * FROM enrollments');
+    res.status(200).json(rows);
+  } catch (error) {
+    console.error('Error fetching enrollees:', error);
+    res.status(500).json({ message: 'Failed to fetch enrollees' });
+  }
+});
+
 export default router;
