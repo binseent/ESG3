@@ -61,12 +61,32 @@ router.post('/enroll', async (req, res) => {
 router.post('/enroll-form', async (req, res) => {
   const { email } = req.body; 
   console.log("Email received at EnrollmentProcess.js:", email);
-
+  
   if (!email) {
     return res.status(400).send({ message: "Email is required" });
   }
 
+  const query = `
+  SELECT status FROM students WHERE email = ?
+`;
+
+  db.query(query, [email], (err, result) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).send({ message: "Database error" });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).send({ message: "User not found" });
+    }
+
+    const studentStatus = result[0];
+    console.log("Students status at enrollment:", studentStatus);
+    return res.status(200).send(studentStatus);
+  });
+
 });
+
 
 
 

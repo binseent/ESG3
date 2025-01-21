@@ -172,6 +172,7 @@ const handleReject = (id) => {
               <th>Student ID</th>
               <th>Full Name</th>
               <th>Contact No.</th>
+              <th>Course</th>
               <th>Email</th>
               <th>Enrollment Status</th>
               <th>Actions</th>
