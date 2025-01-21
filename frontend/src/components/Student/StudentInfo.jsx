@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Icon from "../../assets/icon.png";
 import axios from "axios";
 
 const StudentInfo = () => {
@@ -11,6 +10,7 @@ const StudentInfo = () => {
     address: "",
     email: "",
     contactNumber: "",
+    status: "",
   });
 
   const [studentData, setStudentData] = useState({
@@ -18,6 +18,7 @@ const StudentInfo = () => {
     middleName: "",
     lastName: "",
     email: "",
+    status: "",
   });
 
   const [isFetching, setIsFetching] = useState(false);
@@ -48,10 +49,19 @@ const StudentInfo = () => {
       const response = await axios.get(
         `http://localhost:3000/api/student-info-data?email=${loggedInStudent.email}`
       );
-      setStudentData(response.data);
+
+      // Log response data to check if 'status' is included
+      console.log(response.data);
+
+      // Update both studentData and formData with the status
+      setStudentData((prevState) => ({
+        ...prevState,
+        ...response.data,
+      }));
+
       setFormData((prevData) => ({
         ...prevData,
-        ...response.data,
+        ...response.data, // Ensure 'status' is included in the formData as well
       }));
     } catch (error) {
       console.error("Error fetching student data:", error);
@@ -107,9 +117,6 @@ const StudentInfo = () => {
       <h3>Student info</h3>
       <div className="content">
         <div className="profile">
-          <div className="profile-photo">
-            <img src={Icon} alt="Profile" />
-          </div>
           <div className="profile-details">
             <h4>
               Welcome,{" "}
@@ -117,8 +124,8 @@ const StudentInfo = () => {
                 ? `${studentData.firstName} ${studentData.middleName} ${studentData.lastName}`
                 : "No data available"}
             </h4>
-            <p>{studentData.email || "N/A"}</p>
-            <button>Change photo</button>
+            <p>Email: {studentData.email || "N/A"}</p>
+            <p>Status: {studentData.status || "N/A"}</p>
           </div>
         </div>
       </div>

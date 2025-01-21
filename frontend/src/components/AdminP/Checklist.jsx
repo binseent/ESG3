@@ -16,7 +16,7 @@ const Checklist = () => {
   useEffect(() => {
     const debounce = setTimeout(() => {
       setDebouncedSearch(search); // Update the debounced search term
-    }, 300);
+    }, 600);
 
     return () => clearTimeout(debounce);
   }, [search]);

@@ -21,7 +21,7 @@ router.post('/enroll', async (req, res) => {
   try {
     const [result] = await db.promise().query(
       `INSERT INTO enrollments (
-        full_name, dob, contact_number, email, address, prev_school_name, 
+        full_name, dob, contactNumber, email, address, prev_school_name, 
         prev_program, student_id, academic_year, program
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
