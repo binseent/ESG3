@@ -107,7 +107,9 @@
 }
 
 /* Styling for StudentInfo */
-
+.dashboard-main .contents h3{
+  font-size: 32px;
+}
 .dashboard-main .content {
   background: #ffffff;
   padding: 15px;
