@@ -21,7 +21,7 @@ const StudentManageTable = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/students")
+      .get("https://esg-3.vercel.app/students")
       .then(() => {
         setStudents(response.data);
       })
@@ -37,11 +37,13 @@ const StudentManageTable = () => {
       student.course.toLowerCase().includes(searchInput.toLowerCase());
 
     const matchesCourse =
-      !filterCourse || student.course.toLowerCase() === filterCourse.toLowerCase();
+      !filterCourse ||
+      student.course.toLowerCase() === filterCourse.toLowerCase();
     const matchesYear =
       !filterYear || student.year.toLowerCase() === filterYear.toLowerCase();
     const matchesStatus =
-      !filterStatus || student.status.toLowerCase() === filterStatus.toLowerCase();
+      !filterStatus ||
+      student.status.toLowerCase() === filterStatus.toLowerCase();
 
     return matchesSearch && matchesCourse && matchesYear && matchesStatus;
   });
@@ -56,7 +58,9 @@ const StudentManageTable = () => {
   const openModal = (type, student = null) => {
     setModalType(type);
     setSelectedStudent(student);
-    setNewStudent(student || { id: "", name: "", course: "", year: "", status: "" });
+    setNewStudent(
+      student || { id: "", name: "", course: "", year: "", status: "" }
+    );
   };
 
   const closeModal = () => {
@@ -69,7 +73,7 @@ const StudentManageTable = () => {
     e.preventDefault();
     console.log("Adding student:", newStudent); // Log the new student data
     axios
-      .post("http://localhost:3000/students-add", newStudent)
+      .post("https://esg-3.vercel.app/students-add", newStudent)
       .then((response) => {
         console.log("Add response:", response.data); // Log the response from the server
         setStudents([...students, newStudent]);
@@ -79,11 +83,14 @@ const StudentManageTable = () => {
         console.error("There was an error adding the student!", error);
       });
   };
-  
+
   const handleEdit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:3000/students-update/${selectedStudent.id}`, newStudent)
+      .put(
+        `https://esg-3.vercel.app/students-update/${selectedStudent.id}`,
+        newStudent
+      )
       .then((response) => {
         setStudents(
           students.map((student) =>
@@ -96,11 +103,11 @@ const StudentManageTable = () => {
         console.error("There was an error updating the student!", error);
       });
   };
-  
+
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this student?")) {
       axios
-        .delete(`http://localhost:3000/students-delete/${id}`)
+        .delete(`https://esg-3.vercel.app/students-delete/${id}`)
         .then((response) => {
           setStudents(students.filter((student) => student.id !== id));
         })

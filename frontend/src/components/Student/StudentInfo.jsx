@@ -47,7 +47,7 @@ const StudentInfo = () => {
         localStorage.getItem("loggedInStudent")
       );
       const response = await axios.get(
-        `http://localhost:3000/api/student-info-data?email=${loggedInStudent.email}`
+        `https://esg-3.vercel.app/api/student-info-data?email=${loggedInStudent.email}`
       );
 
       // Log response data to check if 'status' is included
@@ -84,7 +84,7 @@ const StudentInfo = () => {
     setIsFetching(true);
     try {
       const response = await axios.put(
-        "http://localhost:3000/api/update-student-info",
+        "https://esg-3.vercel.app/api/update-student-info",
         formData
       );
 

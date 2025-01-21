@@ -27,7 +27,7 @@ function Login() {
   const handleLogin = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:3000/api/login", { email, password })
+      .post("https://esg-3.vercel.app/api/login", { email, password })
       .then((response) => {
         if (response.data.message === "Admin login successful") {
           alert(response.data.message);
@@ -55,7 +55,7 @@ function Login() {
   const handleRegister = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:3000/api/register", {
+      .post("https://esg-3.vercel.app/api/register", {
         firstName,
         middleName,
         lastName,
@@ -90,7 +90,7 @@ function Login() {
     }
 
     axios
-      .post("http://localhost:3000/api/forgot-password", { email })
+      .post("https://esg-3.vercel.app/api/forgot-password", { email })
       .then((response) => {
         alert(response.data.message);
       })

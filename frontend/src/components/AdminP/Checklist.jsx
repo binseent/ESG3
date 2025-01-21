@@ -27,7 +27,7 @@ const Checklist = () => {
 
     const fetchData = async () => {
       try {
-        const url = `http://localhost:3000/api/course_checklist${
+        const url = `https://esg-3.vercel.app/api/course_checklist${
           debouncedSearch ? `?search=${debouncedSearch}` : ""
         }`;
         const response = await axios.get(url);
@@ -68,7 +68,7 @@ const Checklist = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/course_checklist/${editCourseCode}`,
+        `https://esg-3.vercel.app/api/course_checklist/${editCourseCode}`,
         { final_grade: editGrade }
       );
       console.log("Grade updated successfully:", response.data);
@@ -95,7 +95,7 @@ const Checklist = () => {
   const handleDeleteGrade = async (courseCode) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/course_checklist/${courseCode}`
+        `https://esg-3.vercel.app/api/course_checklist/${courseCode}`
       );
       console.log("Grade deleted successfully:", response.data);
 

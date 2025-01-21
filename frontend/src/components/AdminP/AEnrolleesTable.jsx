@@ -24,7 +24,7 @@ const AEnrolleesTable = () => {
   // Function to fetch enrollees data
   const fetchEnrolleesTable = () => {
     axios
-      .get("http://localhost:3000/api/enrollees-table")
+      .get("https://esg-3.vercel.app/api/enrollees-table")
       .then((response) => {
         console.log("Fetched enrollees:", response.data); // Log the fetched data
         setEnrollees(response.data);
