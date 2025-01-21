@@ -4,132 +4,101 @@ import "./AEnrolleesTable.css";
 import { v4 as uuidv4 } from "uuid"; // Import uuid library
 
 const AEnrolleesTable = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCourse, setSelectedCourse] = useState("");
   const [enrollees, setEnrollees] = useState([]);
-
-  const [modalType, setModalType] = useState("");
   const [selectedEnrollee, setSelectedEnrollee] = useState(null);
-  const [newEnrollee, setNewEnrollee] = useState({
-    id: "",
-    name: "",
-    sex: "",
-    age: "",
-    address: "",
-    contact: "",
-    status: "",
-    course: "",
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  // Function to fetch enrollees data
-  const fetchEnrolleesTable = () => {
-    axios
-      .get("http://localhost:3000/api/enrollees-table")
-      .then((response) => {
-        console.log("Fetched enrollees:", response.data); // Log the fetched data
-        setEnrollees(response.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching enrollees:", error);
-      });
-  };
-
-  // Fetch enrollees data when the component mounts
+  // Fetch enrollees
   useEffect(() => {
-    fetchEnrolleesTable();
+    const fetchEnrollees = async () => {
+      try {
+        const response = await axios.get("/enrollees-table");
+        setEnrollees(response.data);
+      } catch (error) {
+        console.error("Error fetching enrollees:", error);
+      }
+    };
+    fetchEnrollees();
   }, []);
 
-  // Filter enrollees based on the search query and selected course
-  const filteredEnrollees = enrollees.filter(
-    (enrollee) =>
-      enrollee.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (selectedCourse ? enrollee.program === selectedCourse : true) // Filter by course if selected
-  );
-
-  const resetFilters = () => {
-    setSearchQuery("");
-    setSelectedCourse("");
+  // View action button
+  const handleView = async (id) => {
+    try {
+      const response = await axios.get(`/enrollees/${id}`);
+      setSelectedEnrollee(response.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching enrollee details:", error);
+    }
   };
 
-  // Open modal
-  const openModal = (type, enrollee = null) => {
-    setModalType(type);
-    setSelectedEnrollee(enrollee);
-    setNewEnrollee(
-      enrollee || {
-        id: "",
-        name: "",
-        sex: "",
-        age: "",
-        address: "",
-        contact: "",
-        status: "",
-        course: "",
+  // Edit action button
+  const handleEdit = async (id) => {
+    try {
+      const response = await axios.get(`/enrollees/${id}`);
+      setSelectedEnrollee(response.data);
+      setIsEditModalOpen(true);
+    } catch (error) {
+      console.error("Error fetching enrollee for editing:", error);
+    }
+  };
+
+  // Update enrollee status (approve/reject)
+  const handleStatusUpdate = async (id, status) => {
+    try {
+      await axios.patch(`/enrollee/status/${id}`, { status });
+      Swal.fire({
+        icon: "success",
+        title: "Status Updated",
+        text: `Enrollee status updated to ${status}`,
+      });
+      // Re-fetch the enrollees after updating the status
+      const response = await axios.get("/enrollees-table");
+      setEnrollees(response.data);
+    } catch (error) {
+      console.error("Error updating enrollee status:", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Failed to update enrollee status.",
+      });
+    }
+  };
+
+  // Handle delete action
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This action will permanently delete the enrollee.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await axios.delete(`/enrollee/${id}`);
+          Swal.fire("Deleted!", "Enrollee has been deleted.", "success");
+          setEnrollees(enrollees.filter((enrollee) => enrollee.id !== id));
+        } catch (error) {
+          console.error("Error deleting enrollee:", error);
+          Swal.fire("Error!", "Failed to delete enrollee.", "error");
+        }
       }
-    );
-  };
-
-  // Close modal
-  const closeModal = () => {
-    setModalType("");
-    setSelectedEnrollee(null);
-    setNewEnrollee({
-      id: "",
-      name: "",
-      sex: "",
-      age: "",
-      address: "",
-      contact: "",
-      status: "",
-      course: "",
     });
   };
 
-  // Add new enrollee
-  const handleAdd = () => {
-    const enrolleeWithId = { ...newEnrollee, id: uuidv4() }; // Assign a unique id
-    setEnrollees([...enrollees, enrolleeWithId]);
-    closeModal();
+  // Modal close actions
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedEnrollee(null);
   };
 
-  // Edit enrollee
-  const handleEdit = () => {
-    setEnrollees(
-      enrollees.map((enrollee) =>
-        enrollee.id === selectedEnrollee.id ? newEnrollee : enrollee
-      )
-    );
-    closeModal();
-  };
-
-  // Handle document action
-  const handleDocuments = (id) => {
-    // Implement the logic to handle documents action
-    console.log(`Documents for enrollee ID: ${id}`);
-  };
-
-  // Handle approve action
-  const handleApprove = (id) => {
-    console.log("Approving enrollee with id:", id); // Debug log
-    setEnrollees(
-      enrollees.map((enrollee) =>
-        enrollee.id === id
-          ? { ...enrollee, enrollment_status: "Approved" }
-          : enrollee
-      )
-    );
-  };
-
-  // Handle reject action
-  const handleReject = (id) => {
-    console.log("Rejecting enrollee with id:", id); // Debug log
-    setEnrollees(
-      enrollees.map((enrollee) =>
-        enrollee.id === id
-          ? { ...enrollee, enrollment_status: "Rejected" }
-          : enrollee
-      )
-    );
+  const closeEditModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedEnrollee(null);
   };
 
   return (
@@ -185,13 +154,12 @@ const AEnrolleesTable = () => {
           </thead>
           <tbody>
             {filteredEnrollees.length > 0 ? (
-              filteredEnrollees.map((enrollee, index) => (
-                <tr key={enrollee.id || index}>
+              filteredEnrollees.map((enrollee) => (
+                <tr key={enrollee.id}>
                   <td>{enrollee.enrollment_id}</td>
                   <td>{enrollee.student_id}</td>
                   <td>{enrollee.full_name}</td>
-                  <td>{enrollee.contactNumber}</td>
-                  <td>{enrollee.course}</td>
+                  <td>{enrollee.contact_number}</td>
                   <td>{enrollee.email}</td>
                   <td>{enrollee.enrollment_status}</td>
                   <td>
@@ -230,7 +198,7 @@ const AEnrolleesTable = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center" }}>
+                <td colSpan="7" style={{ textAlign: "center" }}>
                   No enrollees found.
                 </td>
               </tr>
@@ -274,7 +242,7 @@ const AEnrolleesTable = () => {
                   <strong>Status:</strong> {selectedEnrollee?.status}
                 </p>
                 <p>
-                  <strong>Course:</strong> {selectedEnrollee?.course}
+                  <strong>Course:</strong> {selectedEnrollee?.program}
                 </p>
                 <p>
                   <strong>Enrollment Date:</strong>{" "}
