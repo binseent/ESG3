@@ -14,7 +14,7 @@ router.get("/student-info-data", (req, res) => {
   }
 
   const query = `
-    SELECT student_id, firstName, middleName, lastName, email, course, birthday, address, contactNumber 
+    SELECT student_id, firstName, middleName, lastName, email, course, birthday, address, contactNumber, status 
     FROM students WHERE email = ?
   `;
 
@@ -23,16 +23,19 @@ router.get("/student-info-data", (req, res) => {
       console.error("Database error:", err);
       return res.status(500).send({ message: "Database error" });
     }
-
+  
     if (result.length === 0) {
       return res.status(404).send({ message: "User not found" });
     }
-
-    // Only send one response
+  
+    // Log the full result and the specific 'status' field
     const studentData = result[0];
-    console.log("Returning data for user:", studentData);
+    console.log("Full student data:", studentData);
+    console.log("Status field:", studentData.status || "Not defined");
+  
     return res.status(200).send(studentData);
   });
+  
 });
 
 // Route to update student information

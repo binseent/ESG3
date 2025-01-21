@@ -69,8 +69,8 @@
 }
 .enrollees-table td button {
   margin: 5px; /* Adds spacing between buttons */
-  padding: 10px 15px;
-  font-size: 16px;
+  padding: 10px 10px;
+  font-size: 12px;
   border-radius: 8px;
   cursor: pointer;
   background-color: #3b82f6;
@@ -97,11 +97,11 @@
 .enrollees-table td {
   border: 1px solid #d1d5db;
   padding: 12px;
-  text-align: left;
+  text-align: center;
 }
 
 .enrollees-table td {
-  padding: 15px;
+  padding: 10px;
 }
 
 .enrollees-table tbody tr:hover {

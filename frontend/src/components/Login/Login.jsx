@@ -23,18 +23,28 @@ function Login() {
 
   const navigate = useNavigate();
 
+  // Handle login for both Admin and Student
   const handleLogin = (event) => {
     event.preventDefault();
     axios
       .post("http://localhost:3000/api/login", { email, password })
       .then((response) => {
-        alert(response.data.message);
-        if (response.status === 200) {
+        if (response.data.message === "Admin login successful") {
+          alert(response.data.message);
+          localStorage.setItem(
+            "loggedInAdmin",
+            JSON.stringify(response.data.admin)
+          );
+          navigate("/admin");
+        } else if (response.data.message === "Login successful") {
+          alert(response.data.message);
           localStorage.setItem(
             "loggedInStudent",
             JSON.stringify(response.data.student)
           );
           navigate("/student");
+        } else {
+          alert("Login failed");
         }
       })
       .catch((error) => {

@@ -9,32 +9,33 @@ router.get("/course_checklist", (req, res) => {
 
   let query = `
       SELECT 
-          course_checklist.course_code,
-          course_checklist.course_title,
-          course_checklist.credit_lecture_hrs,
-          course_checklist.credit_lab_hrs,
-          course_checklist.contact_lecture_hrs,
-          course_checklist.contact_lab_hrs,
-          course_checklist.pre_requisite,
-          course_checklist.semester_taken,
-          final_grade.student_id,
-          final_grade.final_grade
-      FROM course_checklist
-      LEFT JOIN final_grade ON final_grade.course_code = course_checklist.course_code
-  `;
+    course_checklist.course_code,
+    course_checklist.course_title,
+    course_checklist.credit_lecture_hrs,
+    course_checklist.credit_lab_hrs,
+    course_checklist.contact_lecture_hrs,
+    course_checklist.contact_lab_hrs,
+    course_checklist.pre_requisite,
+    course_checklist.semester_taken,
+    final_grade.student_id,
+    final_grade.final_grade,
+    students.firstName,
+    students.middleName,
+    students.lastName
+FROM course_checklist
+LEFT JOIN final_grade ON final_grade.course_code = course_checklist.course_code
+LEFT JOIN students ON students.student_id = final_grade.student_id`;
 
   // Add search condition if the search parameter is provided
   if (search) {
     query += `
         WHERE 
-            final_grade.student_id LIKE ? OR
-            final_grade.student_id IN (
-                SELECT student_id
-                FROM students
-                WHERE 
-                    firstName LIKE ? OR 
-                    MiddleName LIKE ? OR 
-                    lastName LIKE ?
+    final_grade.student_id LIKE ? OR
+    students.student_id LIKE ? OR 
+    students.firstName LIKE ? OR
+    students.middleName LIKE ? OR
+    students.lastName LIKE ?
+
             )
     `;
   }

@@ -1,5 +1,5 @@
 //StudentManageTable.jsx
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./StudentManageTable.css";
 
@@ -22,7 +22,7 @@ const StudentManageTable = () => {
   useEffect(() => {
     axios
       .get("http://localhost:3000/students")
-      .then((response) => {
+      .then(() => {
         setStudents(response.data);
       })
       .catch((error) => {
@@ -67,9 +67,11 @@ const StudentManageTable = () => {
 
   const handleAdd = (e) => {
     e.preventDefault();
+    console.log("Adding student:", newStudent); // Log the new student data
     axios
       .post("http://localhost:3000/students-add", newStudent)
       .then((response) => {
+        console.log("Add response:", response.data); // Log the response from the server
         setStudents([...students, newStudent]);
         closeModal();
       })
