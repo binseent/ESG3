@@ -100,11 +100,7 @@ const EnrollmentForm = () => {
   return (
     <div className="enrollment-form">
       <h1>Enrollment Form</h1>
-      <p>
-        Please select your student type and fill out the required fields
-        carefully.
-      </p>
-
+     
             <p>
         Student Status: 
         <span value={selectedType}>

@@ -23,14 +23,17 @@ const AEnrolleesTable = () => {
 
   // Function to fetch enrollees data
   const fetchEnrolleesTable = () => {
-    axios.get('http://localhost:3000/api/enrollees-table')
-      .then(response => {
+    axios
+      .get("http://localhost:3000/api/enrollees-table")
+      .then((response) => {
+        console.log("Fetched enrollees:", response.data); // Log the fetched data
         setEnrollees(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching enrollees:', error);
+      .catch((error) => {
+        console.error("Error fetching enrollees:", error);
       });
   };
+
   // Fetch enrollees data when the component mounts
   useEffect(() => {
     fetchEnrolleesTable();
@@ -99,7 +102,6 @@ const AEnrolleesTable = () => {
     closeModal();
   };
 
-
   // Handle document action
   const handleDocuments = (id) => {
     // Implement the logic to handle documents action
@@ -107,24 +109,28 @@ const AEnrolleesTable = () => {
   };
 
   // Handle approve action
-const handleApprove = (id) => {
-  console.log("Approving enrollee with id:", id); // Debug log
-  setEnrollees(
-    enrollees.map((enrollee) =>
-      enrollee.id === id ? { ...enrollee, enrollment_status: "Approved" } : enrollee
-    )
-  );
-};
+  const handleApprove = (id) => {
+    console.log("Approving enrollee with id:", id); // Debug log
+    setEnrollees(
+      enrollees.map((enrollee) =>
+        enrollee.id === id
+          ? { ...enrollee, enrollment_status: "Approved" }
+          : enrollee
+      )
+    );
+  };
 
-// Handle reject action
-const handleReject = (id) => {
-  console.log("Rejecting enrollee with id:", id); // Debug log
-  setEnrollees(
-    enrollees.map((enrollee) =>
-      enrollee.id === id ? { ...enrollee, enrollment_status: "Rejected" } : enrollee
-    )
-  );
-};
+  // Handle reject action
+  const handleReject = (id) => {
+    console.log("Rejecting enrollee with id:", id); // Debug log
+    setEnrollees(
+      enrollees.map((enrollee) =>
+        enrollee.id === id
+          ? { ...enrollee, enrollment_status: "Rejected" }
+          : enrollee
+      )
+    );
+  };
 
   return (
     <div className="enrollees-container">
@@ -180,12 +186,13 @@ const handleReject = (id) => {
           </thead>
           <tbody>
             {filteredEnrollees.length > 0 ? (
-              filteredEnrollees.map((enrollee) => (
-                <tr key={enrollee.id}>
+              filteredEnrollees.map((enrollee, index) => (
+                <tr key={enrollee.id || index}>
                   <td>{enrollee.enrollment_id}</td>
                   <td>{enrollee.student_id}</td>
                   <td>{enrollee.full_name}</td>
                   <td>{enrollee.contactNumber}</td>
+                  <td>{enrollee.course}</td>
                   <td>{enrollee.email}</td>
                   <td>{enrollee.enrollment_status}</td>
                   <td>
@@ -224,7 +231,7 @@ const handleReject = (id) => {
               ))
             ) : (
               <tr>
-                <td colSpan="7" style={{ textAlign: "center" }}>
+                <td colSpan="8" style={{ textAlign: "center" }}>
                   No enrollees found.
                 </td>
               </tr>
@@ -268,7 +275,7 @@ const handleReject = (id) => {
                   <strong>Status:</strong> {selectedEnrollee?.status}
                 </p>
                 <p>
-                  <strong>Course:</strong> {selectedEnrollee?.program}
+                  <strong>Course:</strong> {selectedEnrollee?.course}
                 </p>
                 <p>
                   <strong>Enrollment Date:</strong>{" "}
