@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "./AEnrolleesTable.css";
+import { v4 as uuidv4 } from "uuid"; // Import uuid library
 
 const AEnrolleesTable = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCourse, setSelectedCourse] = useState("");
   const [enrollees, setEnrollees] = useState([]);
-  
+
   const [modalType, setModalType] = useState("");
   const [selectedEnrollee, setSelectedEnrollee] = useState(null);
   const [newEnrollee, setNewEnrollee] = useState({
@@ -24,7 +25,11 @@ const AEnrolleesTable = () => {
   const fetchEnrolleesTable = () => {
     axios.get('http://localhost:3000/api/enrollees-table')
       .then(response => {
-        setEnrollees(response.data);
+        const enrolleesWithIds = response.data.map(enrollee => ({
+          ...enrollee,
+          id: enrollee.id || uuidv4() // Ensure each enrollee has a unique id
+        }));
+        setEnrollees(enrolleesWithIds);
       })
       .catch(error => {
         console.error('Error fetching enrollees:', error);
@@ -37,9 +42,10 @@ const AEnrolleesTable = () => {
   }, []);
 
   // Filter enrollees based on the search query and selected course
-  const filteredEnrollees = enrollees.filter(enrollee =>
-    enrollee.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
-    (selectedCourse ? enrollee.program === selectedCourse : true) // Filter by course if selected
+  const filteredEnrollees = enrollees.filter(
+    (enrollee) =>
+      enrollee.full_name?.toLowerCase().includes(searchQuery.toLowerCase()) &&
+      (selectedCourse ? enrollee.program === selectedCourse : true) // Filter by course if selected
   );
 
   const resetFilters = () => {
@@ -83,7 +89,8 @@ const AEnrolleesTable = () => {
 
   // Add new enrollee
   const handleAdd = () => {
-    setEnrollees([...enrollees, newEnrollee]);
+    const enrolleeWithId = { ...newEnrollee, id: uuidv4() }; // Assign a unique id
+    setEnrollees([...enrollees, enrolleeWithId]);
     closeModal();
   };
 
@@ -97,12 +104,32 @@ const AEnrolleesTable = () => {
     closeModal();
   };
 
-  // Delete enrollee
-  const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this enrollee?")) {
-      setEnrollees(enrollees.filter((enrollee) => enrollee.id !== id));
-    }
+
+  // Handle document action
+  const handleDocuments = (id) => {
+    // Implement the logic to handle documents action
+    console.log(`Documents for enrollee ID: ${id}`);
   };
+
+  // Handle approve action
+const handleApprove = (id) => {
+  console.log("Approving enrollee with id:", id); // Debug log
+  setEnrollees(
+    enrollees.map((enrollee) =>
+      enrollee.id === id ? { ...enrollee, enrollment_status: "Approved" } : enrollee
+    )
+  );
+};
+
+// Handle reject action
+const handleReject = (id) => {
+  console.log("Rejecting enrollee with id:", id); // Debug log
+  setEnrollees(
+    enrollees.map((enrollee) =>
+      enrollee.id === id ? { ...enrollee, enrollment_status: "Rejected" } : enrollee
+    )
+  );
+};
 
   return (
     <div className="enrollees-container">
@@ -148,19 +175,11 @@ const AEnrolleesTable = () => {
             <tr>
               <th>Enrollment ID</th>
               <th>Student ID</th>
-              <th>Course Code</th>
-              <th>Enrollment Date</th>
               <th>Full Name</th>
-              <th>Date of Birth</th>
               <th>Contact No.</th>
               <th>Email</th>
-              <th>Address</th>
-              <th>Previous School</th>
-              <th>Previous Program</th>
-              <th>Academic Year</th>
-              <th>Current Program</th>
+              <th>Enrollment Status</th>
               <th>Actions</th>
-
             </tr>
           </thead>
           <tbody>
@@ -168,35 +187,48 @@ const AEnrolleesTable = () => {
               filteredEnrollees.map((enrollee) => (
                 <tr key={enrollee.id}>
                   <td>{enrollee.enrollment_id}</td>
-                <td>{enrollee.student_id}</td>
-                <td>{enrollee.course_code}</td>
-                <td>{enrollee.enrollment_date}</td>
-                <td>{enrollee.full_name}</td>
-                <td>{enrollee.dob}</td>
-                <td>{enrollee.contact_number}</td>
-                <td>{enrollee.email}</td>
-                <td>{enrollee.address}</td>
-                <td>{enrollee.prev_school_name}</td>
-                <td>{enrollee.prev_program}</td>
-                <td>{enrollee.academic_year}</td>
-                <td>{enrollee.program}</td>
-
+                  <td>{enrollee.student_id}</td>
+                  <td>{enrollee.full_name}</td>
+                  <td>{enrollee.contact_number}</td>
+                  <td>{enrollee.email}</td>
+                  <td>{enrollee.enrollment_status}</td>
                   <td>
-                    <button onClick={() => openModal("view", enrollee)}>
+                    <button
+                      className="small-button"
+                      onClick={() => openModal("view", enrollee)}
+                    >
                       View
                     </button>
-                    <button onClick={() => openModal("edit", enrollee)}>
+                    <button
+                      className="small-button"
+                      onClick={() => openModal("edit", enrollee)}
+                    >
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(enrollee.id)}>
-                      Delete
+                    <button
+                      className="small-button"
+                      onClick={() => handleDocuments(enrollee.id)}
+                    >
+                      Documents
+                    </button>
+                    <button
+                      className="small-button"
+                      onClick={() => handleApprove(enrollee.id)}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      className="small-button"
+                      onClick={() => handleReject(enrollee.id)}
+                    >
+                      Reject
                     </button>
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="9" style={{ textAlign: "center" }}>
+                <td colSpan="7" style={{ textAlign: "center" }}>
                   No enrollees found.
                 </td>
               </tr>
@@ -241,6 +273,28 @@ const AEnrolleesTable = () => {
                 </p>
                 <p>
                   <strong>Course:</strong> {selectedEnrollee?.program}
+                </p>
+                <p>
+                  <strong>Enrollment Date:</strong>{" "}
+                  {selectedEnrollee?.enrollment_date}
+                </p>
+                <p>
+                  <strong>Date of Birth:</strong> {selectedEnrollee?.dob}
+                </p>
+                <p>
+                  <strong>Previous School:</strong>{" "}
+                  {selectedEnrollee?.prev_school_name}
+                </p>
+                <p>
+                  <strong>Previous Program:</strong>{" "}
+                  {selectedEnrollee?.prev_program}
+                </p>
+                <p>
+                  <strong>Academic Year:</strong>{" "}
+                  {selectedEnrollee?.academic_year}
+                </p>
+                <p>
+                  <strong>Current Program:</strong> {selectedEnrollee?.program}
                 </p>
               </div>
             ) : (
@@ -301,12 +355,17 @@ const AEnrolleesTable = () => {
                     setNewEnrollee({ ...newEnrollee, course: e.target.value })
                   }
                 />
-                <button onClick={modalType === "edit" ? handleEdit : handleAdd}>
+                <button
+                  className="small-button"
+                  onClick={modalType === "edit" ? handleEdit : handleAdd}
+                >
                   {modalType === "edit" ? "Save Changes" : "Add Enrollee"}
                 </button>
               </>
             )}
-            <button onClick={closeModal}>Close</button>
+            <button className="small-button" onClick={closeModal}>
+              Close
+            </button>
           </div>
         </div>
       )}
