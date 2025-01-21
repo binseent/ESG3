@@ -12,6 +12,17 @@ router.post('/login', async (req, res) => {
     return res.status(400).send({ message: 'Email and password are required' });
   }
 
+  // Admin login check
+  if (email === 'admin@example.com' && password === 'admin') {
+    return res.status(200).send({
+      message: 'Admin login successful',
+      admin: {
+        email: 'admin@example.com',
+      },
+    });
+  }
+
+  // Student login check
   const query = 'SELECT * FROM students WHERE email = ?';
   db.query(query, [email], async (err, result) => {
     if (err) {
