@@ -44,3 +44,8 @@ app.use('/api', enrollmentProcess);
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+app.get("/", (_, res) => {
+	res.json("good mourning.");
+});
+
