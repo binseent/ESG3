@@ -1,5 +1,5 @@
 //EnrollmentForm.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Check from "../../assets/confirm-icon.png";
 
@@ -31,14 +31,32 @@ const EnrollmentForm = () => {
     }));
   };
 
+  const fetchStudentData = async () => {
+    try {
+      const loggedInStudent = JSON.parse(localStorage.getItem("loggedInStudent"));
+      const response = await axios.post('http://localhost:3000/api/enroll-form', {
+        email: loggedInStudent.email,
+      });
+      setFormData((prevData) => ({
+        ...prevData,
+        ...response.data, 
+      }));
+    } catch (error) {
+      console.error("Error fetching student data:", error);
+      alert("Failed to load student information. Please try again.");
+    }
+  };
+
+  useEffect(() => {
+    fetchStudentData(); // Fetch data on component mount
+  }, []);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:3000/api/enroll', {
         ...formData,
       });
-
       // If enrollment is successful, show the popup
       if (response.status === 200) {
         setShowPopup(true);
@@ -48,6 +66,8 @@ const EnrollmentForm = () => {
       alert("Failed to submit enrollment form. Please try again.");
     }
   };
+
+  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

@@ -1,9 +1,10 @@
-//EnrollmentProcess.jsx
+//EnrollmentProcess.js
 import express from 'express';
 import db from './Database.js'; 
 
 const router = express.Router();
 
+//enrollment process
 router.post('/enroll', async (req, res) => {
   const {
     fullName,
@@ -48,14 +49,17 @@ router.post('/enroll', async (req, res) => {
   }
 });
 
-router.get('/enrollees', async (req, res) => {
-  try {
-    const [rows] = await db.promise().query('SELECT * FROM enrollments');
-    res.status(200).json(rows);
-  } catch (error) {
-    console.error('Error fetching enrollees:', error);
-    res.status(500).json({ message: 'Failed to fetch enrollees' });
+//show enrollment form depending on student status
+router.post('/enroll-form', async (req, res) => {
+  const { email } = req.body; 
+  console.log("Email received at EnrollmentProcess.js:", email);
+
+  if (!email) {
+    return res.status(400).send({ message: "Email is required" });
   }
+
 });
+
+
 
 export default router;
