@@ -10,10 +10,9 @@ router.get("/enrollees-table", (req, res) => {
   db.query(sql, (err, results) => {
     if (err) {
       console.error("Error fetching enrollees:", err);
-      res.status(500).send("Error fetching enrollees.");
-      return;
+      return res.status(500).send("Error fetching enrollees.");
     }
-    res.json(results);
+    return res.json(results);
   });
 });
 

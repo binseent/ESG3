@@ -25,17 +25,12 @@ const AEnrolleesTable = () => {
   const fetchEnrolleesTable = () => {
     axios.get('http://localhost:3000/api/enrollees-table')
       .then(response => {
-        const enrolleesWithIds = response.data.map(enrollee => ({
-          ...enrollee,
-          id: enrollee.id || uuidv4() // Ensure each enrollee has a unique id
-        }));
-        setEnrollees(enrolleesWithIds);
+        setEnrollees(response.data);
       })
       .catch(error => {
         console.error('Error fetching enrollees:', error);
       });
   };
-
   // Fetch enrollees data when the component mounts
   useEffect(() => {
     fetchEnrolleesTable();
@@ -177,6 +172,7 @@ const handleReject = (id) => {
               <th>Student ID</th>
               <th>Full Name</th>
               <th>Contact No.</th>
+              <th>Course</th>
               <th>Email</th>
               <th>Enrollment Status</th>
               <th>Actions</th>
@@ -189,7 +185,7 @@ const handleReject = (id) => {
                   <td>{enrollee.enrollment_id}</td>
                   <td>{enrollee.student_id}</td>
                   <td>{enrollee.full_name}</td>
-                  <td>{enrollee.contact_number}</td>
+                  <td>{enrollee.contactNumber}</td>
                   <td>{enrollee.email}</td>
                   <td>{enrollee.enrollment_status}</td>
                   <td>
