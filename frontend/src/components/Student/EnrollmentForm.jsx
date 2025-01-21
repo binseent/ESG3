@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Check from "../../assets/confirm-icon.png";
 
+
 const EnrollmentForm = () => {
   const [selectedType, setSelectedType] = useState("new student");
   const [showPopup, setShowPopup] = useState(false);

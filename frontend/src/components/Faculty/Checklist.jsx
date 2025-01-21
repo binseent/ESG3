@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Checklist = () => {
+  const navigate = useNavigate(); // Initialize useNavigate
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,12 +13,14 @@ const Checklist = () => {
   const [editGrade, setEditGrade] = useState("");
   const [editCourseCode, setEditCourseCode] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
+  const [studentId, setStudentId] = useState("");
 
   useEffect(() => {
     const debounce = setTimeout(() => setDebouncedSearch(search), 600);
     return () => clearTimeout(debounce);
   }, [search]);
 
+  // Fetch data based on debounced search term
   useEffect(() => {
     setLoading(true);
 
@@ -28,14 +32,17 @@ const Checklist = () => {
             params: { search: debouncedSearch },
           }
         );
-        setCourses(response.data);
-        setError(null);
+        console.log("API response:", response.data); // Debugging line to inspect the response
 
         if (response.data.length > 0) {
-          setStudentCourse(response.data[0].student_course || "");
+          setCourses(response.data);
+          setStudentCourse(response.data[0]?.student_course || "");
+          setStudentId(response.data[0]?.student_id);
         } else {
-          setStudentCourse("");
+          setCourses([]);
+          setError("No courses found for the given search.");
         }
+        setError(null);
       } catch (err) {
         console.error("Error fetching course checklist:", err);
         setError("Failed to fetch data. Please try again later.");
@@ -47,60 +54,38 @@ const Checklist = () => {
     fetchData();
   }, [debouncedSearch]);
 
+  // Handle editing grade for a course
   const handleEditGrade = (courseCode) => {
-    const course = courses.find((c) => c.course_code === courseCode);
-    setEditGrade(course.final_grade || "");
-    setEditCourseCode(courseCode);
+    const course = courses.find((course) => course.course_code === courseCode);
+    setEditCourseCode(course.course_code);
+    setEditGrade(course.final_grade);
     setShowEditModal(true);
   };
 
+  // Save the edited grade
   const saveGrade = async () => {
-    if (!editGrade.trim()) {
-      setError("Grade cannot be empty.");
-      return;
-    }
-
     try {
       await axios.put(
         `http://localhost:3000/api/course_checklist/${editCourseCode}`,
-        {
-          final_grade: editGrade,
-        }
-      );
-
-      setCourses((prev) =>
-        prev.map((course) =>
-          course.course_code === editCourseCode
-            ? { ...course, final_grade: editGrade }
-            : course
-        )
+        { student_id: studentId, final_grade: editGrade } // Make sure `studentId` is set
       );
       setShowEditModal(false);
-      setEditGrade("");
-      setEditCourseCode("");
-      setError(null);
-    } catch (err) {
-      console.error("Error updating grade:", err.response?.data || err);
-      setError("Failed to update grade. Please try again.");
+      // Optionally, you may want to refresh the courses list to reflect the updated grade
+    } catch (error) {
+      console.error("Error saving grade:", error);
     }
   };
 
+  // Handle deleting grade for a course
   const handleDeleteGrade = async (courseCode) => {
     try {
       await axios.delete(
-        `http://localhost:3000/api/course_checklist/${courseCode}`
+        `http://localhost:3000/api/course_checklist/${courseCode}`,
+        { data: { student_id: studentId } } // Send the student_id as part of the request body
       );
-      setCourses((prev) =>
-        prev.map((course) =>
-          course.course_code === courseCode
-            ? { ...course, final_grade: "N/A" }
-            : course
-        )
-      );
-      setError(null);
-    } catch (err) {
-      console.error("Error deleting grade:", err);
-      setError("Failed to delete grade. Please try again later.");
+      // Optionally, refresh the course list after deletion
+    } catch (error) {
+      console.error("Error deleting grade:", error);
     }
   };
 
@@ -143,8 +128,8 @@ const Checklist = () => {
             </tr>
           </thead>
           <tbody>
-            {courses.map((course) => (
-              <tr key={course.course_code}>
+            {courses.map((course, index) => (
+              <tr key={`${course.course_code}-${index}`}>
                 <td>{course.course_code}</td>
                 <td>{course.course_title}</td>
                 <td>{course.credit_lecture_hrs}</td>
@@ -167,6 +152,7 @@ const Checklist = () => {
           </tbody>
         </table>
       )}
+
       {showEditModal && (
         <div className="modal">
           <div className="modal-content">

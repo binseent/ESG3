@@ -23,7 +23,8 @@ router.get("/course_checklist", (req, res) => {
       final_grade.final_grade,
       students.firstName,
       students.middleName,
-      students.lastName
+      students.lastName,
+      students.course AS student_course
     FROM course_checklist
     LEFT JOIN final_grade ON final_grade.course_code = course_checklist.course_code
     LEFT JOIN students ON students.student_id = final_grade.student_id
@@ -51,21 +52,28 @@ router.get("/course_checklist", (req, res) => {
   });
 });
 
+
 // PUT endpoint to update the final grade
 router.put("/course_checklist/:course_code", (req, res) => {
-  const { course_code } = req.params; // Extract course_code from URL
-  const { final_grade } = req.body; // Extract final_grade from the request body
+  const { course_code } = req.params; // Extract course_code from the URL
+  const { student_id, final_grade } = req.body; // Extract student_id and final_grade from the request body
 
-  if (!course_code || final_grade === undefined) {
-    return res
-      .status(400)
-      .send({ message: "Course code and final grade are required" });
+  // Validate required fields
+  if (!course_code || !student_id || final_grade === undefined) {
+    return res.status(400).send({
+      message: "Course code, student ID, and final grade are required",
+    });
   }
 
-  console.log("Updating grade for:", course_code, "with grade:", final_grade);
+  console.log("Updating grade for course:", course_code, "for student:", student_id, "with grade:", final_grade);
 
-  const query = "UPDATE course_checklist SET final_grade = ? WHERE course_code = ?";
-  const params = [final_grade, course_code];
+  // Query to update the final grade in the `final_grade` table
+  const query = `
+    UPDATE final_grade
+    SET final_grade = ?
+    WHERE course_code = ? AND student_id = ?;
+  `;
+  const params = [final_grade, course_code, student_id];
 
   db.query(query, params, (err, result) => {
     if (err) {
@@ -73,39 +81,52 @@ router.put("/course_checklist/:course_code", (req, res) => {
       return res.status(500).json({ error: "Failed to update final grade" });
     }
 
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .send({ message: "Student or course not found in the final_grade table" });
+    }
+
     res.send({ message: "Final grade updated successfully" });
   });
 });
 
-
-
 // DELETE endpoint to delete the final grade for a course
 router.delete("/course_checklist/:course_code", (req, res) => {
-  const { course_code } = req.params; // Extract course_code from URL
+  const { course_code } = req.params; // Extract course_code from the URL
+  const { student_id } = req.body; // Extract student_id from the request body
 
-  if (!course_code) {
-    return res.status(400).send({ message: "Course code is required" });
+  // Validate required fields
+  if (!course_code || !student_id) {
+    return res
+      .status(400)
+      .send({ message: "Course code and student ID are required" });
   }
 
-  console.log("Deleting grade for course:", course_code);
+  console.log("Deleting grade for course:", course_code, "for student:", student_id);
 
-  // Instead of removing the row, set the grade to 'N/A' or NULL
-  const query = "UPDATE course_checklist SET final_grade = 'N/A' WHERE course_code = ?";
-  db.query(query, [course_code], (err, result) => {
+  // Query to set the final grade to NULL in the `final_grade` table
+  const query = `
+    UPDATE final_grade
+    SET final_grade = NULL
+    WHERE course_code = ? AND student_id = ?;
+  `;
+  const params = [course_code, student_id];
+
+  db.query(query, params, (err, result) => {
     if (err) {
-      console.error("Error deleting grade:", err);
+      console.error("Error deleting final grade:", err);
       return res.status(500).send({ message: "Failed to delete grade", error: err });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).send({ message: "Course not found" });
+      return res
+        .status(404)
+        .send({ message: "Student or course not found in the final_grade table" });
     }
 
-    console.log("Grade deleted successfully");
-    return res.status(200).send({ message: "Grade deleted successfully" });
+    res.send({ message: "Final grade deleted successfully" });
   });
 });
-
-
 
 export default router;
