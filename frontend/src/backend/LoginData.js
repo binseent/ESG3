@@ -38,6 +38,7 @@ router.post('/login', async (req, res) => {
           middleName: student.middleName,
           lastName: student.lastName,
           email: student.email,
+          status: student.status,
         },
       });
     } catch (compareError) {

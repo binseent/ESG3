@@ -121,13 +121,6 @@
   align-items: center;
 }
 
-.dashboard-main .profile-photo img {
-  width: 160px;
-  height: 160px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
 .dashboard-main .profile-details h4 {
   margin: 0;
   font-size: 1.2rem;

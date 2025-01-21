@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../assets/icon.png";
 import axios from "axios";
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
@@ -47,11 +46,10 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
   return (
     <aside className="sidebar">
       <div className="sidebar-profile">
-        <img src={Logo} alt="profile photo" />
         <div className="profile-name">
-          <h4>{studentData.fullName || "No data available"}</h4>
-          <p>{studentData.studentNumber || "N/A"}</p>
-          <p>{studentData.email || "N/A"}</p>
+          <h4>Name: {studentData.fullName || "No data available"}</h4>
+          <p>Student Number: {studentData.studentNumber || "N/A"}</p>
+          <p>Email: {studentData.email || "N/A"}</p>
         </div>
       </div>
       <ul>
