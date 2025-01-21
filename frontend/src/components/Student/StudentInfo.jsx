@@ -48,7 +48,7 @@ const StudentInfo = () => {
         localStorage.getItem("loggedInStudent")
       );
       const response = await axios.get(
-        `http://localhost:3000/api/student-info-data?email=${loggedInStudent.email}`
+        `http:https://esg-3.vercel.app/api/student-info-data?email=${loggedInStudent.email}`
       );
 
       console.log(response.data);
