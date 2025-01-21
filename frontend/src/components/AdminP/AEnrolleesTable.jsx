@@ -153,6 +153,7 @@ const AEnrolleesTable = () => {
               <th>Full Name</th>
               <th>Date of Birth</th>
               <th>Contact No.</th>
+              <th>Course</th>
               <th>Email</th>
               <th>Address</th>
               <th>Previous School</th>
@@ -174,6 +175,7 @@ const AEnrolleesTable = () => {
                 <td>{enrollee.full_name}</td>
                 <td>{enrollee.dob}</td>
                 <td>{enrollee.contact_number}</td>
+                <td>{enrollee.course}</td>
                 <td>{enrollee.email}</td>
                 <td>{enrollee.address}</td>
                 <td>{enrollee.prev_school_name}</td>

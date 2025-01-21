@@ -6,6 +6,7 @@ import Check from "../../assets/confirm-icon.png";
 const EnrollmentForm = () => {
   const [selectedType, setSelectedType] = useState("new student");
   const [showPopup, setShowPopup] = useState(false);
+  const [studentStatus, setStudentStatus] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
     dob: "",
@@ -31,26 +32,30 @@ const EnrollmentForm = () => {
     }));
   };
 
+  //get student email
   const fetchStudentData = async () => {
     try {
       const loggedInStudent = JSON.parse(localStorage.getItem("loggedInStudent"));
       const response = await axios.post('http://localhost:3000/api/enroll-form', {
         email: loggedInStudent.email,
       });
+      console.log("Response Data:", response.data); 
+      setStudentStatus(response.data.status); 
       setFormData((prevData) => ({
         ...prevData,
-        ...response.data, 
+        ...response.data,
       }));
     } catch (error) {
       console.error("Error fetching student data:", error);
       alert("Failed to load student information. Please try again.");
     }
   };
+  
 
   useEffect(() => {
-    fetchStudentData(); // Fetch data on component mount
+    fetchStudentData();
   }, []);
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -67,8 +72,6 @@ const EnrollmentForm = () => {
     }
   };
 
-  
-
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     // Handle the file upload logic here
@@ -79,6 +82,21 @@ const EnrollmentForm = () => {
     setShowPopup(false);
   };
 
+
+
+  useEffect(() => {
+    const statusMap = {
+      Irregular: "irregular",
+      New: "new student",
+      Old: "old student",
+      Shiftee: "shiftee",
+      Transferee: "transferee"
+    };
+
+    setSelectedType(statusMap[studentStatus] || "new student"); // Default to "new student" if status is not found
+  }, [studentStatus]);
+
+  
   return (
     <div className="enrollment-form">
       <h1>Enrollment Form</h1>
@@ -87,21 +105,14 @@ const EnrollmentForm = () => {
         carefully.
       </p>
 
-      <div className="form-header">
-        <select
-          id="student-type"
-          className="dropdown"
-          value={selectedType}
-          onChange={handleTypeChange}
-        >
-          <option value="new student">New Student</option>
-          <option value="old student">Old Student</option>
-          <option value="irregular">Irregular</option>
-          <option value="transferee">Transferee</option>
-          <option value="shiftee">Shiftee</option>
-        </select>
-      </div>
+            <p>
+        Student Status: 
+        <span value={selectedType}>
+          {studentStatus}
+        </span>
+      </p>
 
+      
       <div className="form-left">
         {selectedType !== "new student" && (
           <>
