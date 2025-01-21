@@ -22,6 +22,16 @@ router.post('/login', async (req, res) => {
     });
   }
 
+  // Faculty login check
+if (email === 'faculty@example.com' && password === 'faculty') {
+  return res.status(200).send({
+    message: 'Faculty login successful',
+    faculty: {
+      email: 'faculty@example.com',
+    },
+  });
+}
+
   // Student login check
   const query = 'SELECT * FROM students WHERE email = ?';
   db.query(query, [email], async (err, result) => {

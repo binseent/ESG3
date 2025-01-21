@@ -20,12 +20,6 @@ const ASidebar = ({ activeSection, setActiveSection }) => {
           Enrolled Students
         </li>
         <li
-          className={activeSection === "Checklist" ? "active" : ""}
-          onClick={() => setActiveSection("Checklist")}
-        >
-          Course Checklist
-        </li>
-        <li
           className={activeSection === "AEnrolleesTable" ? "active" : ""}
           onClick={() => setActiveSection("AEnrolleesTable")}
         >

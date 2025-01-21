@@ -42,6 +42,13 @@ function Login() {
             JSON.stringify(response.data.student)
           );
           navigate("/student");
+        } else if (response.data.message === "Faculty login successful") {
+          alert(response.data.message);
+          localStorage.setItem(
+            "loggedInFaculty",
+            JSON.stringify(response.data.faculty)
+          );
+          navigate("/faculty");
         } else {
           alert("Login failed");
         }
