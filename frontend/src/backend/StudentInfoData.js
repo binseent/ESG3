@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Route to get student information based on email
 router.get("/student-info-data", (req, res) => {
-  console.log("Query Parameters:", req.query);
+  console.log("Email received at StudentInfoData.js:", req.query);
   const { email } = req.query;
 
   if (!email) {
