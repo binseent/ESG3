@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/Login/LoginPage";
 import StudentDashboard from "./pages/Student/StudentDashboard";

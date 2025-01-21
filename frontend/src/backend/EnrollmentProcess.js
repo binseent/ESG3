@@ -1,60 +1,68 @@
 //EnrollmentProcess.jsx
-import express from 'express';
-import db from './Database.js'; 
+import express from "express";
+import db from "./Database.js";
 
 const router = express.Router();
 
-router.post('/enroll', async (req, res) => {
+router.post("/enrollees-table", async (req, res) => {
   const {
-    fullName,
+    enrollment_id,
+    student_id,
+    course_code,
+    enrollment_date,
+    full_name,
     dob,
     contactNumber,
     email,
     address,
-    prevSchoolName,
-    prevProgram,
-    studentId,
-    academicYear,
+    prev_school_name,
+    prev_program,
+    academic_year,
     program,
+    enrollment_status,
   } = req.body;
 
   try {
     const [result] = await db.promise().query(
       `INSERT INTO enrollments (
-        full_name, dob, contactNumber, email, address, prev_school_name, 
-        prev_program, student_id, academic_year, program
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        enrollment_id, student_id, course_code, enrollment_date, full_name, dob, contactNumber, email, address, prev_school_name, 
+        prev_program, academic_year, program, enrollment_status
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        fullName,
+        enrollment_id || null,
+        student_id,
+        course_code || null,
+        enrollment_date || new Date(), // Default to current date if not provided
+        full_name,
         dob,
         contactNumber,
         email,
         address,
-        prevSchoolName || null,
-        prevProgram || null, 
-        studentId || null, 
-        academicYear || null, 
-        program || null, 
+        prev_school_name,
+        prev_program,
+        academic_year,
+        program,
+        enrollment_status,
       ]
     );
-    
-    res.status(200).json({
-      message: 'Enrollment submitted successfully!',
-      data: result, 
+
+    return res.status(200).json({
+      message: "Enrollment submitted successfully!",
+      data: result,
     });
   } catch (error) {
-    console.error('Error inserting enrollment data:', error);
-    res.status(500).json({ message: 'Failed to submit enrollment data' });
+    console.error("Error inserting enrollment data:", error);
+    return res.status(500).json({ message: "Failed to submit enrollment data" });
   }
 });
 
-router.get('/enrollees', async (req, res) => {
+router.get("/enrollees-table", async (req, res) => {
   try {
-    const [rows] = await db.promise().query('SELECT * FROM enrollments');
-    res.status(200).json(rows);
+    const [rows] = await db.promise().query("SELECT * FROM enrollments");
+    return res.status(200).json(rows);
   } catch (error) {
-    console.error('Error fetching enrollees:', error);
-    res.status(500).json({ message: 'Failed to fetch enrollees' });
+    console.error("Error fetching enrollees:", error);
+    return res.status(500).json({ message: "Failed to fetch enrollees" });
   }
 });
 
