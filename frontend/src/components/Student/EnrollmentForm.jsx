@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Check from "../../assets/confirm-icon.png";
 
-
 const EnrollmentForm = () => {
   const [selectedType, setSelectedType] = useState("new student");
   const [showPopup, setShowPopup] = useState(false);
@@ -40,7 +39,7 @@ const EnrollmentForm = () => {
         localStorage.getItem("loggedInStudent")
       );
       const response = await axios.post(
-        "https://esg-3.vercel.app/api/enroll-form",
+        "http://localhost:3000/api/enroll-form",
         {
           email: loggedInStudent.email,
         }
@@ -64,7 +63,7 @@ const EnrollmentForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("https://esg-3.vercel.app/api/enroll", {
+      const response = await axios.post("http://localhost:3000/api/enroll", {
         ...formData,
       });
       // If enrollment is successful, show the popup

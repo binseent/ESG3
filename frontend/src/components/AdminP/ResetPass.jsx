@@ -15,7 +15,7 @@ const ResetPass = () => {
 
   useEffect(() => {
     axios
-      .get("https://esg-3.vercel.app/api/password-reset-requests")
+      .get("http://localhost:3000/api/password-reset-requests")
       .then((response) => {
         setData(response.data);
       })
@@ -44,7 +44,7 @@ const ResetPass = () => {
 
   const handleSendData = () => {
     axios
-      .post("https://esg-3.vercel.app/api/sendMail", {
+      .post("http://localhost:3000/api/sendMail", {
         status: requestStatus,
         password: password,
         reason: reason,

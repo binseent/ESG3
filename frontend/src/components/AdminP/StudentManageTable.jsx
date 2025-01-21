@@ -21,7 +21,7 @@ const StudentManageTable = () => {
 
   useEffect(() => {
     axios
-      .get("https://esg-3.vercel.app/students")
+      .get("http://localhost:3000/students")
       .then(() => {
         setStudents(response.data);
       })
@@ -73,7 +73,7 @@ const StudentManageTable = () => {
     e.preventDefault();
     console.log("Adding student:", newStudent); // Log the new student data
     axios
-      .post("https://esg-3.vercel.app/students-add", newStudent)
+      .post("http://localhost:3000/students-add", newStudent)
       .then((response) => {
         console.log("Add response:", response.data); // Log the response from the server
         setStudents([...students, newStudent]);
@@ -88,7 +88,7 @@ const StudentManageTable = () => {
     e.preventDefault();
     axios
       .put(
-        `https://esg-3.vercel.app/students-update/${selectedStudent.id}`,
+        `http://localhost:3000/students-update/${selectedStudent.id}`,
         newStudent
       )
       .then((response) => {
@@ -107,7 +107,7 @@ const StudentManageTable = () => {
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this student?")) {
       axios
-        .delete(`https://esg-3.vercel.app/students-delete/${id}`)
+        .delete(`http://localhost:3000/students-delete/${id}`)
         .then((response) => {
           setStudents(students.filter((student) => student.id !== id));
         })
