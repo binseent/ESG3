@@ -83,7 +83,7 @@ const StudentInfo = () => {
     setIsFetching(true);
     try {
       const response = await axios.put(
-        "http://localhost:3000/api/update-student-info",
+        "http:https://esg-3.vercel.app/api/update-student-info",
         formData
       );
 

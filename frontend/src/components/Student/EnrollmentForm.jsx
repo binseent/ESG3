@@ -9,7 +9,6 @@ const EnrollmentForm = () => {
   const [studentStatus, setStudentStatus] = useState("");
   const [formData, setFormData] = useState({
     fullName: "",
-    dob: "",
     contactNumber: "",
     email: "",
     address: "",
@@ -39,7 +38,7 @@ const EnrollmentForm = () => {
         localStorage.getItem("loggedInStudent")
       );
       const response = await axios.post(
-        "http://localhost:3000/api/enroll-form",
+        "https://esg-3.vercel.app/api/enroll-form",
         {
           email: loggedInStudent.email,
         }
@@ -63,7 +62,7 @@ const EnrollmentForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/enroll", {
+      const response = await axios.post("https://esg-3.vercel.app/api/enroll", {
         ...formData,
       });
       // If enrollment is successful, show the popup
@@ -191,13 +190,6 @@ const EnrollmentForm = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                />
-                <label htmlFor="dob">Date of Birth</label>
-                <input
-                  type="date"
-                  id="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
                 />
                 <label htmlFor="contactNumber">Contact Number</label>
                 <input
@@ -574,13 +566,6 @@ const EnrollmentForm = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   placeholder="Enter your full name"
-                />
-                <label htmlFor="dob">Date of Birth</label>
-                <input
-                  type="date"
-                  id="dob"
-                  value={formData.dob}
-                  onChange={handleChange}
                 />
                 <label htmlFor="contactNumber">Contact Number</label>
                 <input
