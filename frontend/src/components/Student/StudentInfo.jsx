@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 const StudentInfo = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [editSection, setEditSection] = useState("");
@@ -22,6 +22,7 @@ const StudentInfo = () => {
   });
 
   const [isFetching, setIsFetching] = useState(false);
+  const navigate = useNavigate();
 
   const openPopup = (section) => {
     setEditSection(section);
@@ -50,10 +51,8 @@ const StudentInfo = () => {
         `https://esg-3.vercel.app/api/student-info-data?email=${loggedInStudent.email}`
       );
 
-      // Log response data to check if 'status' is included
       console.log(response.data);
 
-      // Update both studentData and formData with the status
       setStudentData((prevState) => ({
         ...prevState,
         ...response.data,
@@ -61,7 +60,7 @@ const StudentInfo = () => {
 
       setFormData((prevData) => ({
         ...prevData,
-        ...response.data, // Ensure 'status' is included in the formData as well
+        ...response.data,
       }));
     } catch (error) {
       console.error("Error fetching student data:", error);
@@ -99,6 +98,9 @@ const StudentInfo = () => {
         localStorage.setItem("studentData", JSON.stringify(updatedData));
         alert("Changes saved successfully!");
         setIsPopupOpen(false);
+
+        // Redirecting to the dashboard or another page after saving changes
+        navigate("/student"); // Modify the path as needed
       } else {
         alert("Failed to save changes.");
       }
