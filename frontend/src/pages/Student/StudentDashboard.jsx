@@ -22,7 +22,7 @@ const StudentDashboard = () => {
     if (loggedInStudent) {
       axios
         .get(
-          `http:https://esg-3.vercel.app/student-info-data?email=${loggedInStudent.email}`
+          `https://esg-3.vercel.app/student-info-data?email=${loggedInStudent.email}`
         )
         .then((response) => {
           setStudentData(response.data);
