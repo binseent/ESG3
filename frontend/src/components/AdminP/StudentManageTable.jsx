@@ -37,11 +37,13 @@ const StudentManageTable = () => {
       student.course.toLowerCase().includes(searchInput.toLowerCase());
 
     const matchesCourse =
-      !filterCourse || student.course.toLowerCase() === filterCourse.toLowerCase();
+      !filterCourse ||
+      student.course.toLowerCase() === filterCourse.toLowerCase();
     const matchesYear =
       !filterYear || student.year.toLowerCase() === filterYear.toLowerCase();
     const matchesStatus =
-      !filterStatus || student.status.toLowerCase() === filterStatus.toLowerCase();
+      !filterStatus ||
+      student.status.toLowerCase() === filterStatus.toLowerCase();
 
     return matchesSearch && matchesCourse && matchesYear && matchesStatus;
   });
@@ -56,7 +58,9 @@ const StudentManageTable = () => {
   const openModal = (type, student = null) => {
     setModalType(type);
     setSelectedStudent(student);
-    setNewStudent(student || { id: "", name: "", course: "", year: "", status: "" });
+    setNewStudent(
+      student || { id: "", name: "", course: "", year: "", status: "" }
+    );
   };
 
   const closeModal = () => {
@@ -79,11 +83,14 @@ const StudentManageTable = () => {
         console.error("There was an error adding the student!", error);
       });
   };
-  
+
   const handleEdit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:3000/students-update/${selectedStudent.id}`, newStudent)
+      .put(
+        `http://localhost:3000/students-update/${selectedStudent.id}`,
+        newStudent
+      )
       .then((response) => {
         setStudents(
           students.map((student) =>
@@ -96,7 +103,7 @@ const StudentManageTable = () => {
         console.error("There was an error updating the student!", error);
       });
   };
-  
+
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this student?")) {
       axios
